@@ -1,4 +1,4 @@
-package it.polimi.tiw;
+package it.polimi.tiw.tobbisosfy.controllers;
 
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -11,8 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import it.polimi.tiw.beans.User;
-import it.polimi.tiw.dao.UserDAO;
+import it.polimi.tiw.tobbisosfy.beans.User;
+import it.polimi.tiw.tobbisosfy.DAOs.*;
 
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
