@@ -2,6 +2,7 @@ package it.polimi.tiw.tobbisosfy.beans;
 
 import java.util.ArrayList;
 
+
 public class Album {
     private final Long id; //vorrei fosse il db ad assegnarglielo da solo
     private String name;
