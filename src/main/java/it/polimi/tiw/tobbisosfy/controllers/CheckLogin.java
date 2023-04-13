@@ -71,8 +71,6 @@ public class CheckLogin extends HttpServlet {
             path = getServletContext().getContextPath() + "/index.html";
         } else {
             request.getSession().setAttribute("user", u);
-            String target = (u.getRole().equals("admin")) ? "/GoToHomeAdmin" : "/GoToHomeWorker";
-            path = path + target;
         }
         response.sendRedirect(path);
     }
@@ -83,6 +81,7 @@ public class CheckLogin extends HttpServlet {
                 connection.close();
             }
         } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
     }
 }

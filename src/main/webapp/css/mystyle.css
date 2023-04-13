@@ -1,0 +1,22 @@
+.centre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+}
+
+td.entry {
+    padding: 20px;
+}
+
+td.data {
+    width: 80px;
+}
+
+.audio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
