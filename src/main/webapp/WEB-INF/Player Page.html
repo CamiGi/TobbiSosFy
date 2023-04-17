@@ -7,41 +7,41 @@
           th:href="@{/css/mystyle.css}" />
 </head>
 <body>
-<h1 class="centre">
-  PLAYER
-</h1>
-<table class="centre">
-  <tr>
-    <td class="entry">
-      <img src="" alt="Album Cover" width="" height="">
-    </td>
-    <td class="entry">
-      <table>
-        <tr>
-          <td class="data">Title:</td>
-          <td th: text="${track.title}">Title</td>
-        </tr>
-        <tr>
-          <td class="data">Album:</td>
-          <td th: text="${track.album}">Album</td>
-        </tr>
-        <tr>
-          <td class="data">Artist:</td>
-          <td th: text="${track.artist}">Artist</td>
-        </tr>
-        <tr>
-          <td class="data">Year:</td>
-          <td th: text="${track.year}">Year</td>
-        </tr>
-        <tr>
-          <td class="data">Genre:</td>
-          <td th: text="${track.genre}">Genre</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
-<div class="audio-container">
+<div class="player-bg"></div>
+<div class="info">
+  <table>
+    <tr>
+      <td class="entry">
+        <img src="" alt="Album Cover" width="" height="">
+      </td>
+      <td class="entry">
+        <table>
+          <tr>
+            <td class="data">Title:</td>
+            <td th: text="${track.title}">Title</td>
+          </tr>
+          <tr>
+            <td class="data">Album:</td>
+            <td th: text="${track.album}">Album</td>
+          </tr>
+          <tr>
+            <td class="data">Artist:</td>
+            <td th: text="${track.artist}">Artist</td>
+          </tr>
+          <tr>
+            <td class="data">Year:</td>
+            <td th: text="${track.year}">Year</td>
+          </tr>
+          <tr>
+            <td class="data">Genre:</td>
+            <td th: text="${track.genre}">Genre</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="player">
   <audio controls>
     <source src="" type="">
     Your browser does not support this audio extension

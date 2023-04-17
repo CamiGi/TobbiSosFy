@@ -1,9 +1,13 @@
-.centre {
+body, html {
+    height: 100%;
+}
+
+/*.centre {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 80px;
-}
+    margin-top: 65px;
+}*/
 
 td.entry {
     padding: 20px;
@@ -13,10 +17,33 @@ td.data {
     width: 80px;
 }
 
-.audio-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
+.player-bg {
+    background-image: url("bg.jpg");
+
+    filter: blur(6px);
+
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
+.info {
+    font-size: 25px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    color: aqua;
+    mix-blend-mode: difference;
+}
+
+.player {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
