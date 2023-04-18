@@ -9,6 +9,8 @@ public class Track {
     private String mp3Uri;
     private User user;
 
+    //io inserirei anche l'album, da li si prendono artista, anno e immagine
+
     public Track(Long id, String title, String mp3Uri, User user){
             this.id=id;  //vorrei fosse il db ad assegnarglielo da solo
             this.title=title;

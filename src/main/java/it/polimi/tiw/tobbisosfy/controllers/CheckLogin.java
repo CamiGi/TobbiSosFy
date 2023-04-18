@@ -26,14 +26,7 @@ public class CheckLogin extends HttpServlet {
 
     public void init() throws ServletException {
         try {
-            ServletContext context = getServletContext();
-            String driver = context.getInitParameter("dbDriver");
-            String url = context.getInitParameter("dbUrl");
-            String user = context.getInitParameter("dbUser");
-            String password = context.getInitParameter("dbPassword");
-            Class.forName(driver);
-            connection = DriverManager.getConnection(url, user, password);
-
+            connection = DBServletInitializer.init(getServletContext());
         } catch (ClassNotFoundException e) {
             throw new UnavailableException("Can't load database driver");
         } catch (SQLException e) {
@@ -57,15 +50,15 @@ public class CheckLogin extends HttpServlet {
             return;
         }
 
-        UserDAO usr = new UserDAO(connection);
+        //UserDAO usr = new UserDAO(connection);
         User u = null;
-        try {
+        /*try {
             u = usr.checkCredentials(usrn, pwd);
         } catch (SQLException e) {
             // throw new ServletException(e);
             response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in database credential checking");
             return;
-        }
+        }*/
         String path = getServletContext().getContextPath();
         if (u == null) {
             path = getServletContext().getContextPath() + "/index.html";
