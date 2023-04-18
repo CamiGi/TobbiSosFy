@@ -1,0 +1,79 @@
+body {
+    height: 100%;
+    background-color: rgb(13, 16, 23);
+    font-family: "Arial", sans-serif;
+    color: ivory;
+}
+
+.box1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-left: 450px;
+    margin-right: 450px;
+
+    background-color: rgb(22, 27, 33);
+
+    border: 1px solid rgb(26, 31, 37);
+    border-radius: 10px;
+    padding: 10px;
+
+    font-size: 16px;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 7%;
+}
+
+.field {
+    padding: 10px;
+}
+
+input {
+    background-color: rgb(13, 16, 23);
+
+    font-family: "Arial", sans-serif;
+    font-size: 16px;
+    color: ivory;
+
+    width: 300px;
+    height: 25px;
+
+    border: 1px solid rgb(26, 31, 37);
+    border-radius: 4px;
+}
+
+.in {
+    background-color: rgb(40, 50, 100);
+    width: 308px;
+    height: 30px;
+
+    border-radius: 4px;
+}
+
+.box2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 450px;
+    margin-right: 450px;
+
+    border: 1px solid rgb(26, 31, 37);
+    border-radius: 10px;
+    padding: 25px;
+
+    font-size: 16px;
+}
+
+a:link {
+    color: darkslateblue;
+}
+
+a:visited {
+    color: darkblue;
+}

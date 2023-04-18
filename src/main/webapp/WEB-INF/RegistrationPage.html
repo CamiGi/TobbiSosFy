@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Registration Page</title>
+  <link rel="stylesheet" type="text/css" media="all" href="../css/pagestyle.css"/>
+</head>
+<body>
+<h2>Register to TobbiSosFy Music Manager</h2>
+<div class="box1">
+  <form action="CheckLogin"
+        method="POST">
+    <div class="field">
+      username<br><br><label>
+      <input type="text" name="username">
+    </label>
+    </div>
+    <div class="field">
+      password*<br><br><label>
+      <input type="text" name="pwd">
+    </label>
+    </div>
+    <div class="field">
+      confirm password*<br><br><label>
+      <input type="text" name="conf">
+    </label>
+    </div>
+    <div class="field">
+      <input class="in" type="submit" value="register">
+    </div>
+  </form>
+</div>
+<div class="box2">
+  *Password must contain:
+  <ul>
+    <li>at least 8 characters</li>
+    <li>at most 20 characters</li>
+    <li>at least one numeric character</li>
+    <li>at least one uppercase character</li>
+    <li>at least one special character</li>
+  </ul>
+</div>
+</body>
+</html>

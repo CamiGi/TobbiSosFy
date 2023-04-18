@@ -1,19 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Login page</title>
-    <link rel="stylesheet" type="text/css" media="all" href="css/mystyle.css"/>
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" media="all" href="css/pagestyle.css"/>
 </head>
 <body>
-<h1>Welcome to the new project management application</h1>
-<div class="centre">
+<h2>LogIn TobbiSosFy Music Manager</h2>
+<div class="box1">
     <form action="CheckLogin"
           method="POST">
-        username: <input type="text" name="username"> <br>
-        password: <input type="password" name="pwd"><br>
-            <input type="submit" value="login">
+        <div class="field">
+            username<br><br><label>
+            <input type="text" name="username">
+            </label>
+        </div>
+        <div class="field">
+            password<br><br><label>
+            <input type="password" name="pwd">
+            </label>
+        </div>
+        <div class="field">
+            <input class="in" type="submit" value="login">
+        </div>
     </form>
+</div>
+<div class="box2">
+    New to TobbiSosFy? &nbsp
+        <a href="/RegistratinPage.html">Register here!</a>
 </div>
 </body>
 </html>

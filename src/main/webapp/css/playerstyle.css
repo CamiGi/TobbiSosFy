@@ -1,7 +1,7 @@
-body, html {
+html {
     height: 100%;
 
-    background-image: url("bg.webp");
+    background-image: url("playerBG.webp");
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -30,7 +30,6 @@ td.data {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
 
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
