@@ -7,45 +7,46 @@
           th:href="@{/css/mystyle.css}" />
 </head>
 <body>
-<div class="player-bg"></div>
-<div class="info">
-  <table>
-    <tr>
-      <td class="entry">
-        <img src="" alt="Album Cover" width="" height="">
-      </td>
-      <td class="entry">
-        <table>
-          <tr>
-            <td class="data">Title:</td>
-            <td th: text="${track.title}">Title</td>
-          </tr>
-          <tr>
-            <td class="data">Album:</td>
-            <td th: text="${track.album}">Album</td>
-          </tr>
-          <tr>
-            <td class="data">Artist:</td>
-            <td th: text="${track.artist}">Artist</td>
-          </tr>
-          <tr>
-            <td class="data">Year:</td>
-            <td th: text="${track.year}">Year</td>
-          </tr>
-          <tr>
-            <td class="data">Genre:</td>
-            <td th: text="${track.genre}">Genre</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</div>
-<div class="player">
-  <audio controls>
-    <source src="" type="">
-    Your browser does not support this audio extension
-  </audio>
+<div class="box">
+  <div class="info">
+    <table>
+      <tr>
+        <td class="entry">
+          <img th: src="@{img.url}" alt="Album Cover">
+        </td>
+        <td class="entry">
+          <table>
+            <tr>
+              <td class="data">Title:</td>
+              <td class="data" th: text="${track.title}">unknown</td>
+            </tr>
+            <tr>
+              <td class="data">Album:</td>
+              <td class="data" th: text="${track.album}">unknown</td>
+            </tr>
+            <tr>
+              <td class="data">Artist:</td>
+              <td class="data" th: text="${track.artist}">unknown</td>
+            </tr>
+            <tr>
+              <td class="data">Year:</td>
+              <td class="data" th: text="${track.year}">unknown</td>
+            </tr>
+            <tr>
+              <td class="data">Genre:</td>
+              <td class="data" th: text="${track.genre}">unknown</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="player">
+    <audio controls>
+      <source src="" type="">
+      Your browser does not support this audio extension
+    </audio>
+  </div>
 </div>
 </body>
 </html>
