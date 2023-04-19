@@ -11,7 +11,6 @@ public class TrackDAO {
     private Connection con;
     private ResultSet result= null;
     private PreparedStatement pstatement = null;
-    private Statement statement = null;
 
     public TrackDAO(Connection con){
         this.con=con;
@@ -139,6 +138,15 @@ public class TrackDAO {
             }
         }
         return code;
+    }
+
+    private ArrayList<Object> getTrack(Long trackId, User user, Playlist playlist) throws SQLException {
+        ArrayList<Object> finalTrack;
+        String query = "SELECT tracks FROM playlist WHERE ID=?";
+        pstatement = con.prepareStatement(query);
+        pstatement.setLong(1,playlist.getId());
+        result = pstatement.executeQuery();
+        query = "SELECT * FROM track WHERE ID=?";
     }
 
     public Long getLastIdArtist() throws SQLException, Exception{
