@@ -6,43 +6,67 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class TrackDAO {
     private Connection con;
+    private ResultSet result= null;
+    private PreparedStatement pstatement = null;
+    private Statement statement = null;
 
     public TrackDAO(Connection con){
         this.con=con;
     }
 
     public void createTrack(Track track, Album album, Artist artist, User user) throws SQLException, Exception {
-        String queryArID="SELECT * FROM artist WHERE artistID= ?";
-        String queryAlID="SELECT * FROM album WHERE albumID= ?";
-        String queryTID="SELECT * FROM track WHERE trackID= ?";
+        String queryArID="SELECT ID, name FROM artist WHERE name= ?";
+        String queryAlID="SELECT ID, name FROM album WHERE name= ?";
+        String queryTID="SELECT ID, title FROM track WHERE title= ?";
         String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?)";
         String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?)";
         String queryNewArtist = "INSERT INTO artist VALUES (?, ?, ?, ?)";
-        ResultSet result= null;
-        PreparedStatement pstatement = null;
         int rescode = 0;
-        pstatement = con.prepareStatement(queryArID);
-        pstatement.setLong(1,artist.getId());
-        result = pstatement.executeQuery();
-        if(!result.first()){
-            rescode = newArtist(pstatement, rescode, artist, user, queryNewArtist);
+        pstatement = con.prepareStatement(queryArID);   //vedo se ho l'artista
+        pstatement.setString(1,artist.getName());
+        result = pstatement.executeQuery();  //result set con una riga sola se l'artista esiste, se non esiste non ho nessuna riga
+        if(!result.first()){  //se non ho nessun artista
+            rescode = newArtist(pstatement, rescode, artist, user, queryNewArtist);  //creo artista
             if(rescode != 1){
-                throw new Exception("ATTENZIONE qualcosa non è andato bene");
+                throw new Exception("ATTENZIONE qualcosa non è andato bene : 100");
             }
-            rescode = newAlbum(pstatement, rescode, album, user, queryNewAlbum);
+            rescode = newAlbum(pstatement, rescode, album, user, queryNewAlbum);  //creo album
             if(rescode != 1){
-                throw new Exception("ATTENZIONE quaclosa non è andato bene");
+                throw new Exception("ATTENZIONE quaclosa non è andato bene : 101");
             }
-            rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);
+            rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track
             if(rescode != 1){
-                throw new Exception("ATTENZIONE qualcosa non è andato bene");
+                throw new Exception("ATTENZIONE qualcosa non è andato bene : 102");
             }
-        } else {
-            pstatement = con.prepareStatement(queryAlID);
-            pstatement.setLong(1, album.getId());
-            result = pstatement.executeQuery();
+        } else {  //se ho già l'artista
+            pstatement = con.prepareStatement(queryAlID);  //vedo se esite l'album
+            pstatement.setString(1, album.getName());
+            result = pstatement.executeQuery();  //mando la query
+            if(!result.first()){  //se non esiste l'album
+                rescode = newAlbum(pstatement, rescode, album, user, queryNewAlbum);  //creo album
+                if(rescode != 1){
+                    throw new Exception("ATTENZIONE quaclosa non è andato bene : 200");
+                }
+                rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track
+                if(rescode != 1){
+                    throw new Exception("ATTENZIONE qualcosa non è andato bene : 201");
+                }
+            } else {  //caso in cui esiste l'artista e l'album
+                pstatement = con.prepareStatement(queryTID);  //vedo se esiste la track
+                pstatement.setString(1,track.getTitle());
+                result = pstatement.executeQuery();
+                if(!result.first()){  // la track non esiste
+                    rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track
+                    if(rescode != 1){
+                        throw new Exception("ATTENZIONE qualcosa non è andato bene : 300");
+                    }
+                } else {
+                    throw new Exception("ATTENZIONE LA CANZONE è GIà PRESENTE NEL DATABASE");  //la canzone è già presente
+                }
+            }
         }
     }
 
@@ -115,5 +139,33 @@ public class TrackDAO {
             }
         }
         return code;
+    }
+
+    public Long getLastIdArtist() throws SQLException, Exception{
+        String query="SELECT ID FROM artist";  //creo la query
+        return getLId(query);
+    }
+
+    public Long getLastIdAlbum() throws SQLException, Exception{
+        String query="SELECT ID FROM album";  //creo la query
+        return getLId(query);
+    }
+
+    public Long getLastIdTrack() throws SQLException, Exception{
+        String query="SELECT ID FROM track";  //creo la query
+        return getLId(query);
+    }
+
+
+    private Long getLId(String query) throws  SQLException, Exception{
+        boolean w;
+        String q = query;
+        pstatement = con.prepareStatement(query);
+        result = pstatement.executeQuery();  //ottengo tutti gli ID degli artisti
+        w = result.last();  //muovo il cursore nell'ultima riga
+        if(w == false){
+            throw new Exception("Non ci sono righe");
+        }
+        return (Long) result.getObject("ID");  //ritorno l'id
     }
 }

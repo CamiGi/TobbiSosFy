@@ -12,7 +12,7 @@ public class Playlist {
 
     public Playlist(Long id, String name, LocalDateTime date, User user) {
         this.id = id;  //vorrei fosse il db ad assegnarglielo da solo
-        this.name = name;
+        this.name = name.toLowerCase();
         this.date=date;
         this.user = user;
     }

@@ -13,7 +13,7 @@ public class User {
 
     public User(Long id, String username, String password) {
         this.id = id;
-        this.username = username;
+        this.username = username.toLowerCase();
         this.password = password;
     }
 
