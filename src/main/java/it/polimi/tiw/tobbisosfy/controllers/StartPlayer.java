@@ -2,7 +2,6 @@ package it.polimi.tiw.tobbisosfy.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
@@ -50,14 +49,14 @@ public class StartPlayer extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         Track track = null;
-         TrackDAO trFinder = new TrackDAO(connection);
-         String path = null;
+        Track track = null;
+        TrackDAO trFinder = new TrackDAO(connection);
+        String path = null;
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         try {
-            //qua va trovata la canzone estratta dalla richiesta http (track = trFinder.xxxx())
+
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,

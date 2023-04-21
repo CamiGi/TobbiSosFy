@@ -7,12 +7,25 @@
           th:href="@{/css/playerstyle.css}" />
 </head>
 <body>
+<a class="logout" th:href="@{/Logout}">Logout</a>
+<div class="back">
+    <table>
+        <tr>
+            <td class="homepage">
+                <a th:href="@{/GoToHome}">Home</a>
+            </td>
+            <td class="playlistpage">
+                <a th:href="@{/GoToPlaylist}">Playlist</a>
+            </td>
+        </tr>
+    </table>
+</div>
 <div class="box">
   <div class="info">
     <table>
       <tr>
         <td class="entry">
-          <img th: src="@{img.url}" alt="Album Cover">
+          <img th: src="@{track.img}" alt="Album Cover">
         </td>
         <td class="entry">
           <table>

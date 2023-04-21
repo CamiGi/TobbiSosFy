@@ -4,6 +4,44 @@ html {
     background-image: url("playerBG.webp");
     background-repeat: no-repeat;
     background-size: cover;
+
+    font-family: "Arial", sans-serif;
+    color: ivory;
+}
+
+.logout {
+    position: absolute;
+    top: 5%;
+    left: 85%;
+
+    text-align: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px 25px;
+
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 10px;
+}
+
+.back {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 10px;
+}
+
+.homepage {
+    border-right: 1px solid rgb(100, 100, 100);
+    padding: 15px 20px;
+}
+
+.playlistpage {
+    border-left: 1px solid rgb(100, 100, 100);
+    padding: 15px 20px;
 }
 
 /*.centre {
@@ -31,7 +69,6 @@ td.data {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
 
     border: 1px solid rgb(100, 100, 100);
