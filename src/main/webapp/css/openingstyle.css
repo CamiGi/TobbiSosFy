@@ -56,9 +56,6 @@ input {
 }
 
 .box2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin-top: 15px;
     margin-left: 450px;
     margin-right: 450px;

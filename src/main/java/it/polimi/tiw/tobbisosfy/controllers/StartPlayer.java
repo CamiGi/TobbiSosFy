@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 import it.polimi.tiw.tobbisosfy.beans.Track;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -56,14 +57,14 @@ public class StartPlayer extends HttpServlet {
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
         try {
-
+            //si trova la traccia giusta da db
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Song not found");
             return;
         }
-        path = "WEB-INF/PlayerPage.html";
+        path = "/PlayerPage.html";
         ctx.setVariable("track", track);
         templateEngine.process(path, ctx, response.getWriter());
     }
