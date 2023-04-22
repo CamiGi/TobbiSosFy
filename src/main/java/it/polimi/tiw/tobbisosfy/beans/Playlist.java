@@ -6,28 +6,17 @@ import java.util.ArrayList;
 
 @JavaBean
 public class Playlist {
-    private final Long id;  //vorrei fosse il db ad assegnarglielo da solo
-    private String name;
+    private String title;
     private LocalDateTime date;
     private User user;
-    private ArrayList<Track> songs;
 
-    public Playlist(Long id, String name, LocalDateTime date, User user) {
-        this.id = id;  //vorrei fosse il db ad assegnarglielo da solo
-        this.name = name.toLowerCase();
+    public Playlist(Long id, String title, LocalDateTime date, User user) {
+        this.title =title.toLowerCase();
         this.date=date;
         this.user = user;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void getDate(LocalDateTime date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -35,11 +24,11 @@ public class Playlist {
         return user;
     }
 
-    public ArrayList<Track> getSongs() {
-        return songs;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSongs(ArrayList<Track> songs) {
-        this.songs = songs;
+    public LocalDateTime getDate() {
+        return date;
     }
 }

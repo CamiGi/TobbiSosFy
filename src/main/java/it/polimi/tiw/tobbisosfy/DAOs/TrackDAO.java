@@ -11,45 +11,46 @@ public class TrackDAO {
     private Connection con;
     private ResultSet result= null;
     private PreparedStatement pstatement = null;
+    private PreparedStatement ps;
+    private String queryArID="SELECT ID, name FROM artist WHERE name= ?";
+    private String queryAlID="SELECT ID, name FROM album WHERE name= ?";
+    private String queryTID="SELECT ID, title FROM track WHERE title= ?";
+    private String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?)"; //title, albumID, file, username
+    private String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?)"; //name, year, genre, artistID, img
+    private String queryNewArtist = "INSERT INTO artist VALUES (?)";  //name
 
     public TrackDAO(Connection con){
         this.con=con;
     }
 
-    public void createTrack(Track track, Album album, Artist artist, User user) throws SQLException, Exception {
-        String queryArID="SELECT ID, name FROM artist WHERE name= ?";
-        String queryAlID="SELECT ID, name FROM album WHERE name= ?";
-        String queryTID="SELECT ID, title FROM track WHERE title= ?";
-        String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?)";
-        String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?)";
-        String queryNewArtist = "INSERT INTO artist VALUES (?, ?, ?, ?)";
+    public void createTrack(Track track, User user) throws SQLException, Exception {
         int rescode = 0;
         pstatement = con.prepareStatement(queryArID);   //vedo se ho l'artista
-        pstatement.setString(1,artist.getName());
+        pstatement.setString(1,track.getAlbum().getArtist().getName());
         result = pstatement.executeQuery();  //result set con una riga sola se l'artista esiste, se non esiste non ho nessuna riga
         if(!result.first()){  //se non ho nessun artista
-            rescode = newArtist(pstatement, rescode, artist, user, queryNewArtist);  //creo artista
+            rescode = newArtist(pstatement, rescode, track.getAlbum().getArtist(), user, queryNewArtist);  //creo artista: name
             if(rescode != 1){
                 throw new Exception("ATTENZIONE qualcosa non è andato bene : 100");
             }
-            rescode = newAlbum(pstatement, rescode, album, user, queryNewAlbum);  //creo album
+            rescode = newAlbum(pstatement, rescode, track.getAlbum(), user, queryNewAlbum);  //creo album: creo album: name, year, genre, artistID, img
             if(rescode != 1){
                 throw new Exception("ATTENZIONE quaclosa non è andato bene : 101");
             }
-            rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track
+            rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track: title, albumID, file, username
             if(rescode != 1){
                 throw new Exception("ATTENZIONE qualcosa non è andato bene : 102");
             }
         } else {  //se ho già l'artista
             pstatement = con.prepareStatement(queryAlID);  //vedo se esite l'album
-            pstatement.setString(1, album.getName());
+            pstatement.setString(1, track.getAlbum().getName());
             result = pstatement.executeQuery();  //mando la query
             if(!result.first()){  //se non esiste l'album
-                rescode = newAlbum(pstatement, rescode, album, user, queryNewAlbum);  //creo album
+                rescode = newAlbum(pstatement, rescode, track.getAlbum(), user, queryNewAlbum);  //creo album: name, year, genre, artistID, img
                 if(rescode != 1){
                     throw new Exception("ATTENZIONE quaclosa non è andato bene : 200");
                 }
-                rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track
+                rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track: title, albumID, file, username
                 if(rescode != 1){
                     throw new Exception("ATTENZIONE qualcosa non è andato bene : 201");
                 }
@@ -69,15 +70,11 @@ public class TrackDAO {
         }
     }
 
-    private int newArtist(PreparedStatement ps, int code, Artist artist, User user, String queryNewArtist) throws SQLException{
+    //creo artista: name
+    private int newArtist(int code,  Artist artist) throws SQLException{
         try{
             ps = con.prepareStatement(queryNewArtist);
-            ps.setLong(1, artist.getId());
-            ps.setString(2, artist.getName());
-            ps.setString(3, artist.getGenre().toString());
-            ArrayList a = new ArrayList<String>();
-            artist.getAlbums().stream().forEach(s->{a.add(s.getName());});  //parkour
-            ps.setArray(4,(Array)a);
+            ps.setString(1, artist.getName());
             code= ps.executeUpdate();  //returns the number of rows inserted into the table
         } catch (SQLException e){
             throw new SQLException(e);
@@ -93,15 +90,17 @@ public class TrackDAO {
         return code;
     }
 
-    private int newAlbum(PreparedStatement ps, int code, Album album, User user, String queryNewAlbum) throws SQLException{
+    //creo album: name, year, genre, artistID, img
+    private int newAlbum(int code, Album album) throws SQLException{
         try{
+            ps=con.prepareStatement("SELECT ID FROM artist WHERE name=?");  //chiedo al db l'id dell'artista col nome che compare nell'oggetto album
+            ps.setString(1,album.getArtist().getName());
+            ResultSet re =ps.executeQuery();
             ps = con.prepareStatement(queryNewAlbum);
-            ps.setLong(1, album.getId());
-            ps.setString(2, album.getName());
-            ArrayList a = new ArrayList<String>();
-            album.getTracks().stream().forEach(s->{a.add(s.getTitle());});
-            ps.setArray(3,(Array)a);
-            ps.setString(4, album.getArtist().getName());
+            ps.setString(1, album.getName());
+            ps.setInt(2, album.getYear());
+            ps.setString(3, album.getGenre().toString());
+            ps.setInt(4, re.getInt("ID"));
             ps.setString(5, album.getImgUri());
             code = ps.executeUpdate();
         } catch (SQLException e){
@@ -118,13 +117,20 @@ public class TrackDAO {
         return code;
     }
 
-    private int newTrack(PreparedStatement ps, int code, Track track, User user, String queryNewTrack) throws SQLException{
+    //creo track: title, albumID, file, username
+    private int newTrack(int code, Track track, User user) throws SQLException{
         try{
+            ps=con.prepareStatement("SELECT ID FROM album WHERE name=?");  //chiedo al db l'id dell'album col nome che compare nell'oggetto track
+            ps.setString(1,track.getAlbum().getName());
+            ResultSet re =ps.executeQuery();
+            ps=con.prepareStatement("SELECT username FROM user WHERE username=?");  //chiedo al db l'id dell'album col nome che compare nell'oggetto track
+            ps.setString(1,user.getUsername());
+            ResultSet re1 =ps.executeQuery();
             ps = con.prepareStatement(queryNewTrack);
-            ps.setLong(1, track.getId());
-            ps.setString(2, track.getTitle());
+            ps.setString(1, track.getTitle());
+            ps.setInt(2, re.getInt("ID"));
             ps.setString(3,track.getMp3Uri());
-            ps.setLong(4, track.getUser().getId());
+            ps.setString(4, re1.getString("username"));  //ridondante ma almeno se c'è un errore nel db viene lanciato
             code = ps.executeUpdate();
         } catch (SQLException e){
             throw new SQLException(e);
@@ -140,32 +146,76 @@ public class TrackDAO {
         return code;
     }
 
-    private ArrayList<Object> getTrack(Long trackId, User user, Playlist playlist) throws SQLException {
-        ArrayList<Object> finalTrack;
-        String query = "SELECT tracks FROM playlist WHERE ID=?";
-        pstatement = con.prepareStatement(query);
-        pstatement.setLong(1,playlist.getId());
-        result = pstatement.executeQuery();
-        query = "SELECT * FROM track WHERE ID=?";
+    /**
+     * DA RIFARE
+     * @param playlist
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<Track> getTracksFromPlaylist(Playlist playlist) throws SQLException{
+        ArrayList<Track> rs = new ArrayList<>();
+        /*String queryTraks = "SELECT trackID FORM contains WHERE playlistID=?";  //creo query che seleziona i track id
+        String queryPlayID = "SELECT ID FORM playlist WHERE name=?";  //creo query che trova l'id della playlist che mi interessa
+        ps = con.prepareStatement(queryPlayID);  //settaggio prepared statement
+        ps.setString(1,playlist.getTitle());
+        result = ps.executeQuery();  //mando la query playlist
+        ps = con.prepareStatement(queryTraks);  //settaggio altro statement
+        ps.setInt(1,result.getInt("ID"));
+        result = ps.executeQuery();  //mando la query per sapere gli id delle canzoni
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        result.first();
+        ids.add(result.getInt("trackID"));  //inserisco gli id
+        while (!result.isAfterLast()){
+            result.next();
+            ids.add(result.getInt("trackID"));
+        }*/
+        return  rs;
     }
 
-    public Long getLastIdArtist() throws SQLException, Exception{
+    /*private Track getTrack(Playlist playlist, int trackId) throws SQLException {
+        Track result_t;
+        Album result_al;
+        Artist result_ar;
+        playlist.
+    }*/
+
+    /**
+     * @return the last existent ID for artist
+     * @throws SQLException
+     * @throws Exception
+     */
+    public int getLastIdArtist() throws SQLException, Exception{
         String query="SELECT ID FROM artist";  //creo la query
         return getLId(query);
     }
 
-    public Long getLastIdAlbum() throws SQLException, Exception{
+    /**
+     * @return the last existent ID for artist
+     * @throws SQLException
+     * @throws Exception
+     */
+    public int getLastIdAlbum() throws SQLException, Exception{
         String query="SELECT ID FROM album";  //creo la query
         return getLId(query);
     }
 
-    public Long getLastIdTrack() throws SQLException, Exception{
+    /**
+     * @return the last existent ID for artist
+     * @throws SQLException
+     * @throws Exception
+     */
+    public int getLastIdTrack() throws SQLException, Exception{
         String query="SELECT ID FROM track";  //creo la query
         return getLId(query);
     }
 
 
-    private Long getLId(String query) throws  SQLException, Exception{
+    /**
+     * @return the last existent ID for artist
+     * @throws SQLException
+     * @throws Exception
+     */
+    private int getLId(String query) throws  SQLException, Exception{
         boolean w;
         String q = query;
         pstatement = con.prepareStatement(query);
@@ -174,6 +224,6 @@ public class TrackDAO {
         if(w == false){
             throw new Exception("Non ci sono righe");
         }
-        return (Long) result.getObject("ID");  //ritorno l'id
+        return (int) result.getObject("ID");  //ritorno l'id
     }
 }
