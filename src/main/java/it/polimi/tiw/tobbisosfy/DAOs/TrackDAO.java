@@ -3,8 +3,6 @@ package it.polimi.tiw.tobbisosfy.DAOs;
 import it.polimi.tiw.tobbisosfy.beans.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class TrackDAO {
@@ -18,26 +16,30 @@ public class TrackDAO {
     private String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?)"; //title, albumID, file, username
     private String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?)"; //name, year, genre, artistID, img
     private String queryNewArtist = "INSERT INTO artist VALUES (?)";  //name
+    private String queryAlbum = "SELECT * FROM album WHERE ID=?";
+    private String queryArtist = "SELECT * FROM artist WHERE ID=?";
+    private String queryTrack = "SELECT * FROM track WHERE ID=?";
+    private String queryUser = "SELECT * FORM user WHERE username=?";
 
     public TrackDAO(Connection con){
         this.con=con;
     }
 
-    public void createTrack(Track track, User user) throws SQLException, Exception {
+    public void addTrack(Track track, User user) throws SQLException, Exception {
         int rescode = 0;
         pstatement = con.prepareStatement(queryArID);   //vedo se ho l'artista
         pstatement.setString(1,track.getAlbum().getArtist().getName());
         result = pstatement.executeQuery();  //result set con una riga sola se l'artista esiste, se non esiste non ho nessuna riga
         if(!result.first()){  //se non ho nessun artista
-            rescode = newArtist(pstatement, rescode, track.getAlbum().getArtist(), user, queryNewArtist);  //creo artista: name
+            rescode = newArtist(rescode, track.getAlbum().getArtist());  //creo artista: name
             if(rescode != 1){
                 throw new Exception("ATTENZIONE qualcosa non è andato bene : 100");
             }
-            rescode = newAlbum(pstatement, rescode, track.getAlbum(), user, queryNewAlbum);  //creo album: creo album: name, year, genre, artistID, img
+            rescode = newAlbum(rescode, track.getAlbum());  //creo album: creo album: name, year, genre, artistID, img
             if(rescode != 1){
                 throw new Exception("ATTENZIONE quaclosa non è andato bene : 101");
             }
-            rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track: title, albumID, file, username
+            rescode = newTrack(rescode, track, user);  //creo track: title, albumID, file, username
             if(rescode != 1){
                 throw new Exception("ATTENZIONE qualcosa non è andato bene : 102");
             }
@@ -46,11 +48,11 @@ public class TrackDAO {
             pstatement.setString(1, track.getAlbum().getName());
             result = pstatement.executeQuery();  //mando la query
             if(!result.first()){  //se non esiste l'album
-                rescode = newAlbum(pstatement, rescode, track.getAlbum(), user, queryNewAlbum);  //creo album: name, year, genre, artistID, img
+                rescode = newAlbum(rescode, track.getAlbum());  //creo album: name, year, genre, artistID, img
                 if(rescode != 1){
                     throw new Exception("ATTENZIONE quaclosa non è andato bene : 200");
                 }
-                rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track: title, albumID, file, username
+                rescode = newTrack(rescode, track, user);  //creo track: title, albumID, file, username
                 if(rescode != 1){
                     throw new Exception("ATTENZIONE qualcosa non è andato bene : 201");
                 }
@@ -59,7 +61,7 @@ public class TrackDAO {
                 pstatement.setString(1,track.getTitle());
                 result = pstatement.executeQuery();
                 if(!result.first()){  // la track non esiste
-                    rescode = newTrack(pstatement, rescode, track, user, queryNewTrack);  //creo track
+                    rescode = newTrack(rescode, track, user);  //creo track
                     if(rescode != 1){
                         throw new Exception("ATTENZIONE qualcosa non è andato bene : 300");
                     }
@@ -146,38 +148,56 @@ public class TrackDAO {
         return code;
     }
 
+    public int getIDofTrack(Track track) throws  SQLException{
+        ps = con.prepareStatement("SELECT ID FROM track WHERE title=? AND username=?");
+        ps.setString(1,track.getTitle());
+        ps.setString(2,track.getUser().getUsername());
+        result = ps.executeQuery();
+        return result.getInt("ID");
+    }
+
     /**
-     * DA RIFARE
-     * @param playlist
+     * Restituisce l'oggetto track dato l'id
+     * @param trackID
      * @return
      * @throws SQLException
      */
-    public ArrayList<Track> getTracksFromPlaylist(Playlist playlist) throws SQLException{
-        ArrayList<Track> rs = new ArrayList<>();
-        /*String queryTraks = "SELECT trackID FORM contains WHERE playlistID=?";  //creo query che seleziona i track id
-        String queryPlayID = "SELECT ID FORM playlist WHERE name=?";  //creo query che trova l'id della playlist che mi interessa
-        ps = con.prepareStatement(queryPlayID);  //settaggio prepared statement
-        ps.setString(1,playlist.getTitle());
-        result = ps.executeQuery();  //mando la query playlist
-        ps = con.prepareStatement(queryTraks);  //settaggio altro statement
-        ps.setInt(1,result.getInt("ID"));
-        result = ps.executeQuery();  //mando la query per sapere gli id delle canzoni
-        ArrayList<Integer> ids = new ArrayList<Integer>();
-        result.first();
-        ids.add(result.getInt("trackID"));  //inserisco gli id
-        while (!result.isAfterLast()){
-            result.next();
-            ids.add(result.getInt("trackID"));
-        }*/
-        return  rs;
-    }
+    public Track getTrack(int trackID) throws SQLException {
 
-    /*private Track getTrack(Playlist playlist, int trackId) throws SQLException {
-        Track result_t;
-        Album result_al;
-        Artist result_ar;
-        playlist.
-    }*/
+        Track t;
+        Album album;
+        Artist artist;
+        User user;
+        ResultSet resultTrack;
+        ResultSet resultAlbum;
+
+        //query per ricevere le info della track
+        ps = con.prepareStatement(queryTrack);
+        ps.setInt(1,trackID);
+        resultTrack = ps.executeQuery();
+
+        //query per ricevere le info sull'album
+        ps = con.prepareStatement(queryAlbum);
+        ps.setInt(1,resultTrack.getInt("albumID"));
+        resultAlbum = ps.executeQuery();
+
+        //query per ricevere le info sull'artista
+        ps = con.prepareStatement(queryArtist);
+        ps.setInt(1,resultAlbum.getInt("artistID"));
+        result = ps.executeQuery();
+
+        //costruisco la track
+        artist = new Artist(result.getString("name"),this);
+        album = new Album(this, resultAlbum.getString("name"), resultAlbum.getInt("year"),Genre.valueOf(resultAlbum.getString("genre")), artist, resultAlbum.getString("img"));
+        ps = con.prepareStatement(queryUser);
+        ps.setString(1,resultTrack.getString("username"));
+        result = ps.executeQuery();
+        user = new User(result.getString("username"), result.getString("password"));
+        t = new Track(this, resultTrack.getString("title"), album, resultTrack.getString("file"), user);
+
+        //ritorno la track
+        return t;
+    }
 
     /**
      * @return the last existent ID for artist
