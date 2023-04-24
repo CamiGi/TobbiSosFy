@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,18 +18,6 @@ public class PlaylistDAO {
     private TrackDAO td;
     private PreparedStatement ps;
     private ResultSet result;
-
-    private String queryArID="SELECT ID, name FROM artist WHERE name= ?";
-    private String queryAlID="SELECT ID, name FROM album WHERE name= ?";
-    private String queryTID="SELECT ID, title FROM track WHERE title= ?";
-    private String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?)"; //title, albumID, file, username
-    private String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?)"; //name, year, genre, artistID, img
-    private String queryNewArtist = "INSERT INTO artist VALUES (?)";  //name
-    private String queryAlbum = "SELECT * FROM album WHERE ID=?";
-    private String queryArtist = "SELECT * FROM artist WHERE ID=?";
-    private String queryTrack = "SELECT * FROM track WHERE ID=?";
-    private String queryUser = "SELECT * FORM user WHERE username=?";
-    private String queryPlaylist = "SELECT * FROM playlist WHERE ID=?";
     private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID =?";
     private String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
     private String queryNewUser = "INSERT INTO user VALUES (?,?)";

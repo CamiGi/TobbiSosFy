@@ -170,6 +170,7 @@ public class TrackDAO {
         User user;
         ResultSet resultTrack;
         ResultSet resultAlbum;
+        int marco = -1;
 
         //query per ricevere le info della track
         ps = con.prepareStatement(queryTrack);
@@ -178,7 +179,8 @@ public class TrackDAO {
 
         //query per ricevere le info sull'album
         ps = con.prepareStatement(queryAlbum);
-        ps.setInt(1,resultTrack.getInt("albumID"));
+        marco = resultTrack.getInt("albumID");
+        ps.setInt(1, marco); ///PROBLEMA
         resultAlbum = ps.executeQuery();
 
         //query per ricevere le info sull'artista
