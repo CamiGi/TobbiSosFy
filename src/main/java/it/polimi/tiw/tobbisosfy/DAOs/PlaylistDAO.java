@@ -47,7 +47,7 @@ public class PlaylistDAO {
         ps.setString(2,playlist.getUser().getUsername());
         result = ps.executeQuery();
 
-        if(!result.first()){  //se non ho già la playlist
+        if(!result.isBeforeFirst()){  //se non ho già la playlist
             ps = con.prepareStatement(queryNewPlaylist);
             ps.setString(1,playlist.getTitle());
             ps.setDate(2,playlist.getDate());
@@ -55,6 +55,11 @@ public class PlaylistDAO {
             code = ps.executeUpdate();
         } else {
             throw new Exception("ATTENZIONE qualcosa non è andato bene: 500");
+        }
+
+        if (!(code == 1)){
+            con.rollback();
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 501");
         }
 
         ps = con.prepareStatement(queryPlID);
@@ -69,7 +74,7 @@ public class PlaylistDAO {
         ps.setInt(1,h);
         result = ps.executeQuery();
 
-        if(!result.first()){  //se non ho già la tupla
+        if(!result.isBeforeFirst()){  //se non ho già la tupla
 
             for (Track t : tracks){
                 ps = con.prepareStatement(queryNewContains);
@@ -77,16 +82,16 @@ public class PlaylistDAO {
                 try {
                     ps.setInt(2,td.getIDofTrack(t));
                 } catch (SQLException e){
-                    System.out.println("ATTENZIONE qualcosa non funziona: 501");
+                    System.out.println("ATTENZIONE qualcosa non funziona: 502");
                 }
                 code = ps.executeUpdate();
             }
         } else {
-            throw new Exception("ATTENZIONE qualcosa è andato storto: 502");
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 503");
         }
         if (!(code == 1)){
             con.rollback();
-            throw new Exception("ATTENZIONE qualcosa è andato storto: 503");
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 504");
         }
     }
 
@@ -105,7 +110,7 @@ public class PlaylistDAO {
         ps.setString(1,user.getUsername());
         result = ps.executeQuery();
 
-        result.first();
+        result.next();
         while (!result.isAfterLast()){
             r.add(new Playlist(result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user));
             result.next();
@@ -139,7 +144,7 @@ public class PlaylistDAO {
         ps.setInt(1,result.getInt("ID"));
         resultTrack = ps.executeQuery();  //mando la query definitiva che mi da tutte le canzoni
 
-        resultTrack.first();
+        resultTrack.next();
         while (!resultTrack.isAfterLast()){
             tid = resultTrack.getInt("track.ID");
             //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
@@ -166,7 +171,7 @@ public class PlaylistDAO {
         ps.setString(3,playlist.getUser().getUsername());
 
         result = ps.executeQuery();
-        if (result.first()){
+        if (result.isBeforeFirst()){
             id = result.getInt("ID");
         }
 
@@ -197,7 +202,7 @@ public class PlaylistDAO {
         ps.setInt(2, idt);
         result = ps.executeQuery();
 
-        if(!result.first()){
+        if(!result.isBeforeFirst()){
             ps = con.prepareStatement(query2);
             ps.setInt(1, idp);
             ps.setInt(2, idt);
@@ -207,7 +212,7 @@ public class PlaylistDAO {
         }
         if (!(code == 1)){
             con.rollback();
-            throw new Exception("ATTENZIONE qualcosa è andato storto: 504");
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 505");
         }
     }
 }

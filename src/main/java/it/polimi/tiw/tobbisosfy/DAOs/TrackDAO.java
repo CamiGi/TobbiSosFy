@@ -37,7 +37,7 @@ public class TrackDAO {
         pstatement = con.prepareStatement(queryArID);   //vedo se ho l'artista
         pstatement.setString(1,track.getAlbum().getArtist().getArtistName());
         result = pstatement.executeQuery();  //result set con una riga sola se l'artista esiste, se non esiste non ho nessuna riga
-        if(!result.first()){  //se non ho nessun artista
+        if(!result.isBeforeFirst()){  //se non ho nessun artista
             rescode = newArtist(rescode, track.getAlbum().getArtist());  //creo artista: name
             if(rescode != 1){
                 throw new Exception("ATTENZIONE qualcosa non è andato bene : 100");
@@ -54,7 +54,7 @@ public class TrackDAO {
             pstatement = con.prepareStatement(queryAlID);  //vedo se esite l'album
             pstatement.setString(1, track.getAlbum().getTitle());
             result = pstatement.executeQuery();  //mando la query
-            if(!result.first()){  //se non esiste l'album
+            if(!result.isBeforeFirst()){  //se non esiste l'album
                 rescode = newAlbum(rescode, track.getAlbum());  //creo album: name, year, genre, artistID, img
                 if(rescode != 1){
                     throw new Exception("ATTENZIONE quaclosa non è andato bene : 200");
@@ -67,7 +67,7 @@ public class TrackDAO {
                 pstatement = con.prepareStatement(queryTID);  //vedo se esiste la track
                 pstatement.setString(1,track.getTitle());
                 result = pstatement.executeQuery();
-                if(!result.first()){  // la track non esiste
+                if(!result.isBeforeFirst()){  // la track non esiste
                     rescode = newTrack(rescode, track, user);  //creo track
                     if(rescode != 1){
                         throw new Exception("ATTENZIONE qualcosa non è andato bene : 300");
@@ -87,14 +87,6 @@ public class TrackDAO {
             code= ps.executeUpdate();  //returns the number of rows inserted into the table
         } catch (SQLException e){
             throw new SQLException(e);
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();  //perchè?/////////////////////////////
-                }
-            } catch (Exception e1) {
-                System.out.println("Altra eccezione: "+e1.getMessage());
-            }
         }
         return code;
     }
@@ -114,14 +106,6 @@ public class TrackDAO {
             code = ps.executeUpdate();
         } catch (SQLException e){
             throw new SQLException(e);
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();  //perchè?
-                }
-            } catch (Exception e1) {
-                System.out.println("Altra eccezione: "+e1.getMessage());
-            }
         }
         return code;
     }
@@ -143,14 +127,6 @@ public class TrackDAO {
             code = ps.executeUpdate();
         } catch (SQLException e){
             throw new SQLException(e);
-        } finally {
-            try {
-                if (ps != null) {
-                    ps.close();  //perchè?
-                }
-            } catch (Exception e1) {
-                System.out.println("Altra eccezione: "+e1.getMessage());
-            }
         }
         return code;
     }
@@ -184,7 +160,6 @@ public class TrackDAO {
         User u;
         ResultSet resultTrack;
         ResultSet resultAlbum;
-        int marco = -1;
 
         //query per ricevere le info della track
         ps = con.prepareStatement(queryTrack);
@@ -193,7 +168,7 @@ public class TrackDAO {
         resultTrack = ps.executeQuery();
         resultTrack.next();
 
-        if (!resultTrack.first()){
+        if (!resultTrack.isBeforeFirst()){
             throw new Exception("ATTENZIONE non puoi prendere questa Track, non sei tu l'utente che l'ha inserita");
         }
 

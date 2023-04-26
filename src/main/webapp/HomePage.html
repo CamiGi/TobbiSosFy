@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link rel="stylesheet" type="text/css" media="all" href="css/homestyle.css"
+          th:href="@{css/homestyle.css}" />
 </head>
 <body>
+<div class="username">Camilla</div>
+<div class="myplaylists">div_1
+    <dl>
+        <dt>Playist_1</dt>
+        <dd>titlo_1</dd>
+        <dd>data_1</dd>
+        <dt>Playist_2</dt>
+        <dd>titlo_2</dd>
+        <dd>data_2</dd>
+        <dt>Playist_3</dt>
+        <dd>titlo_3</dd>
+        <dd>data_3</dd>
+    </dl>
+</div>
+
+<div class="newTrack">Add a New Track
+    <form>
+        <label for="ttitle">Track Title</label><br>
+        <input type="text" id="ttitle" name="ttitle"><br>
+    </form>
+
+</div>
 
 </body>
 </html>

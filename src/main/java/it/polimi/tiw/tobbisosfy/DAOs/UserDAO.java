@@ -29,31 +29,24 @@ public class UserDAO {
      * @param password
      * @return l'oggetto user
      * @throws SQLException
-     * @throws Exception
+     * @throws Exception se lo username o la password sono errate
      */
     public User login(String username, String password) throws SQLException, Exception{
-        /*ps = con.prepareStatement(queryUsername);
+        ps = con.prepareStatement(queryUsername);
         ps.setString(1,username);
         result = ps.executeQuery();
 
-        if (result.first()){
+        if (result.isBeforeFirst()){
             ps = con.prepareStatement(queryLogin);
             ps.setString(1, username);
             ps.setString(2, password);
             result = ps.executeQuery();
-            if (!result.first()){
+            if (!result.isBeforeFirst()){
                 throw new Exception("ATTENZIONE password errata");
             }
         } else {
             throw new Exception("ATTENZIONE username errato");
         }
-        */
-        ps = con.prepareStatement(queryLogin);
-        ps.setString(1, username);
-        ps.setString(2, password);
-        result = ps.executeQuery();
-        result.next();
-
         return new User(result.getString("username"), result.getString("password"));
     }
 
