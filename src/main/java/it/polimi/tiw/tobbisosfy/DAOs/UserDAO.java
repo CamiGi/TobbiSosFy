@@ -53,8 +53,9 @@ public class UserDAO {
         ps.setString(1, username);
         ps.setString(2, password);
         result = ps.executeQuery();
+        result.next();
 
-        return new User(username, password);
+        return new User(result.getString("username"), result.getString("password"));
     }
 
     /**
