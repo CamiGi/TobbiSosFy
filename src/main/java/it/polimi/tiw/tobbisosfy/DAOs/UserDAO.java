@@ -60,18 +60,15 @@ public class UserDAO {
      */
     public void addUser(String username, String password) throws SQLException, Exception{
         int code = 0;
-        ps = con.prepareStatement(queryUsername);
-        ps.setString(1,username);
-        result = ps.executeQuery();
+        //ps = con.prepareStatement(queryUsername);
+        //ps.setString(1,username);
+        //result = ps.executeQuery();
 
-        if (!result.first()){
-            ps = con.prepareStatement(queryNewUser);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            code = ps.executeUpdate();
-        } else {
-            throw new Exception("ATTENZIONE username già esistente");
-        }
+        ps = con.prepareStatement(queryNewUser);
+        ps.setString(1, username);
+        ps.setString(2, password);
+        code = ps.executeUpdate();
+
         if (!(code == 1)){
             con.rollback();
             throw new Exception("ATTENZIONE qualcosa è andato storto: 600");
