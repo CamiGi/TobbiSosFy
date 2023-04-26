@@ -32,7 +32,7 @@ public class UserDAO {
      * @throws Exception
      */
     public User login(String username, String password) throws SQLException, Exception{
-        ps = con.prepareStatement(queryUsername);
+        /*ps = con.prepareStatement(queryUsername);
         ps.setString(1,username);
         result = ps.executeQuery();
 
@@ -47,6 +47,12 @@ public class UserDAO {
         } else {
             throw new Exception("ATTENZIONE username errato");
         }
+        */
+
+        ps = con.prepareStatement(queryLogin);
+        ps.setString(1, username);
+        ps.setString(2, password);
+        result = ps.executeQuery();
 
         return new User(username, password);
     }
@@ -60,9 +66,6 @@ public class UserDAO {
      */
     public void addUser(String username, String password) throws SQLException, Exception{
         int code = 0;
-        //ps = con.prepareStatement(queryUsername);
-        //ps.setString(1,username);
-        //result = ps.executeQuery();
 
         ps = con.prepareStatement(queryNewUser);
         ps.setString(1, username);
