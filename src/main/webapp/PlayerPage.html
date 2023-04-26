@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Player</title>
-    <link rel="stylesheet" type="text/css" media="all" href="../css/playerstyle.css"
-          th:href="@{/css/playerstyle.css}" />
+    <link rel="stylesheet" type="text/css" media="all" href="css/playerstyle.css"
+          th:href="@{css/playerstyle.css}" />
 </head>
 <body>
 <a class="logout" th:href="@{/Logout}">Logout</a>
@@ -25,29 +25,29 @@
     <table>
       <tr>
         <td class="entry">
-          <img th: src="@{track.img}" alt="Album Cover">
+          <img th:src="@{/resources/images/{image}(image=${track.album.imgUri})}" alt="No Album Cover">
         </td>
         <td class="entry">
           <table>
             <tr>
               <td class="data">Title:</td>
-              <td class="data" th: text="${track.title}">unknown</td>
+              <td class="data" th:text="${track.title}">unknown</td>
             </tr>
             <tr>
               <td class="data">Album:</td>
-              <td class="data" th: text="${track.album}">unknown</td>
+              <td class="data" th:text="${track.album.title}">unknown</td>
             </tr>
             <tr>
               <td class="data">Artist:</td>
-              <td class="data" th: text="${track.artist}">unknown</td>
+              <td class="data" th:text="${track.album.artist.artistName}">unknown</td>
             </tr>
             <tr>
               <td class="data">Year:</td>
-              <td class="data" th: text="${track.year}">unknown</td>
+              <td class="data" th:text="${track.album.year}">unknown</td>
             </tr>
             <tr>
               <td class="data">Genre:</td>
-              <td class="data" th: text="${track.genre}">unknown</td>
+              <td class="data" th:text="${track.album.genre}">unknown</td>
             </tr>
           </table>
         </td>
@@ -55,8 +55,8 @@
     </table>
   </div>
   <div class="player">
-    <audio controls>
-      <source src="" type="">
+    <audio controls> <!--th:src="@{/resources/tracks/{song}(song=${track.mp3Uri})}"-->
+      <source src="/resources/tracks/Summer%20of%2069.mp3" type="audio/mpeg">
       Your browser does not support this audio extension
     </audio>
   </div>

@@ -18,7 +18,7 @@ public class PlaylistDAO {
     private TrackDAO td;
     private PreparedStatement ps;
     private ResultSet result;
-    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID =?";
+    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND user =?";
     private String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
     private String queryNewUser = "INSERT INTO user VALUES (?,?)";
     private String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
@@ -41,7 +41,7 @@ public class PlaylistDAO {
      */
     public int addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
 
-        String queryplst = "SELECT * FROM playlist WHERE title=? AND userID=?";
+        String queryplst = "SELECT * FROM playlist WHERE title=? AND user=?";
 
         ps = con.prepareStatement(queryplst);
         ps.setString(1,playlist.getTitle());
@@ -114,6 +114,8 @@ public class PlaylistDAO {
      * @throws SQLException
      */
     public Map<Integer, Track> getTracksFromPlaylist(Playlist playlist) throws SQLException{
+        //DA MARCO PER CAMI: come per la track bisogna fare un controllo anche sull'utente, se no si possono
+        //vedere anche le playlist degli altri utenti
         Map<Integer, Track> rs = new HashMap<>();
         ResultSet resultTrack;
         int tid;

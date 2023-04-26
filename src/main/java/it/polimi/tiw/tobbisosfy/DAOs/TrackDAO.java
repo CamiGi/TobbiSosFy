@@ -19,7 +19,7 @@ public class TrackDAO {
     private String queryAlbum = "SELECT * FROM album WHERE ID=?";
     private String queryArtist = "SELECT * FROM artist WHERE ID=?";
     private String queryTrack = "SELECT * FROM track WHERE ID=?";
-    private String queryUser = "SELECT * FORM user WHERE username=?";
+    private String queryUser = "SELECT * FROM user WHERE username=?";
 
     public TrackDAO(Connection con){
         this.con=con;
@@ -28,7 +28,7 @@ public class TrackDAO {
     public void addTrack(Track track, User user) throws SQLException, Exception {
         int rescode = 0;
         pstatement = con.prepareStatement(queryArID);   //vedo se ho l'artista
-        pstatement.setString(1,track.getAlbum().getArtist().getName());
+        pstatement.setString(1,track.getAlbum().getArtist().getArtistName());
         result = pstatement.executeQuery();  //result set con una riga sola se l'artista esiste, se non esiste non ho nessuna riga
         if(!result.first()){  //se non ho nessun artista
             rescode = newArtist(rescode, track.getAlbum().getArtist());  //creo artista: name
@@ -45,7 +45,7 @@ public class TrackDAO {
             }
         } else {  //se ho già l'artista
             pstatement = con.prepareStatement(queryAlID);  //vedo se esite l'album
-            pstatement.setString(1, track.getAlbum().getName());
+            pstatement.setString(1, track.getAlbum().getTitle());
             result = pstatement.executeQuery();  //mando la query
             if(!result.first()){  //se non esiste l'album
                 rescode = newAlbum(rescode, track.getAlbum());  //creo album: name, year, genre, artistID, img
@@ -76,7 +76,7 @@ public class TrackDAO {
     private int newArtist(int code,  Artist artist) throws SQLException{
         try{
             ps = con.prepareStatement(queryNewArtist);
-            ps.setString(1, artist.getName());
+            ps.setString(1, artist.getArtistName());
             code= ps.executeUpdate();  //returns the number of rows inserted into the table
         } catch (SQLException e){
             throw new SQLException(e);
@@ -96,10 +96,10 @@ public class TrackDAO {
     private int newAlbum(int code, Album album) throws SQLException{
         try{
             ps=con.prepareStatement("SELECT ID FROM artist WHERE name=?");  //chiedo al db l'id dell'artista col nome che compare nell'oggetto album
-            ps.setString(1,album.getArtist().getName());
+            ps.setString(1,album.getArtist().getArtistName());
             ResultSet re =ps.executeQuery();
             ps = con.prepareStatement(queryNewAlbum);
-            ps.setString(1, album.getName());
+            ps.setString(1, album.getTitle());
             ps.setInt(2, album.getYear());
             ps.setString(3, album.getGenre().toString());
             ps.setInt(4, re.getInt("ID"));
@@ -123,7 +123,7 @@ public class TrackDAO {
     private int newTrack(int code, Track track, User user) throws SQLException{
         try{
             ps=con.prepareStatement("SELECT ID FROM album WHERE name=?");  //chiedo al db l'id dell'album col nome che compare nell'oggetto track
-            ps.setString(1,track.getAlbum().getName());
+            ps.setString(1,track.getAlbum().getTitle());
             ResultSet re =ps.executeQuery();
             ps=con.prepareStatement("SELECT username FROM user WHERE username=?");  //chiedo al db l'id dell'album col nome che compare nell'oggetto track
             ps.setString(1,user.getUsername());
@@ -149,7 +149,7 @@ public class TrackDAO {
     }
 
     public int getIDofTrack(Track track) throws  SQLException{
-        ps = con.prepareStatement("SELECT ID FROM track WHERE title=? AND username=?");
+        ps = con.prepareStatement("SELECT ID FROM track WHERE title=? AND user=?");
         ps.setString(1,track.getTitle());
         ps.setString(2,track.getUser().getUsername());
         result = ps.executeQuery();
@@ -163,7 +163,8 @@ public class TrackDAO {
      * @throws SQLException
      */
     public Track getTrack(int trackID) throws SQLException {
-
+        //DA MARCO PER CAMI: attenzione, l'utente malevolo puo' inserire un id a caso e vedere le canzoni degli
+        // altri utenti. Per risolvere bisogna cercare la canzone nella tabella join tra track e user
         Track t;
         Album album;
         Artist artist;
@@ -176,24 +177,28 @@ public class TrackDAO {
         ps = con.prepareStatement(queryTrack);
         ps.setInt(1,trackID);
         resultTrack = ps.executeQuery();
+        resultTrack.next();
 
         //query per ricevere le info sull'album
         ps = con.prepareStatement(queryAlbum);
         marco = resultTrack.getInt("albumID");
         ps.setInt(1, marco); ///PROBLEMA
         resultAlbum = ps.executeQuery();
+        resultAlbum.next();
 
         //query per ricevere le info sull'artista
         ps = con.prepareStatement(queryArtist);
         ps.setInt(1,resultAlbum.getInt("artistID"));
         result = ps.executeQuery();
+        result.next();
 
         //costruisco la track
         artist = new Artist(result.getString("name"),this);
-        album = new Album(this, resultAlbum.getString("name"), resultAlbum.getInt("year"),Genre.valueOf(resultAlbum.getString("genre")), artist, resultAlbum.getString("img"));
+        album = new Album(this, resultAlbum.getString("name"), resultAlbum.getDate("year").toLocalDate().getYear(), Genre.valueOf(resultAlbum.getString("genre")), artist, resultAlbum.getString("img"));
         ps = con.prepareStatement(queryUser);
         ps.setString(1,resultTrack.getString("username"));
         result = ps.executeQuery();
+        result.next();
         user = new User(result.getString("username"), result.getString("password"));
         t = new Track(this, resultTrack.getString("title"), album, resultTrack.getString("file"), user);
 

@@ -7,14 +7,14 @@ import java.beans.JavaBean;
 @JavaBean
 public class Artist {
 
-    private String name;
+    private String artistName;
     private TrackDAO td;
 
     public Artist(String name, TrackDAO td){
         this.td = td;
-        this.name=name.toLowerCase();
+        this.artistName=name.toLowerCase();
     }
-    public String getName() {
-        return name;
+    public String getArtistName() {
+        return artistName;
     }
 }

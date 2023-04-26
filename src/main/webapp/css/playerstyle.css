@@ -1,7 +1,7 @@
 html {
     height: 100%;
 
-    background-image: url("playerBG.webp");
+    background-image: url("../resources/playerBG.webp");
     background-repeat: no-repeat;
     background-size: cover;
 
@@ -58,6 +58,7 @@ td.entry {
 
 td.data {
     max-width: 600px;
+    min-width: 100px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -93,5 +94,14 @@ td.data {
 img {
     max-width: 300px;
     height: auto;
+    border: 4px solid rgb(100, 100, 100);
     border-radius: 32px;
+}
+
+a:link {
+    color: ivory;
+}
+
+a:visited {
+    color: ivory;
 }

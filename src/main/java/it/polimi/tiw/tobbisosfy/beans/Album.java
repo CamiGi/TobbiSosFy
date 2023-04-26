@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 public class Album {
-    private String name;
+    private String title;
     private int year;
     private Genre genre;
     private Artist artist;
@@ -17,15 +17,15 @@ public class Album {
 
     public Album(TrackDAO td, String name, int year, Genre genre, Artist artist, String imgUri) {
         this.td = td;
-        this.name = name.toLowerCase();
+        this.title = name.toLowerCase();
         this.year = year;
         this.genre = genre;
         this.artist = artist;
         this.imgUri = imgUri;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     public Artist getArtist() {

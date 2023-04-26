@@ -37,3 +37,24 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### image files ###
+.apng
+.avif
+.gif
+.jpeg
+.jpg
+.png
+.svg
+.webp
+
+### audio files ###
+.wav
+.mpeg
+.mp3
+.mp4
+.aac
+.aacp
+.ogg
+.webm
+.flac

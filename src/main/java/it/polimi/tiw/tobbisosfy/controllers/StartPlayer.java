@@ -25,6 +25,7 @@ public class StartPlayer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
+
     public StartPlayer() {
         super();
     }
@@ -46,27 +47,46 @@ public class StartPlayer extends HttpServlet {
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
         templateResolver.setSuffix(".html");
+        System.out.println("Servlet creata");
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Track track = null;
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException {
+        Track track;
         TrackDAO trFinder = new TrackDAO(connection);
-        String path = null;
+        String path;
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        int trID;
 
         try {
-            //si trova la traccia giusta da db
-        } catch (Exception e) {
+            trID = Integer.parseInt(request.getParameter("track"));
+            track = trFinder.getTrack(trID);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Erroneous track id");
+            return;
+            //da rifare con thymeleaf
+        } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Song not found");
+                    "Track not found");
             return;
+            //da rifare con thymeleaf
         }
         path = "/PlayerPage.html";
         ctx.setVariable("track", track);
         templateEngine.process(path, ctx, response.getWriter());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int trID;
+
+        System.out.println("Metodo doPost trID="+request.getParameter("track"));
+
+        response.sendRedirect("StartPlayer?track="+request.getParameter("track"));
     }
 
     @Override
