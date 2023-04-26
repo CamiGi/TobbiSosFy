@@ -53,34 +53,27 @@ public class UserDAO {
      * Aggiungo un nuovo utente
      * @param username
      * @param password
-     * @param code
-     * @return
      * @throws SQLException
-     * @throws Exception
+     * @throws Exception ATTENZIONE username già esistente
      */
-    public int addUser(String username, String password, int code) throws SQLException, Exception{
-        code = 0;
+    public void addUser(String username, String password) throws SQLException, Exception{
+        int code = 0;
         ps = con.prepareStatement(queryUsername);
         ps.setString(1,username);
         result = ps.executeQuery();
 
         if (!result.first()){
-            ps = con.prepareStatement(queryLogin);
+            ps = con.prepareStatement(queryNewUser);
             ps.setString(1, username);
             ps.setString(2, password);
-            result = ps.executeQuery();
-            if (!result.first()){
-                ps = con.prepareStatement(queryNewUser);
-                ps.setString(1, username);
-                ps.setString(2, password);
-                code = ps.executeUpdate();
-            } else {
-                throw new Exception("ATTENZIONE password già esistente");
-            }
+            code = ps.executeUpdate();
         } else {
             throw new Exception("ATTENZIONE username già esistente");
         }
-        return code;
+        if (!(code == 1)){
+            con.rollback();
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 600");
+        }
     }
 
 }

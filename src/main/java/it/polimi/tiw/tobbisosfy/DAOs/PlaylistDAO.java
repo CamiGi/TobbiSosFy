@@ -38,7 +38,7 @@ public class PlaylistDAO {
      * @throws SQLException Vuol dire che già esiste nel DB
      * @throws Exception
      */
-    public int addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
+    public void addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
 
         String queryplst = "SELECT * FROM playlist WHERE title=? AND userID=?";
 
@@ -84,8 +84,10 @@ public class PlaylistDAO {
         } else {
             throw new Exception("ATTENZIONE qualcosa è andato storto: 502");
         }
-
-        return code;
+        if (!(code == 1)){
+            con.rollback();
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 503");
+        }
     }
 
     /**
@@ -175,13 +177,12 @@ public class PlaylistDAO {
      * Inserisce una canzone nella playlist
      * @param playlist
      * @param track
-     * @param code se restituisce 1 è andato a buon fine
      * @return
      * @throws SQLException
      * @throws Exception
      */
-    public int addSongToPlaylist(Playlist playlist, Track track, int code) throws SQLException, Exception{
-        code = 0;
+    public void addSongToPlaylist(Playlist playlist, Track track) throws SQLException, Exception{
+        int code = 0;
         int idp = -1;
         int idt = -1;
 
@@ -204,6 +205,9 @@ public class PlaylistDAO {
         } else {
             throw new Exception("ATTENZIONE la canzone è già nella playlist: "+playlist.getTitle());
         }
-        return code;
+        if (!(code == 1)){
+            con.rollback();
+            throw new Exception("ATTENZIONE qualcosa è andato storto: 504");
+        }
     }
 }

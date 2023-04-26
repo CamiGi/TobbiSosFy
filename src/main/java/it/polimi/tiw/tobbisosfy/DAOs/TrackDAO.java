@@ -162,7 +162,7 @@ public class TrackDAO {
      * @throws SQLException
      */
     public int getIDofTrack(Track track) throws  SQLException{
-        ps = con.prepareStatement("SELECT ID FROM track WHERE title=? AND user=?");
+        ps = con.prepareStatement("SELECT ID FROM track WHERE title=? AND username=?");
         ps.setString(1,track.getTitle());
         ps.setString(2,track.getUser().getUsername());
         result = ps.executeQuery();
