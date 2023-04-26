@@ -20,7 +20,6 @@
         <param-name>dbDriver</param-name>
         <param-value>com.mysql.cj.jdbc.Driver</param-value>
     </context-param>
-    <!--
     <filter>
         <filter-name>Gate</filter-name>
         <filter-class>it.polimi.tiw.tobbisosfy.filters.Gate</filter-class>
@@ -31,16 +30,15 @@
         <url-pattern>/GoToPlaylist</url-pattern>
         <url-pattern>/StartPlayer</url-pattern>
     </filter-mapping>
-    -->
     <welcome-file-list>
-        <welcome-file>playlistTest.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>imagepath</param-name>
-        <param-value>C:\Users\omarc\IdeaProjects\TobbiSosFy\src\main\webapp\resources\images</param-value>
+        <param-value>/resources/images</param-value>
     </context-param>
     <context-param>
         <param-name>trackpath</param-name>
-        <param-value>C:\Users\omarc\IdeaProjects\TobbiSosFy\src\main\webapp\resources\tracks</param-value>
+        <param-value>/resources/tracks</param-value>
     </context-param>
 </web-app>

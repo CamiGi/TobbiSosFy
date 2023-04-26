@@ -1,5 +1,6 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
+import it.polimi.tiw.tobbisosfy.DAOs.UserDAO;
 import it.polimi.tiw.tobbisosfy.beans.User;
 
 import javax.servlet.RequestDispatcher;
@@ -42,7 +43,7 @@ public class Register extends HttpServlet {
             throws ServletException, IOException {
         String usrn = request.getParameter("nickname");
         String pwd = request.getParameter("password");
-        //UserDao creator;
+        UserDAO creator = new UserDAO(connection);
         User u = null;
         String path = getServletContext().getContextPath();
 
@@ -52,14 +53,6 @@ public class Register extends HttpServlet {
             //da rifare con thymeleaf
         }
 
-        /*
-        //checks if the username exists
-        if (userDAO.usernameAlreadyTaken(usern)) {
-            response.sendError(HttpServletRespone.SC_BAD_REQUEST, "This username already exists");
-            return;
-            //da rifare con thymeleaf
-        }
-        */
         //does all the controls on the password
         if (pwd.length() < 8) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "This password is too short");
@@ -110,8 +103,22 @@ public class Register extends HttpServlet {
             return;
             //da rifare con thymeleaf
         }
+        if (!pwd.equals(request.getParameter("conf"))) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Password is different from confirmation");
+            return;
+        }
 
-        //u = creator.createUser(usern, pwd);
+        try {
+            creator.addUser(usrn, pwd);
+        } catch (SQLException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Username already existing");
+            return;
+            //da rifare in thymeleaf
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            return;
+            //da rifare in thymeleaf
+        }
         response.sendRedirect(path + "/UserRegisteredPage.html");
     }
 

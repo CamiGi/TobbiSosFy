@@ -48,7 +48,6 @@ public class UserDAO {
             throw new Exception("ATTENZIONE username errato");
         }
         */
-
         ps = con.prepareStatement(queryLogin);
         ps.setString(1, username);
         ps.setString(2, password);

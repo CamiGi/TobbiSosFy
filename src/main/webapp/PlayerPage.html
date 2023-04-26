@@ -55,8 +55,8 @@
     </table>
   </div>
   <div class="player">
-    <audio controls> <!--th:src="@{/resources/tracks/{song}(song=${track.mp3Uri})}"-->
-      <source src="/resources/tracks/Summer%20of%2069.mp3" type="audio/mpeg">
+    <audio controls>
+      <source th:src="@{/resources/tracks/{song}(song=${track.mp3Uri})}" type="audio/mpeg">
       Your browser does not support this audio extension
     </audio>
   </div>

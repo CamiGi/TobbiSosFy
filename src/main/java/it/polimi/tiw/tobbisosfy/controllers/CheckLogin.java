@@ -1,10 +1,8 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
 import java.io.IOException;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Connection;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
@@ -50,22 +48,26 @@ public class CheckLogin extends HttpServlet {
             return;
         }
 
-        //UserDAO usr = new UserDAO(connection);
+        UserDAO usr = new UserDAO(connection);
         User u = null;
-        /*try {
-            u = usr.checkCredentials(usrn, pwd);
+        try {
+            u = usr.login(usrn, pwd);
         } catch (SQLException e) {
-            // throw new ServletException(e);
-            response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failure in database credential checking");
+            response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Wrong username or password");
             return;
-        }*/
+            //da rifare in thymeleaf
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            return;
+            //da rifare in thymeleaf
+        }
         String path = getServletContext().getContextPath();
         if (u == null) {
             path = getServletContext().getContextPath() + "/index.html";
         } else {
             request.getSession().setAttribute("user", u);
         }
-        response.sendRedirect(path);
+        response.sendRedirect(path+"/GoToHome");
     }
 
     public void destroy() {
