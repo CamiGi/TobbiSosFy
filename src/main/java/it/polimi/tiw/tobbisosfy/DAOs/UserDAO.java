@@ -1,5 +1,7 @@
 package it.polimi.tiw.tobbisosfy.DAOs;
 
+import it.polimi.tiw.tobbisosfy.beans.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,11 +27,11 @@ public class UserDAO {
      * Valutazione username e password corrette
      * @param username
      * @param password
-     * @return true se ok, false se non va bene
+     * @return l'oggetto user
      * @throws SQLException
      * @throws Exception
      */
-    public boolean login(String username, String password) throws SQLException, Exception{
+    public User login(String username, String password) throws SQLException, Exception{
         ps = con.prepareStatement(queryUsername);
         ps.setString(1,username);
         result = ps.executeQuery();
@@ -39,14 +41,14 @@ public class UserDAO {
             ps.setString(1, username);
             ps.setString(2, password);
             result = ps.executeQuery();
-            if (result.first()){
-                return result.first();
-            } else {
+            if (!result.first()){
                 throw new Exception("ATTENZIONE password errata");
             }
         } else {
             throw new Exception("ATTENZIONE username errato");
         }
+
+        return new User(username, password);
     }
 
     /**
