@@ -18,13 +18,20 @@ public class TrackDAO {
     private String queryNewArtist = "INSERT INTO artist VALUES (?)";  //name
     private String queryAlbum = "SELECT * FROM album WHERE ID=?";
     private String queryArtist = "SELECT * FROM artist WHERE ID=?";
-    private String queryTrack = "SELECT * FROM track WHERE ID=?";
+    private String queryTrack = "SELECT * FROM track WHERE ID=? AND username=?";
     private String queryUser = "SELECT * FROM user WHERE username=?";
 
     public TrackDAO(Connection con){
         this.con=con;
     }
 
+    /**
+     * Aggiungo una track nel db
+     * @param track
+     * @param user
+     * @throws SQLException
+     * @throws Exception
+     */
     public void addTrack(Track track, User user) throws SQLException, Exception {
         int rescode = 0;
         pstatement = con.prepareStatement(queryArID);   //vedo se ho l'artista
@@ -83,7 +90,7 @@ public class TrackDAO {
         } finally {
             try {
                 if (ps != null) {
-                    ps.close();  //perchè?
+                    ps.close();  //perchè?/////////////////////////////
                 }
             } catch (Exception e1) {
                 System.out.println("Altra eccezione: "+e1.getMessage());
@@ -148,6 +155,12 @@ public class TrackDAO {
         return code;
     }
 
+    /**
+     * Data la track restituisce il suo id (int)
+     * @param track
+     * @return
+     * @throws SQLException
+     */
     public int getIDofTrack(Track track) throws  SQLException{
         ps = con.prepareStatement("SELECT ID FROM track WHERE title=? AND user=?");
         ps.setString(1,track.getTitle());
@@ -157,18 +170,18 @@ public class TrackDAO {
     }
 
     /**
-     * Restituisce l'oggetto track dato l'id
+     * Restituisce l'oggetto track dato l'id (int)
      * @param trackID
      * @return
      * @throws SQLException
      */
-    public Track getTrack(int trackID) throws SQLException {
+    public Track getTrack(int trackID, String username) throws SQLException, Exception{
         //DA MARCO PER CAMI: attenzione, l'utente malevolo puo' inserire un id a caso e vedere le canzoni degli
         // altri utenti. Per risolvere bisogna cercare la canzone nella tabella join tra track e user
         Track t;
         Album album;
         Artist artist;
-        User user;
+        User u;
         ResultSet resultTrack;
         ResultSet resultAlbum;
         int marco = -1;
@@ -176,13 +189,17 @@ public class TrackDAO {
         //query per ricevere le info della track
         ps = con.prepareStatement(queryTrack);
         ps.setInt(1,trackID);
+        ps.setString(2, username);
         resultTrack = ps.executeQuery();
         resultTrack.next();
 
+        if (!resultTrack.first()){
+            throw new Exception("ATTENZIONE non puoi prendere questa Track, non sei tu l'utente che l'ha inserita");
+        }
+
         //query per ricevere le info sull'album
         ps = con.prepareStatement(queryAlbum);
-        marco = resultTrack.getInt("albumID");
-        ps.setInt(1, marco); ///PROBLEMA
+        ps.setInt(1, resultTrack.getInt("albumID"));
         resultAlbum = ps.executeQuery();
         resultAlbum.next();
 
@@ -199,11 +216,11 @@ public class TrackDAO {
         ps.setString(1,resultTrack.getString("username"));
         result = ps.executeQuery();
         result.next();
-        user = new User(result.getString("username"), result.getString("password"));
-        t = new Track(this, resultTrack.getString("title"), album, resultTrack.getString("file"), user);
+        u = new User(result.getString("username"), result.getString("password"));
+        t = new Track(this, resultTrack.getString("title"), album, resultTrack.getString("file"), u);
 
-        //ritorno la track
         return t;
+
     }
 
     /**

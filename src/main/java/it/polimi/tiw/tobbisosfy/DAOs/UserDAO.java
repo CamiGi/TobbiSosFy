@@ -21,6 +21,14 @@ public class UserDAO {
         this.con=con;
     }
 
+    /**
+     * Valutazione username e password corrette
+     * @param username
+     * @param password
+     * @return true se ok, false se non va bene
+     * @throws SQLException
+     * @throws Exception
+     */
     public boolean login(String username, String password) throws SQLException, Exception{
         ps = con.prepareStatement(queryUsername);
         ps.setString(1,username);
@@ -41,6 +49,15 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Aggiungo un nuovo utente
+     * @param username
+     * @param password
+     * @param code
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
     public int addUser(String username, String password, int code) throws SQLException, Exception{
         code = 0;
         ps = con.prepareStatement(queryUsername);

@@ -2,10 +2,6 @@ package it.polimi.tiw.tobbisosfy.beans;
 
 import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-
 
 public class Album {
     private String title;

@@ -51,7 +51,7 @@ public class StartPlayer extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Track track;
         TrackDAO trFinder = new TrackDAO(connection);
         String path;
@@ -61,7 +61,7 @@ public class StartPlayer extends HttpServlet {
 
         try {
             trID = Integer.parseInt(request.getParameter("track"));
-            track = trFinder.getTrack(trID);
+            track = trFinder.getTrack(trID, (String)request.getSession().getAttribute("user"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -74,6 +74,9 @@ public class StartPlayer extends HttpServlet {
                     "Track not found");
             return;
             //da rifare con thymeleaf
+        } catch (Exception e){
+            e.printStackTrace();
+            return;
         }
         path = "/PlayerPage.html";
         ctx.setVariable("track", track);

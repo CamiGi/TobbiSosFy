@@ -18,9 +18,8 @@ public class PlaylistDAO {
     private TrackDAO td;
     private PreparedStatement ps;
     private ResultSet result;
-    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND user =?";
+    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
     private String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
-    private String queryNewUser = "INSERT INTO user VALUES (?,?)";
     private String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
 
 
@@ -41,7 +40,7 @@ public class PlaylistDAO {
      */
     public int addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
 
-        String queryplst = "SELECT * FROM playlist WHERE title=? AND user=?";
+        String queryplst = "SELECT * FROM playlist WHERE title=? AND userID=?";
 
         ps = con.prepareStatement(queryplst);
         ps.setString(1,playlist.getTitle());
@@ -89,6 +88,12 @@ public class PlaylistDAO {
         return code;
     }
 
+    /**
+     *
+     * @param user utente che sta interagendo
+     * @return un arreylist di tutte le playlist dell'utente
+     * @throws SQLException
+     */
     public ArrayList<Playlist> getPlaylists(User user) throws  SQLException{
         ArrayList<Playlist> r = new ArrayList<>();
         Playlist pl;
@@ -113,7 +118,7 @@ public class PlaylistDAO {
      * @return
      * @throws SQLException
      */
-    public Map<Integer, Track> getTracksFromPlaylist(Playlist playlist) throws SQLException{
+    public Map<Integer, Track> getTracksFromPlaylist(Playlist playlist) throws SQLException, Exception{
         //DA MARCO PER CAMI: come per la track bisogna fare un controllo anche sull'utente, se no si possono
         //vedere anche le playlist degli altri utenti
         Map<Integer, Track> rs = new HashMap<>();
@@ -136,10 +141,69 @@ public class PlaylistDAO {
         while (!resultTrack.isAfterLast()){
             tid = resultTrack.getInt("track.ID");
             //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
-            rs.put(tid, td.getTrack(tid));
+            rs.put(tid, td.getTrack(tid, playlist.getUser().getUsername()));
             resultTrack.next();
         }
 
         return  rs;
+    }
+
+    /**
+     * Ritorna l'ID della playlist
+     * @param playlist
+     * @return -1 se sbagliato, un numero maggiore di zero se giusto (che sarebbe l'id)
+     * @throws SQLException
+     */
+    public int getIdOfPlaylist(Playlist playlist) throws SQLException{
+        String queryIdP = "SELECT ID FROM playlist WHERE title=? AND creationDate=? AND userID=?";
+        int id = -1;
+
+        ps = con.prepareStatement(queryIdP);
+        ps.setString(1,playlist.getTitle());
+        ps.setDate(2,playlist.getDate());
+        ps.setString(3,playlist.getUser().getUsername());
+
+        result = ps.executeQuery();
+        if (result.first()){
+            id = result.getInt("ID");
+        }
+
+        return id;
+    }
+
+    /**
+     * Inserisce una canzone nella playlist
+     * @param playlist
+     * @param track
+     * @param code se restituisce 1 è andato a buon fine
+     * @return
+     * @throws SQLException
+     * @throws Exception
+     */
+    public int addSongToPlaylist(Playlist playlist, Track track, int code) throws SQLException, Exception{
+        code = 0;
+        int idp = -1;
+        int idt = -1;
+
+        idp = this.getIdOfPlaylist(playlist);
+        idt = td.getIDofTrack(track);
+
+        String query1 = "SELECT * FROM contains WHERE playlistID=? AND trackID=?";
+        String query2 = "INSERT INTO contains VALUES(?, ?)";
+
+        ps = con.prepareStatement(query1);
+        ps.setInt(1, idp);
+        ps.setInt(2, idt);
+        result = ps.executeQuery();
+
+        if(!result.first()){
+            ps = con.prepareStatement(query2);
+            ps.setInt(1, idp);
+            ps.setInt(2, idt);
+            code = ps.executeUpdate();
+        } else {
+            throw new Exception("ATTENZIONE la canzone è già nella playlist: "+playlist.getTitle());
+        }
+        return code;
     }
 }

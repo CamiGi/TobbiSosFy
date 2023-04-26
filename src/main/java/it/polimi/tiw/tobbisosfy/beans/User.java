@@ -1,7 +1,6 @@
 package it.polimi.tiw.tobbisosfy.beans;
 
 import java.beans.JavaBean;
-import java.util.ArrayList;
 
 @JavaBean
 public class User {
@@ -9,7 +8,7 @@ public class User {
     private String password;
 
     public User(String username, String password) {
-        this.username = username.toLowerCase();
+        this.username = username;
         this.password = password;
     }
 
