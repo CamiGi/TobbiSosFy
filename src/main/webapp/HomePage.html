@@ -7,28 +7,71 @@
           th:href="@{css/homestyle.css}" />
 </head>
 <body>
-<div class="username">Camilla</div>
-<div class="myplaylists">div_1
-    <dl>
-        <dt>Playist_1</dt>
-        <dd>titlo_1</dd>
-        <dd>data_1</dd>
-        <dt>Playist_2</dt>
-        <dd>titlo_2</dd>
-        <dd>data_2</dd>
-        <dt>Playist_3</dt>
-        <dd>titlo_3</dd>
-        <dd>data_3</dd>
-    </dl>
-</div>
+<div class="username" th:text="${user.username}">Null</div>
+<a class="logout" href="/Logout">logout</a>
 
-<div class="newTrack">Add a New Track
+
+<div class="one">
+    <p class="myplaylists">My playlists</p>
+        <dl>
+            <dt>Playist_1</dt>
+            <dd>titlo_1</dd>
+            <dd>data_1</dd>
+            <dd>n_canzoni</dd>
+            <dt>Playist_2</dt>
+            <dd>titlo_2</dd>
+            <dd>data_2</dd>
+            <dd>n_canzoni</dd>
+            <dt>Playist_3</dt>
+            <dd>titlo_3</dd>
+            <dd>data_3</dd>
+            <dd>n_canzoni</dd>
+        </dl>
+</div>
+<script>
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+</script>
+
+<div class="newTrack">
+    <p>Add a new track</p>
     <form>
         <label for="ttitle">Track Title</label><br>
-        <input type="text" id="ttitle" name="ttitle"><br>
+        <input class="text" type="text" id="ttitle" name="ttitle"><br>
+        <label for="talbum">Album</label><br>
+        <input class="text" type="text" id="talbum" name="talbum"><br>
+        <legend id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here the audio file</legend><br>
+        <input type="submit" value="Submit"><br>
     </form>
 
 </div>
 
+<div class="newPlaylist">
+    <p>Add a new playlist</p>
+    <form>
+        <label for="ptitle">Playlist Title</label><br>
+        <input class="text" type="text" id="ptitle" name="ptitle"><br>
+        <fieldset class="fs">
+            <legend>My songs</legend><br>
+                <input type="checkbox" id="song1" name="song1" value="song1">
+                <label class="chlab" for="song1">song1 - album1 - artist1</label><br>
+                <input type="checkbox" id="song2" name="song2" value="song2">
+                <label class="chlab" for="song2">song2 - album2 - artist2</label><br>
+        </fieldset>
+        <input type="submit" value="Submit"><br>
+        <!--<button (click)="metodo" type="button" id="psubmit">Submit</button><br>-->
+    </form>
+</div>
+
 </body>
-</html>

@@ -115,7 +115,6 @@ public class PlaylistDAO {
             r.add(new Playlist(result.getInt("ID"), result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user));
             result.next();
         }
-
         return r;
     }
 

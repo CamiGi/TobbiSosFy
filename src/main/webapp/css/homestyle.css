@@ -1,0 +1,233 @@
+html {
+    height: 100%;
+
+    background-color: rgba(0,0,0,1);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    color: ivory;
+
+    /*height: 100%;*/
+}
+.body{
+    background: black;
+    color: ivory;
+    min-height: 100vh;
+    min-width: 100vh;
+}
+.username{
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 20.8px;
+
+    position: absolute;
+    top: 5%;
+    left: 85%;
+
+    text-align: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px 25px;
+}
+
+.logout{
+    font-size: 13px;
+    font-weight: 700;
+    color: black;
+    line-height: 14px;
+
+    position: absolute;
+    top: 5.5%;
+    left: 5%;
+
+    text-align: center;
+
+    background-color: ivory;
+    padding: 13px 15px;
+
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 30px;
+}
+
+div{
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    padding: 10px;
+
+}
+
+.newTrack{
+    left: 60%;
+
+}
+
+.newPlaylist{
+    left: 33%;
+}
+
+p{
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 20.8px;
+}
+
+dt{
+    font-size: 18px;
+    line-height: 25px;
+}
+
+dd{
+    color: #aaaaaa;
+}
+
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+    color: ivory;
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+label{
+    font-size: 15px;
+    line-height: 25px;
+    padding: 3px;
+}
+.text{
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgb(100, 100, 100);
+    color: ivory;
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    height: 24px;
+    border-radius: 10px;
+}
+
+legend{
+    font-size: 13px;
+    line-height: 25px;
+    padding: 3px;
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    align-content: center;
+    border-radius: 10px;
+}
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: absolute;
+    padding-left: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    border: 1px solid rgb(100, 100, 100); /*Da eliminare*/
+
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    background-color: cadetblue;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    position: absolute;
+    top: 0px;
+    left: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.chlab{
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    background-clip: content-box;
+    cursor: pointer;
+    /*clip: rect(1px, 1px, 1px, 1px);
+    position: absolute;*/
+    margin: 0;
+    padding: 2px 0 0 24px;
+    background: cadetblue left center no-repeat;
+}
+
+input[type="checkbox"]:checked{
+    background-color: cadetblue;
+}
+
+button{
+    background-color: black;
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    font-size: 15px;
+    cursor: pointer;
+    color: cadetblue;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+input[type="submit"]{
+    background-color: black;
+    font-family: "helvetica";
+    font-size: 15px;
+    cursor: pointer;
+    color: cadetblue;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-top: 15px;
+    border-color: white;
+
+}
