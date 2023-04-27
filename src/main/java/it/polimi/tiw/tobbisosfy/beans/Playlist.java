@@ -5,14 +5,20 @@ import java.sql.Date;
 
 @JavaBean
 public class Playlist {
+    private final int id;
     private String title;
     private Date date;
     private User user;
 
-    public Playlist(String title, java.sql.Date date, User user) {
+    public Playlist(int id, String title, java.sql.Date date, User user) {
+        this.id = id;
         this.title =title.toLowerCase();
         this.date=date;
         this.user = user;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public User getUser() {

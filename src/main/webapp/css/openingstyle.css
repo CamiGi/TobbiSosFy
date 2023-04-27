@@ -9,9 +9,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
-    margin-left: 450px;
-    margin-right: 450px;
+
+    margin-top: 10px;
+    margin-left: 50%;
+    transform: translate(-50%, 0%);
 
     background-color: rgb(22, 27, 33);
 
@@ -20,6 +21,8 @@ body {
     padding: 10px;
 
     font-size: 16px;
+
+    width: 350px;
 }
 
 h2 {
@@ -47,7 +50,7 @@ input {
     border-radius: 4px;
 }
 
-.in {
+input[type="submit"] {
     background-color: rgb(40, 50, 100);
     width: 308px;
     height: 30px;
@@ -55,22 +58,48 @@ input {
     border-radius: 4px;
 }
 
+input[type="submit"]:hover{
+    background-color: rgb(60, 60, 100);
+}
+
 .box2 {
+    margin-left: 50%;
     margin-top: 15px;
-    margin-left: 450px;
-    margin-right: 450px;
+    transform: translate(-50%, 0%);
 
     border: 1px solid rgb(26, 31, 37);
     border-radius: 10px;
     padding: 25px;
 
     font-size: 16px;
+
+    width: 323px;
 }
 
 a:link {
     color: darkslateblue;
+    font-size: 18px;
+    text-decoration: none;
 }
 
 a:visited {
     color: darkblue;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#err {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 5%;
+    margin-bottom: 5%;
+
+    color: red;
+    font-size: 20px;
+    font-family: "Arial", sans-serif;
 }

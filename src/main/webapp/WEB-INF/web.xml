@@ -29,6 +29,7 @@
         <url-pattern>/GoToHome</url-pattern>
         <url-pattern>/GoToPlaylist</url-pattern>
         <url-pattern>/StartPlayer</url-pattern>
+        <url-pattern>/Logout</url-pattern>
     </filter-mapping>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

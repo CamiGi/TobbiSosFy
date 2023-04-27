@@ -1,6 +1,10 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
+import org.thymeleaf.context.WebContext;
+
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,4 +20,7 @@ public class DBServletInitializer {
         return DriverManager.getConnection(url, user, password);
     }
 
+    static WebContext createContext (HttpServletRequest request, HttpServletResponse response, ServletContext servletContext) {
+        return new WebContext(request, response, servletContext, request.getLocale());
+    }
 }

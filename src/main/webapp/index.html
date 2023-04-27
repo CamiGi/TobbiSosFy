@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="ISO-8859-1">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" media="all" href="css/openingstyle.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="css/openingstyle.css"
+          th:href="@{css/openingstyle.css}" />
 </head>
 <body>
 <h2>LogIn TobbiSosFy Music Manager</h2>
@@ -20,8 +21,9 @@
             <input type="password" name="pwd">
             </label>
         </div>
+        <div id="err" th:text="${error}"></div>
         <div class="field">
-            <input class="in" type="submit" value="login">
+            <input type="submit" value="login">
         </div>
     </form>
 </div>

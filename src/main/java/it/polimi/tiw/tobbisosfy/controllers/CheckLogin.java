@@ -3,6 +3,7 @@ package it.polimi.tiw.tobbisosfy.controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Connection;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
@@ -11,11 +12,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import it.polimi.tiw.tobbisosfy.beans.User;
 import it.polimi.tiw.tobbisosfy.DAOs.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
+    private TemplateEngine templateEngine;
 
     public CheckLogin() {
         super();
@@ -30,6 +36,12 @@ public class CheckLogin extends HttpServlet {
         } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
         }
+        ServletContext servletContext = getServletContext();
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -42,28 +54,28 @@ public class CheckLogin extends HttpServlet {
             throws ServletException, IOException {
         String usrn = request.getParameter("username");
         String pwd = request.getParameter("pwd");
+        String path = getServletContext().getContextPath();
+        final WebContext ctx = DBServletInitializer.createContext(request, response, getServletContext());
 
         if (usrn == null || usrn.isEmpty() || pwd == null || pwd.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters");
+            ctx.setVariable("error", "Missing parameters");
+            templateEngine.process("/index.html", ctx, response.getWriter());
             return;
         }
 
         UserDAO usr = new UserDAO(connection);
-        User u = null;
+        User u;
         try {
             u = usr.login(usrn, pwd);
-        } catch (SQLException e) {
-            response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Wrong username or password");
-            return;
-            //da rifare in thymeleaf
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            ctx.setVariable("error", e.getMessage());
+            templateEngine.process("/index.html", ctx, response.getWriter());
             return;
-            //da rifare in thymeleaf
         }
-        String path = getServletContext().getContextPath();
         if (u == null) {
-            path = getServletContext().getContextPath() + "/index.html";
+            ctx.setVariable("error", "An error occurred while creating user");
+            templateEngine.process("/index.html", ctx, response.getWriter());
+            return;
         } else {
             request.getSession().setAttribute("user", u);
         }
@@ -75,8 +87,8 @@ public class CheckLogin extends HttpServlet {
             if (connection != null) {
                 connection.close();
             }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

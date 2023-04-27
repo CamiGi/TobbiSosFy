@@ -42,11 +42,12 @@ public class UserDAO {
             ps.setString(2, password);
             result = ps.executeQuery();
             if (!result.isBeforeFirst()){
-                throw new Exception("ATTENZIONE password errata");
+                throw new Exception("Wrong password");
             }
         } else {
-            throw new Exception("ATTENZIONE username errato");
+            throw new Exception("Username not found");
         }
+        result.next();
         return new User(result.getString("username"), result.getString("password"));
     }
 
@@ -67,7 +68,7 @@ public class UserDAO {
 
         if (!(code == 1)){
             con.rollback();
-            throw new Exception("ATTENZIONE qualcosa è andato storto: 600");
+            throw new Exception("ATTENTION something went wrong: 600");
         }
     }
 

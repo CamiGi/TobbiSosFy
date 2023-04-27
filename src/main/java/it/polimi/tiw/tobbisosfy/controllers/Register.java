@@ -1,9 +1,12 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
 import it.polimi.tiw.tobbisosfy.DAOs.UserDAO;
-import it.polimi.tiw.tobbisosfy.beans.User;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +21,7 @@ import java.sql.SQLException;
 public class Register extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection connection = null;
+    private TemplateEngine templateEngine;
 
     public Register() {
         super();
@@ -31,12 +35,12 @@ public class Register extends HttpServlet {
         } catch (SQLException e) {
             throw new UnavailableException("Couldn't get db connection");
         }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        response.getWriter().append("Served at: ").append(request.getContextPath());
+        ServletContext servletContext = getServletContext();
+        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        this.templateEngine = new TemplateEngine();
+        this.templateEngine.setTemplateResolver(templateResolver);
+        templateResolver.setSuffix(".html");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -44,35 +48,30 @@ public class Register extends HttpServlet {
         String usrn = request.getParameter("nickname");
         String pwd = request.getParameter("password");
         UserDAO creator = new UserDAO(connection);
-        User u = null;
+        final WebContext ctx = DBServletInitializer.createContext(request, response, getServletContext());
         String path = getServletContext().getContextPath();
 
         if (usrn == null || usrn.isEmpty() || pwd == null || pwd.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters");
+            registrationFailed(response, ctx, "Missing parameters");
             return;
-            //da rifare con thymeleaf
         }
 
         //does all the controls on the password
         if (pwd.length() < 8) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "This password is too short");
+            registrationFailed(response, ctx, "Password is too short");
             return;
-            //da rifare con thymeleaf
         }
         if (pwd.length() > 20) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "This password is too long");
+            registrationFailed(response, ctx, "Password is too long");
             return;
-            //da rifare con thymeleaf
         }
         if (pwd.toLowerCase().equals(pwd)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Your password must contain at least one uppercase character");
+            registrationFailed(response, ctx, "Password has no uppercase chars");
             return;
-            //da rifare con thymeleaf
         }
         if (pwd.toUpperCase().equals(pwd)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Your password must contain at least one lowercase character");
+            registrationFailed(response, ctx, "Password has no lowercase chars");
             return;
-            //da rifare con thymeleaf
         }
         if (!pwd.contains("0") &&
                 !pwd.contains("1") &&
@@ -84,9 +83,8 @@ public class Register extends HttpServlet {
                 !pwd.contains("7") &&
                 !pwd.contains("8") &&
                 !pwd.contains("9")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Your password must contain at least one numeric character");
+            registrationFailed(response, ctx, "Password has no numeric chars");
             return;
-            //da rifare con thymeleaf
         }
         if (!pwd.contains("-") &&
                 !pwd.contains("_") &&
@@ -99,32 +97,29 @@ public class Register extends HttpServlet {
                 !pwd.contains("@") &&
                 !pwd.contains("`") &&
                 !pwd.contains("#")) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Your password must contain at least one special character");
+            registrationFailed(response, ctx, "Password has no special chars");
             return;
-            //da rifare con thymeleaf
         }
         if (!pwd.equals(request.getParameter("conf"))) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Password is different from confirmation");
+            registrationFailed(response, ctx, "Password and confirmation are different");
             return;
         }
 
         try {
             creator.addUser(usrn, pwd);
-        } catch (SQLException e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Username already existing");
-            return;
-            //da rifare in thymeleaf
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            if (e.getMessage().contains("Duplicate entry"))
+                registrationFailed(response, ctx, "Username already taken");
+            else
+                registrationFailed(response, ctx, e.getMessage());
             return;
-            //da rifare in thymeleaf
         }
         response.sendRedirect(path + "/UserRegisteredPage.html");
     }
 
-    private void registrationFailed(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException {
-        RequestDispatcher re = request.getRequestDispatcher(path + "/RegistrationPage.html");
-        re.forward(request, response);
+    private void registrationFailed(HttpServletResponse response, WebContext ctx, String err) throws IOException {
+        ctx.setVariable("error", err);
+        templateEngine.process("/RegistrationPage.html", ctx, response.getWriter());
     }
 
     public void destroy() {
@@ -132,8 +127,8 @@ public class Register extends HttpServlet {
             if (connection != null) {
                 connection.close();
             }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

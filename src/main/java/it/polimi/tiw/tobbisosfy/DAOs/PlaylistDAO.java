@@ -18,7 +18,7 @@ public class PlaylistDAO {
     private TrackDAO td;
     private PreparedStatement ps;
     private ResultSet result;
-    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
+    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND user=?";
     private String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
     private String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
 
@@ -40,7 +40,7 @@ public class PlaylistDAO {
      */
     public void addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
 
-        String queryplst = "SELECT * FROM playlist WHERE title=? AND userID=?";
+        String queryplst = "SELECT * FROM playlist WHERE title=? AND user=?";
 
         ps = con.prepareStatement(queryplst);
         ps.setString(1,playlist.getTitle());
@@ -105,14 +105,14 @@ public class PlaylistDAO {
         ArrayList<Playlist> r = new ArrayList<>();
         Playlist pl;
 
-        String query = "SELECT * FROM playlist WHERE title=?";
+        String query = "SELECT * FROM playlist WHERE user=?";
         ps = con.prepareStatement(query);
         ps.setString(1,user.getUsername());
         result = ps.executeQuery();
 
         result.next();
         while (!result.isAfterLast()){
-            r.add(new Playlist(result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user));
+            r.add(new Playlist(result.getInt("ID"), result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user));
             result.next();
         }
 
@@ -162,7 +162,7 @@ public class PlaylistDAO {
      * @throws SQLException
      */
     public int getIdOfPlaylist(Playlist playlist) throws SQLException{
-        String queryIdP = "SELECT ID FROM playlist WHERE title=? AND creationDate=? AND userID=?";
+        String queryIdP = "SELECT ID FROM playlist WHERE title=? AND creationDate=? AND user=?";
         int id = -1;
 
         ps = con.prepareStatement(queryIdP);

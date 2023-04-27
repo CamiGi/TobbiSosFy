@@ -47,16 +47,15 @@ public class StartPlayer extends HttpServlet {
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
         templateResolver.setSuffix(".html");
-        System.out.println("Servlet creata");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Track track;
         TrackDAO trFinder = new TrackDAO(connection);
+        getServletContext().getContextPath();
         String path;
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        final WebContext ctx = DBServletInitializer.createContext(request, response, getServletContext());
         int trID;
 
         try {
@@ -81,15 +80,6 @@ public class StartPlayer extends HttpServlet {
         path = "/PlayerPage.html";
         ctx.setVariable("track", track);
         templateEngine.process(path, ctx, response.getWriter());
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int trID;
-
-        System.out.println("Metodo doPost trID="+request.getParameter("track"));
-
-        response.sendRedirect("StartPlayer?track="+request.getParameter("track"));
     }
 
     @Override
