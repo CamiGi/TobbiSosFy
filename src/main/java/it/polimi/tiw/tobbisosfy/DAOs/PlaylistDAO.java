@@ -10,8 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 
 public class PlaylistDAO {
 
@@ -142,15 +141,15 @@ public class PlaylistDAO {
      * @return
      * @throws SQLException
      */
-    public Map<Integer, Track> getTracksFromPlaylist(Playlist playlist) throws SQLException, Exception{
+    public ArrayList<Track> getTracksFromPlaylist(Playlist playlist) throws SQLException, Exception{
         //DA MARCO PER CAMI: come per la track bisogna fare un controllo anche sull'utente, se no si possono
         //vedere anche le playlist degli altri utenti
-        Map<Integer, Track> rs = new HashMap<>();
+        ArrayList<Track> rs = new ArrayList<>();
         ResultSet resultTrack;
         int tid;
 
 
-        String queryTracks = "SELECT * FROM contains JOIN track WHERE contains.playlistID=? AND contains.trackID=track.ID";  //creo query che seleziona le canzoni (tentativo di JOIN)
+        String queryTracks = "SELECT * FROM contains JOIN track JOIN album WHERE contains.playlistID=? AND contains.trackID=track.ID ORDER BY year";  //creo query che seleziona le canzoni (tentativo di JOIN)
         String prova = "SELECT ID FROM playlist WHERE title=?"; //creo query che trova l'id della playlist che mi interessa
 
         ps = con.prepareStatement(prova);  //settaggio prepared statement
@@ -165,7 +164,7 @@ public class PlaylistDAO {
         while (!resultTrack.isAfterLast()){
             tid = resultTrack.getInt("track.ID");
             //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
-            rs.put(tid, td.getTrack(tid, playlist.getUser().getUsername()));
+            rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
             resultTrack.next();
         }
 
@@ -254,4 +253,5 @@ public class PlaylistDAO {
 
         return plst;
     }
+
 }

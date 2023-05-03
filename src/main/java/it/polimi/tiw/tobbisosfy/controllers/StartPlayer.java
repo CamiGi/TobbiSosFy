@@ -53,7 +53,6 @@ public class StartPlayer extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Track track;
         TrackDAO trFinder = new TrackDAO(connection);
-        getServletContext().getContextPath();
         String path;
         final WebContext ctx = DBServletInitializer.createContext(request, response, getServletContext());
         int trID;
@@ -66,13 +65,13 @@ public class StartPlayer extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     "Erroneous track id");
             return;
-            //da rifare con thymeleaf
+            //redirect pagina errore
         } catch (SQLException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Track not found");
             return;
-            //da rifare con thymeleaf
+            //redirect pagina errore
         } catch (Exception e){
             e.printStackTrace();
             return;
