@@ -4,6 +4,7 @@ import it.polimi.tiw.tobbisosfy.beans.Playlist;
 import it.polimi.tiw.tobbisosfy.beans.Track;
 import it.polimi.tiw.tobbisosfy.beans.User;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -118,6 +119,21 @@ public class PlaylistDAO {
             result.next();
         }
         return r;
+    }
+
+    public boolean isTrackContained(Track track, Playlist playlist) throws SQLException{
+        String query = "SELECT * FROM contains WHERE playlistID=? AND trackID=?";
+        ps = con.prepareStatement(query);
+        ps.setInt(1, playlist.getId());
+        ps.setInt(2, track.getId());
+        result = ps.executeQuery();
+
+        if(result.isBeforeFirst()){
+            return true;
+        } else if (!result.isBeforeFirst()) {
+            return false;
+        }
+        return false;
     }
 
     /**

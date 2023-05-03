@@ -56,10 +56,6 @@
             <legend>My songs</legend><br>
                 <a th:each="song: ${songs}"
                     th:insert="@{/song_pttn.html} :: list (song)">There's no songs</a>
-                <input type="checkbox" id="song1" name="song1" value="song1">
-                <label class="chlab" for="song1">song1 - album1 - artist1</label><br>
-                <input type="checkbox" id="song2" name="song2" value="song2">
-                <label class="chlab" for="song2">song2 - album2 - artist2</label><br>
         </fieldset>
         <input type="submit" value="Submit"><br>
         <!--<button (click)="metodo" type="button" id="psubmit">Submit</button><br>-->

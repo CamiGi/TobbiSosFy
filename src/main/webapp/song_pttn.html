@@ -2,8 +2,8 @@
 <html lang="en">
     <body>
         <div th:fragment="list (song)">
-            <input type="checkbox" id="song1" name="song1" value="song1">
-            <label class="chlab" for="song1" th:text="${song.title}"></label><br>
+            <input type="checkbox" id="song" th:value="${song.Id}">
+            <label class="chlab" for="song" th:text="${song.title}"></label><br>
         </div>
     </body>
 </html>

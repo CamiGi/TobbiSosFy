@@ -3,6 +3,7 @@ package it.polimi.tiw.tobbisosfy.DAOs;
 import it.polimi.tiw.tobbisosfy.beans.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 
 public class TrackDAO {
@@ -144,6 +145,28 @@ public class TrackDAO {
         result = ps.executeQuery();
         return result.getInt("ID");
     }*/
+
+    public ArrayList<Track> getTracksFromUser(User user) throws SQLException, Exception{
+
+        ArrayList<Track> tracks = new ArrayList<>();
+        String query = "SELECT ID FROM track WHERE username=?";
+
+        ps = con.prepareStatement(query);
+        ps.setString(1,user.getUsername());
+        result = ps.executeQuery();
+
+        if(result.isBeforeFirst()){
+            result.next();
+            while(!result.isAfterLast()){
+                tracks.add(this.getTrack(result.getInt("ID"), user.getUsername()));
+                result.next();
+            }
+        } else {
+            throw new Exception("ATTENZIONE l'utente non ha canzoni: 301");
+        }
+
+        return tracks;
+    }
 
     /**
      * Restituisce l'oggetto track dato l'id (int)
