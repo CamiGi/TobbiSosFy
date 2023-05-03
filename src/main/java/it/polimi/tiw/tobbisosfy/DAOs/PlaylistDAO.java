@@ -197,39 +197,51 @@ public class PlaylistDAO {
     /**
      * Inserisce una canzone nella playlist
      * @param playlist
-     * @param track
      * @return
      * @throws SQLException
      * @throws Exception
      */
-    public void addSongToPlaylist(Playlist playlist, Track track) throws SQLException, Exception{
+    public void addSongsToPlaylist(Playlist playlist, ArrayList<Track> tracks) throws Exception{
         int code = 0;
         int idp = -1;
-        int idt = -1;
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        con.setAutoCommit(false);
 
         idp = this.getIdOfPlaylist(playlist);
-        idt = track.getId();
+        for (Track t : tracks){
+            ids.add(t.getId());
+        }
 
         String query1 = "SELECT * FROM contains WHERE playlistID=? AND trackID=?";
         String query2 = "INSERT INTO contains VALUES(?, ?)";
 
-        ps = con.prepareStatement(query1);
-        ps.setInt(1, idp);
-        ps.setInt(2, idt);
-        result = ps.executeQuery();
+        try {
+            for (Integer i : ids) {
+                ps = con.prepareStatement(query1);
+                ps.setInt(1, idp);
+                ps.setInt(2, i);
+                result = ps.executeQuery();
 
-        if(!result.isBeforeFirst()){
-            ps = con.prepareStatement(query2);
-            ps.setInt(1, idp);
-            ps.setInt(2, idt);
-            code = ps.executeUpdate();
-        } else {
-            throw new Exception("ATTENZIONE la canzone è già nella playlist: "+playlist.getTitle());
-        }
-        if (!(code == 1)){
+                if (!result.isBeforeFirst()) {
+                    result.next();
+                    ps = con.prepareStatement(query2);
+                    ps.setInt(1, idp);
+                    ps.setInt(2, i);
+                    code = ps.executeUpdate();
+                } else {
+                    throw new Exception("ATTENZIONE la canzone è già nella playlist: " + playlist.getTitle());
+                }
+                if (!(code == 1)) {
+                    con.rollback();
+                    throw new Exception("ATTENZIONE qualcosa è andato storto: 505");
+                }
+            }
+        } catch (SQLException e) {
             con.rollback();
-            throw new Exception("ATTENZIONE qualcosa è andato storto: 505");
+            throw new Exception("C'è una canzone che non va bene: 506");
         }
+
+        con.setAutoCommit(true);
     }
 
     public Playlist getPlaylistFromId(int id, User user) throws SQLException, Exception {
