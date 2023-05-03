@@ -10,22 +10,12 @@
 <div class="username" th:text="${user.username}">Null</div>
 <a class="logout" href="/Logout">logout</a>
 
-
+<li>
 <div class="one">
     <p class="myplaylists">My playlists</p>
         <dl>
-            <dt>Playist_1</dt>
-            <dd>titlo_1</dd>
-            <dd>data_1</dd>
-            <dd>n_canzoni</dd>
-            <dt>Playist_2</dt>
-            <dd>titlo_2</dd>
-            <dd>data_2</dd>
-            <dd>n_canzoni</dd>
-            <dt>Playist_3</dt>
-            <dd>titlo_3</dd>
-            <dd>data_3</dd>
-            <dd>n_canzoni</dd>
+            <dt th:each="playlist: ${playlists}"
+                th:insert="@{/ply_pttn.html} :: list (playlist)">There's no playlists</dt>
         </dl>
 </div>
 <script>
@@ -64,6 +54,8 @@
         <input class="text" type="text" id="ptitle" name="ptitle"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
+                <a th:each="song: ${songs}"
+                    th:insert="@{/song_pttn.html} :: list (song)">There's no songs</a>
                 <input type="checkbox" id="song1" name="song1" value="song1">
                 <label class="chlab" for="song1">song1 - album1 - artist1</label><br>
                 <input type="checkbox" id="song2" name="song2" value="song2">
@@ -73,5 +65,7 @@
         <!--<button (click)="metodo" type="button" id="psubmit">Submit</button><br>-->
     </form>
 </div>
+
+</li>
 
 </body>

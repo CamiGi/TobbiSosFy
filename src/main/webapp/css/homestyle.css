@@ -31,6 +31,10 @@ html {
     padding: 15px 25px;
 }
 
+a:link{
+    text-decoration: none;
+}
+
 .logout{
     font-size: 13px;
     font-weight: 700;
@@ -55,7 +59,7 @@ div{
     top: 20%;
     left: 5%;
     padding: 10px;
-
+    flex: auto;
 }
 
 .newTrack{
@@ -89,14 +93,18 @@ dd{
     border: 1px solid #aaaaaa;
     color: ivory;
     font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
-    font-size: 15px;
+    font-size: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
 }
+#div1:hover{
+    padding: 12px;
+}
 
 label{
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
     font-size: 15px;
     line-height: 25px;
     padding: 3px;
@@ -118,81 +126,6 @@ legend{
     align-content: center;
     border-radius: 10px;
 }
-/* Customize the label (the container) */
-.container {
-    display: block;
-    position: absolute;
-    padding-left: 20px;
-    cursor: pointer;
-    font-size: 15px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
-    border: 1px solid rgb(100, 100, 100); /*Da eliminare*/
-
-}
-
-/* Hide the browser's default checkbox */
-.container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-    position: absolute;
-    top: 8px;
-    left: 0;
-    height: 15px;
-    width: 15px;
-    background-color: #eee;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-    background-color: #ccc;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-    background-color: cadetblue;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-    display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-    position: absolute;
-    top: 0px;
-    left: 4px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-.chlab{
-    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
-    font-size: 15px;
-    cursor: pointer;
-}
 
 input[type="checkbox"] {
     background-clip: content-box;
@@ -208,7 +141,7 @@ input[type="checkbox"]:checked{
     background-color: cadetblue;
 }
 
-button{
+/*button{
     background-color: black;
     font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
     font-size: 15px;
@@ -217,7 +150,7 @@ button{
     font-weight: 700;
     border-radius: 10px;
     margin-top: 15px;
-}
+}*/
 
 input[type="submit"]{
     background-color: black;
@@ -229,5 +162,32 @@ input[type="submit"]{
     border-radius: 10px;
     margin-top: 15px;
     border-color: white;
+    border-width: 1px;
+    padding: 5px;
+    position: relative;
+    flex: auto;
+}
 
+input[type="submit"]:hover{
+    left: 0.5em;
+    padding: 7px;
+}
+
+input[type="submit"]:active{
+    background-color: black;
+    color: ivory;
+    border-color: black;
+}
+
+input[type="text"]:active{
+    border-color: ivory;
+}
+
+input[type="checkbox"]{
+    flex: auto;
+    position: relative;
+}
+
+input[type="checkbox"]:hover{
+    left:.1em;
 }

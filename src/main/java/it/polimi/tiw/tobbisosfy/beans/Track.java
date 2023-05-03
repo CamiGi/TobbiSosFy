@@ -6,6 +6,7 @@ import java.beans.JavaBean;
 
 @JavaBean
 public class Track {
+    private int giampaolo;
     private String title;
     private Album album;
     private String mp3Uri;
@@ -18,6 +19,14 @@ public class Track {
         this.title=title.toLowerCase();
         this.mp3Uri=mp3Uri;
         this.user = user;
+    }
+
+    public void setId(int giampaolo){
+        this.giampaolo=giampaolo;
+    }
+
+    public int getId(){
+        return giampaolo;
     }
 
     public String getTitle() {

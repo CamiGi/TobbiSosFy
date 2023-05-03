@@ -18,7 +18,7 @@ public class PlaylistDAO {
     private final Connection con;
     private PreparedStatement ps;
     private ResultSet result;
-    private final String queryPlID = "SELECT ID FROM playlist WHERE title=? AND user=?";
+    private final String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
     private final String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
     private final String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
 
@@ -39,7 +39,7 @@ public class PlaylistDAO {
      */
     public void addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
 
-        String queryplst = "SELECT * FROM playlist WHERE title=? AND user=?";
+        String queryplst = "SELECT * FROM playlist WHERE title=? AND userID=?";
 
         ps = con.prepareStatement(queryplst);
         ps.setString(1,playlist.getTitle());
@@ -79,7 +79,7 @@ public class PlaylistDAO {
                 ps = con.prepareStatement(queryNewContains);
                 ps.setInt(1,h);
                 try {
-                    ps.setInt(2,td.getIDofTrack(t));
+                    ps.setInt(2, t.getId());
                 } catch (SQLException e){
                     System.out.println("ATTENZIONE qualcosa non funziona: 502");
                 }
@@ -104,7 +104,7 @@ public class PlaylistDAO {
         ArrayList<Playlist> r = new ArrayList<>();
         Playlist pl;
 
-        String query = "SELECT * FROM playlist WHERE user=?";
+        String query = "SELECT * FROM playlist WHERE userID=?";
         ps = con.prepareStatement(query);
         ps.setString(1,user.getUsername());
         result = ps.executeQuery();
@@ -160,7 +160,7 @@ public class PlaylistDAO {
      * @throws SQLException
      */
     public int getIdOfPlaylist(Playlist playlist) throws SQLException{
-        String queryIdP = "SELECT ID FROM playlist WHERE title=? AND creationDate=? AND user=?";
+        String queryIdP = "SELECT ID FROM playlist WHERE title=? AND creationDate=? AND userID=?";
         int id = -1;
 
         ps = con.prepareStatement(queryIdP);
@@ -190,7 +190,7 @@ public class PlaylistDAO {
         int idt = -1;
 
         idp = this.getIdOfPlaylist(playlist);
-        idt = td.getIDofTrack(track);
+        idt = track.getId();
 
         String query1 = "SELECT * FROM contains WHERE playlistID=? AND trackID=?";
         String query2 = "INSERT INTO contains VALUES(?, ?)";
