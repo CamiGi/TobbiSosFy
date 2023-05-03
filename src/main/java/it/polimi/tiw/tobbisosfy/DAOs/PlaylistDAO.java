@@ -110,8 +110,11 @@ public class PlaylistDAO {
         result = ps.executeQuery();
 
         result.next();
+        
         while (!result.isAfterLast()){
-            r.add(new Playlist(result.getInt("ID"), result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user));
+            pl= new Playlist(result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user);
+            pl.setId(result.getInt("ID"));
+            r.add(pl);
             result.next();
         }
         return r;
@@ -212,5 +215,27 @@ public class PlaylistDAO {
             con.rollback();
             throw new Exception("ATTENZIONE qualcosa è andato storto: 505");
         }
+    }
+
+    public Playlist getPlaylistFromId(int id, User user) throws SQLException, Exception {
+
+        String query = "SELECT * FROM playlist WHERE ID=? AND userID=?";
+        Playlist plst;
+
+        ps = con.prepareStatement(query);
+        ps.setInt(1, id);
+        ps.setString(2, user.getUsername());
+
+        result = ps.executeQuery();
+        result.next();
+
+        if (user.getUsername().equals(result.getString("userID"))) {
+            plst = new Playlist(result.getString("title"), result.getDate("creationDate"), user);
+        } else {
+            throw new Exception("ATTENZIONE la playlist selezionata non appartiene all'utente: 700");
+        }
+        plst.setId(id);
+
+        return plst;
     }
 }
