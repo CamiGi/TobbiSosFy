@@ -14,19 +14,16 @@ import java.util.Map;
 
 public class PlaylistDAO {
 
-    private Connection con;
-    private TrackDAO td;
+    private final Connection con;
     private PreparedStatement ps;
     private ResultSet result;
-    private String queryPlID = "SELECT ID FROM playlist WHERE title=? AND user=?";
-    private String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
-    private String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
+    private final String queryPlID = "SELECT ID FROM playlist WHERE title=? AND user=?";
+    private final String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
+    private final String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
 
 
-    public PlaylistDAO(Connection con, TrackDAO td){
+    public PlaylistDAO(Connection con){
         this.con = con;
-        this.td=td;
-
     }
 
     /**
@@ -41,6 +38,7 @@ public class PlaylistDAO {
     public void addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
 
         String queryplst = "SELECT * FROM playlist WHERE title=? AND user=?";
+        TrackDAO td = new TrackDAO(con);
 
         ps = con.prepareStatement(queryplst);
         ps.setString(1,playlist.getTitle());
@@ -129,6 +127,7 @@ public class PlaylistDAO {
         //vedere anche le playlist degli altri utenti
         Map<Integer, Track> rs = new HashMap<>();
         ResultSet resultTrack;
+        TrackDAO td = new TrackDAO(con);
         int tid;
 
 
@@ -186,6 +185,7 @@ public class PlaylistDAO {
      * @throws Exception
      */
     public void addSongToPlaylist(Playlist playlist, Track track) throws SQLException, Exception{
+        TrackDAO td = new TrackDAO(con);
         int code = 0;
         int idp = -1;
         int idt = -1;

@@ -1,5 +1,7 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
+import it.polimi.tiw.tobbisosfy.DAOs.PlaylistDAO;
+import it.polimi.tiw.tobbisosfy.beans.Track;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -15,13 +17,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet("/ShowPlaylists")
-public class ShowPlaylists extends HttpServlet {
+@WebServlet("/ShowPlaylist")
+public class ShowPlaylist extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
 
-    public ShowPlaylists() {
+    public ShowPlaylist() {
         super();
     }
 
@@ -46,6 +48,7 @@ public class ShowPlaylists extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        Track track;
+        PlaylistDAO plFinder = new PlaylistDAO(connection);
     }
 }
