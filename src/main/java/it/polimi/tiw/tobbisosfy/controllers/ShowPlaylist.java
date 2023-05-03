@@ -1,6 +1,7 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
 import it.polimi.tiw.tobbisosfy.DAOs.PlaylistDAO;
+import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 import it.polimi.tiw.tobbisosfy.beans.Playlist;
 import it.polimi.tiw.tobbisosfy.beans.Track;
 import it.polimi.tiw.tobbisosfy.beans.User;
@@ -53,16 +54,18 @@ public class ShowPlaylist extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int plID;
-        Playlist playlist;
         PlaylistDAO plFinder = new PlaylistDAO(connection);
-        ArrayList<Track> tracks;
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
-
+        User user = (User) req.getSession().getAttribute("user");
+        Playlist playlist;
+        ArrayList<Track> tracks;
+        ArrayList<Track> addTracks;
 
         try {
             plID = Integer.parseInt(req.getParameter("playlist"));
-            playlist = plFinder.getPlaylistFromId(plID, (User) req.getSession().getAttribute("user"));
+            playlist = plFinder.getPlaylistFromId(plID, user);
             tracks = plFinder.getTracksFromPlaylist(playlist);
+            addTracks = new TrackDAO(connection).getTracksFromUser(user);
         } catch (NumberFormatException e) {
             //redirect pagina errore
             ctx.setVariable("error", "Invalid playlist ID");
@@ -80,9 +83,62 @@ public class ShowPlaylist extends HttpServlet {
             return;
         }
 
+        addTracks.removeAll(tracks);
+
         ctx.setVariable("playlist", playlist);
         ctx.setVariable("tracks", tracks);
+        ctx.setVariable("addTrks", addTracks);
         templateEngine.process("/PlaylistPage.html", ctx, resp.getWriter());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] tracks = req.getParameterValues("tracks");
+        ArrayList<Integer> trIDs;
+        PlaylistDAO plfinder = new PlaylistDAO(connection);
+        final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
+        Playlist playlist;
+
+        try {
+            playlist = plfinder.getPlaylistFromId(Integer.parseInt(req.getParameter("playlist")),
+                    (User) req.getSession().getAttribute("user"));
+        } catch (NumberFormatException e) {
+            ctx.setVariable("error", "Invalid playlist ID");
+            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            return;
+        } catch (SQLException e) {
+            ctx.setVariable("error", "Playlist cannot be found or you haven't got the rights to see it");
+            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            return;
+        } catch (Exception e) {
+            ctx.setVariable("error", e.getMessage());
+            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            return;
+        }
+
+        if (tracks == null) {
+            ctx.setVariable("error", "Add a song to the playlist");
+            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            return;
+        }
+        trIDs = new ArrayList<>();
+
+        try {
+            for (String track : tracks) {
+                trIDs.add(Integer.parseInt(track));
+            }
+            plfinder.addSongsToPlaylist(playlist, trIDs);
+        } catch (NumberFormatException e) {
+            ctx.setVariable("error", "The song you're trying to add does not exist or you haven't the authorization to see it");
+            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            return;
+        } catch (Exception e) {
+            ctx.setVariable("error", e.getMessage());
+            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            return;
+        }
+
+        doGet(req, resp); // guarda esempi fraternali
     }
 
     @Override

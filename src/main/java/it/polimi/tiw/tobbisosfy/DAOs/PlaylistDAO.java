@@ -201,22 +201,19 @@ public class PlaylistDAO {
      * @throws SQLException
      * @throws Exception
      */
-    public void addSongsToPlaylist(Playlist playlist, ArrayList<Track> tracks) throws Exception{
+    public void addSongsToPlaylist(Playlist playlist, ArrayList<Integer> tracks) throws Exception{
         int code = 0;
         int idp = -1;
         ArrayList<Integer> ids = new ArrayList<Integer>();
         con.setAutoCommit(false);
 
         idp = this.getIdOfPlaylist(playlist);
-        for (Track t : tracks){
-            ids.add(t.getId());
-        }
 
         String query1 = "SELECT * FROM contains WHERE playlistID=? AND trackID=?";
         String query2 = "INSERT INTO contains VALUES(?, ?)";
 
         try {
-            for (Integer i : ids) {
+            for (Integer i : tracks) {
                 ps = con.prepareStatement(query1);
                 ps.setInt(1, idp);
                 ps.setInt(2, i);
