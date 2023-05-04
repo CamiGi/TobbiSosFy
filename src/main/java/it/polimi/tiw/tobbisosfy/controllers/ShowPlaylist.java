@@ -54,18 +54,21 @@ public class ShowPlaylist extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int plID;
+        int group;
+        boolean next;
         PlaylistDAO plFinder = new PlaylistDAO(connection);
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         User user = (User) req.getSession().getAttribute("user");
         Playlist playlist;
         ArrayList<Track> tracks;
-        ArrayList<Track> addTracks;
+        ArrayList<Track> shownTracks;
+        ArrayList<Track> addableTracks;
 
         try {
             plID = Integer.parseInt(req.getParameter("playlist"));
             playlist = plFinder.getPlaylistFromId(plID, user);
             tracks = plFinder.getTracksFromPlaylist(playlist);
-            addTracks = new TrackDAO(connection).getTracksFromUser(user);
+            addableTracks = new TrackDAO(connection).getTracksFromUser(user);
         } catch (NumberFormatException e) {
             ctx.setVariable("error", "Invalid playlist ID");
             resp.sendRedirect("/ShowError");
@@ -80,11 +83,20 @@ public class ShowPlaylist extends HttpServlet {
             return;
         }
 
-        addTracks.removeAll(tracks);
+        addableTracks.removeAll(tracks);
+        group = 5*Integer.parseInt(req.getParameter("group"));
+        shownTracks = new ArrayList<>(5);
+
+        for (int c=group; c<group+5 && c<tracks.size(); c++)
+            shownTracks.add(tracks.get(c));
+
+        next = group+5<tracks.size()-1;
 
         ctx.setVariable("playlist", playlist);
-        ctx.setVariable("tracks", tracks);
-        ctx.setVariable("addTrks", addTracks);
+        ctx.setVariable("tracks", shownTracks);
+        ctx.setVariable("addTrks", addableTracks);
+        ctx.setVariable("group", group);
+        ctx.setVariable("next", next);
         templateEngine.process("/PlaylistPage.html", ctx, resp.getWriter());
     }
 

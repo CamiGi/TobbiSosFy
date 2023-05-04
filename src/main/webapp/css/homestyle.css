@@ -191,3 +191,57 @@ input[type="checkbox"]{
 input[type="checkbox"]:hover{
     left:.1em;
 }
+
+a.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid 2px ivory;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+a.button:link {
+    color:ivory;
+    font-size: 40px;
+}
+
+a.button:visited {
+    color: ivory;
+}
+
+a.button:hover {
+    border-color: deepskyblue;
+    color: deepskyblue;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.title {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 2px solid ivory;
+    border-radius: 32px;
+    padding: 10px 50px;
+
+    max-width: 400px;
+}
+
+div.button {
+    position: absolute;
+    top: 30%;
+}

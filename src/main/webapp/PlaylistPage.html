@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Playlist</title>
+    <link rel="stylesheet" type="text/css" media="all" href="css/homestyle.css"
+        th:href="@{css/homestyle.css}" />
+</head>
+<body>
+<a class="logout" href="/Logout">Logout</a>
+<div class="title">
+    <h1 th:text="${playlist.title}">playlist</h1>
+</div>
+<div class="button" th:if="${group}!=0">
+    <a class="button" th:href="/ShowPlaylist?group=${group-1}"><</a>
+</div>
+<table>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+<!--<div th:if="${next}">
+    <a class="button" th:href="/ShowPlaylist?group=${group+1}">></a>
+</div>-->
+</body>
+</html>
