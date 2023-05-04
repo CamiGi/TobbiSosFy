@@ -61,19 +61,17 @@ public class StartPlayer extends HttpServlet {
             trID = Integer.parseInt(request.getParameter("track"));
             track = trFinder.getTrack(trID, (String)request.getSession().getAttribute("user"));
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Erroneous track id");
+            ctx.setVariable("error", "Erroneous track ID");
+            response.sendRedirect("/ShowError");
             return;
-            //redirect pagina errore
         } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Track not found");
+            ctx.setVariable("error", "Track not found");
+            response.sendRedirect("/ShowError");
             return;
-            //redirect pagina errore
         } catch (Exception e){
             e.printStackTrace();
+            ctx.setVariable("error", e.getMessage());
+            response.sendRedirect("/ShowError");
             return;
         }
         path = "/PlayerPage.html";

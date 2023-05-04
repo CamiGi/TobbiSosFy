@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" media="all" href="css/homestyle.css"
+                              th:href="@{css/homestyle.css}" />
+</head>
+<body>
+<a class="logout" href="/Logout">Logout</a>
+<div th:text="${error}.">Something went wrong during the elaboration of your request.
+<br><br>
+Please click
+<a href="/Home">here </a>
+to go to the Home Page</div>
+</body>
+</html>

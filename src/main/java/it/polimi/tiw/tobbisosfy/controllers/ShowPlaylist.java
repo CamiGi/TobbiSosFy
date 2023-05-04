@@ -67,19 +67,16 @@ public class ShowPlaylist extends HttpServlet {
             tracks = plFinder.getTracksFromPlaylist(playlist);
             addTracks = new TrackDAO(connection).getTracksFromUser(user);
         } catch (NumberFormatException e) {
-            //redirect pagina errore
             ctx.setVariable("error", "Invalid playlist ID");
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         } catch (SQLException e) {
-            //redirect pagina errore
             ctx.setVariable("error", "This playlist does not exist or you haven't got the authorization to see it");
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         } catch (Exception e) {
-            //redirect pagina errore
             ctx.setVariable("error", e.getMessage());
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         }
 
@@ -104,21 +101,21 @@ public class ShowPlaylist extends HttpServlet {
                     (User) req.getSession().getAttribute("user"));
         } catch (NumberFormatException e) {
             ctx.setVariable("error", "Invalid playlist ID");
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         } catch (SQLException e) {
             ctx.setVariable("error", "Playlist cannot be found or you haven't got the rights to see it");
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         } catch (Exception e) {
             ctx.setVariable("error", e.getMessage());
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         }
 
         if (tracks == null) {
             ctx.setVariable("error", "Add a song to the playlist");
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         }
         trIDs = new ArrayList<>();
@@ -130,11 +127,11 @@ public class ShowPlaylist extends HttpServlet {
             plfinder.addSongsToPlaylist(playlist, trIDs);
         } catch (NumberFormatException e) {
             ctx.setVariable("error", "The song you're trying to add does not exist or you haven't the authorization to see it");
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         } catch (Exception e) {
             ctx.setVariable("error", e.getMessage());
-            templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
+            resp.sendRedirect("/ShowError");
             return;
         }
 
