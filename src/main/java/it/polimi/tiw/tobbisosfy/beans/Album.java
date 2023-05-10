@@ -44,4 +44,8 @@ public class Album {
         return (this.title.isEmpty() || this.year == 0 ||
                 this.imgUri.isEmpty() || this.artist.isEmpty());
     }
+    @Override
+    public String toString(){
+        return "Album={title="+this.title+", year="+this.year+", genre="+this.genre+", artist="+this.artist.toString()+", imgUri="+this.imgUri+"}";
+    }
 }

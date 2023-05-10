@@ -17,6 +17,6 @@ public enum Genre {
     }
 
     public boolean isEmpty(){
-        return genre.isEmpty();
+        return genre.isEmpty();                                             
     }
 }

@@ -35,4 +35,13 @@ public class Playlist {
     public java.sql.Date getDate() {
         return date;
     }
+
+    @Override
+    public String toString(){
+        return "Playlist={title="+this.title+", date="+this.date.toString()+", user="+this.user.toString()+"}";
+    }
+
+    public String getDateString(){
+        return this.date.toString();
+    }
 }

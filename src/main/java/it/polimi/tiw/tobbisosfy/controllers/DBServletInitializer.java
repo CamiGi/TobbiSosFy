@@ -12,12 +12,18 @@ import java.sql.SQLException;
 public class DBServletInitializer {
 
     static Connection init(ServletContext context) throws SQLException, ClassNotFoundException {
-        String driver = context.getInitParameter("dbDriver");
-        String url = context.getInitParameter("dbUrl");
-        String user = context.getInitParameter("dbUser");
-        String password = context.getInitParameter("dbPassword");
-        Class.forName(driver);
-        return DriverManager.getConnection(url, user, password);
+        try {
+            String driver = context.getInitParameter("dbDriver");
+            String url = context.getInitParameter("dbUrl");
+            String user = context.getInitParameter("dbUser");
+            String password = context.getInitParameter("dbPassword");
+            Class.forName(driver);
+            System.out.println("DBINITIALIZER");
+            return DriverManager.getConnection(url, user, password);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     static WebContext createContext (HttpServletRequest request, HttpServletResponse response, ServletContext servletContext) {

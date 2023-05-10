@@ -153,13 +153,14 @@ public class TrackDAO {
 
         ps = con.prepareStatement(query);
         ps.setString(1,user.getUsername());
-        result = ps.executeQuery();
+        ResultSet r = ps.executeQuery();
 
-        if(result.isBeforeFirst()){
-            result.next();
-            while(!result.isAfterLast()){
-                tracks.add(this.getTrack(result.getInt("ID"), user.getUsername()));
-                result.next();
+        if(r.isBeforeFirst()){
+            r.next();
+            while(!r.isAfterLast()){
+                System.out.println(r.getInt("ID"));
+                tracks.add(this.getTrack(r.getInt("ID"), user.getUsername()));
+                r.next();
             }
         } else {
             throw new Exception("ATTENZIONE l'utente non ha canzoni: 301");

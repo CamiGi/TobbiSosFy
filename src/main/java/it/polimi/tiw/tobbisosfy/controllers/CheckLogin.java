@@ -25,10 +25,12 @@ public class CheckLogin extends HttpServlet {
 
     public CheckLogin() {
         super();
+        System.out.println("CIAONISSIMO");
         // TODO Auto-generated constructor stub
     }
 
     public void init() throws ServletException {
+        System.out.println("SONO DENTROOOOOO");
         try {
             connection = DBServletInitializer.init(getServletContext());
         } catch (ClassNotFoundException e) {
@@ -42,6 +44,7 @@ public class CheckLogin extends HttpServlet {
         this.templateEngine = new TemplateEngine();
         this.templateEngine.setTemplateResolver(templateResolver);
         templateResolver.setSuffix(".html");
+        System.out.println("CIAONE");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -79,8 +82,9 @@ public class CheckLogin extends HttpServlet {
         } else {
             request.getSession().setAttribute("user", u);
         }
-        //response.sendRedirect(path+"/Home");
-        response.sendRedirect(path+"/ShowPlaylist?playlist=1&group=0");
+
+        response.sendRedirect(path+"/Home");
+        //response.sendRedirect(path+"/ShowPlaylist?playlist=1&group=0");
     }
 
     public void destroy() {

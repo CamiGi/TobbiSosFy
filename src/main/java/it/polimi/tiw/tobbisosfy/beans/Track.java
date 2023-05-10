@@ -44,4 +44,9 @@ public class Track {
     public Album getAlbum() {
         return album;
     }
+
+    @Override
+    public String toString(){
+        return "Track={title="+this.title+", album="+this.getAlbum().toString()+", uri="+this.mp3Uri+", user="+this.user.toString()+"}";
+    }
 }

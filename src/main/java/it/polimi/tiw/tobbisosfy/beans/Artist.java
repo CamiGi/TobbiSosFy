@@ -21,4 +21,9 @@ public class Artist {
     public boolean isEmpty() {
         return artistName.isEmpty();
     }
+
+    @Override
+    public String toString(){
+        return "Artist={name="+this.artistName+"}";
+    }
 }

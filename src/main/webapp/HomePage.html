@@ -13,9 +13,9 @@
 
 <div class="one">
     <p class="myplaylists">My playlists</p>
-        <dl>
-            <dt th:each="playlist: ${playlists}"
-                th:insert="@{/ply_pttn.html} :: list (playlist)">There's no playlists</dt>
+        <dl th:each="playlist: ${playlists}">
+            <dt th:text="${playlist.title}">There's no playlists</dt>
+            <dd th:text="${playlist.getDateString()}"></dd>
         </dl>
 </div>
 <script>
@@ -34,12 +34,12 @@
     <p>Add a new track</p>
     <form>
         <label for="ttitle">Track Title</label><br>
-        <input class="text" type="text" id="ttitle" name="ttitle"><br>
-        <legend id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here the audio file</legend><br>
+        <input class="text" type="text" id="ttitle" name="ttitle" required="required"><br>
+        <legend id="div1" >Drop here the audio file</legend><br>
         <label for="talbum">Album</label><br>
-        <input class="text" type="text" id="talbum" name="talbum"><br>
+        <input class="text" type="text" id="talbum" name="talbum" required="required"><br>
         <label for="dalbum">Date of the album</label><br>
-        <input class="text" type="date" id="dalbum" name="dalbum"><br>
+        <input class="text" type="date" id="dalbum" name="dalbum" required="required"><br>
         <label for="galbum">Genre</label><br>
         <fieldset id="galbum">
                 <table>
@@ -126,7 +126,7 @@
                     </tr>
             </table>
         </fieldset>
-        <legend id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here the album image</legend><br>
+        <legend id="div2" >Drop here the album image</legend><br>
         <label for="aname">Artist name</label><br>
         <input class="text" type="text" id="aname" name="aname"><br>
         <input type="submit" value="Submit"><br>
@@ -141,11 +141,11 @@
         <input class="text" type="text" id="ptitle" name="ptitle"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
-                <a th:each="song: ${songs}"
-                    th:insert="@{/song_pttn.html} :: list (song)">There's no songs</a>
+                <a th:each="track: ${songs}" alt="There's no songs">
+                    <input type="checkbox" id="song" th:value="${track.id}">
+                    <label for="song" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}"></label><br></a>
         </fieldset>
         <input type="submit" value="Submit"><br>
-        <!--<button (click)="metodo" type="button" id="psubmit">Submit</button><br>-->
     </form>
 </div>
 
