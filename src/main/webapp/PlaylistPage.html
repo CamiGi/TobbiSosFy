@@ -11,16 +11,23 @@
 <div class="title">
     <h1 th:text="${playlist.title}">playlist</h1>
 </div>
-<div class="button" th:if="${group}!=0">
-    <a class="button" th:href="/ShowPlaylist?group=${group-1}"><</a>
+<div class="page">
+    <div class="button" th:if="${group}!=0">
+        <a th:href="@{/ShowPlaylist + '?group=' + {g} (g=group-1)}"><</a>
+    </div>
+    <div class="tab">
+        <table>
+            <tr>
+                <td class="data" th:each="t : ${tracks}"
+                                th:insert="track_pttn :: track">
+                    This playlist does not contain any tracks
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="button" th:if="${next}">
+        <a th:href="@{/ShowPlaylist + '?group=' + {g} (g=group+1)}">></a>
+    </div>
 </div>
-<table>
-    <tr>
-        <td></td>
-    </tr>
-</table>
-<!--<div th:if="${next}">
-    <a class="button" th:href="/ShowPlaylist?group=${group+1}">></a>
-</div>-->
 </body>
 </html>

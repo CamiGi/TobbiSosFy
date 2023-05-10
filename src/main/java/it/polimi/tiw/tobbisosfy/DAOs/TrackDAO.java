@@ -189,11 +189,11 @@ public class TrackDAO {
         ps.setInt(1,trackID);
         ps.setString(2, username);
         resultTrack = ps.executeQuery();
-        resultTrack.next();
 
         if (!resultTrack.isBeforeFirst()){
             throw new Exception("ATTENZIONE non puoi prendere questa Track, non sei tu l'utente che l'ha inserita");
         }
+        resultTrack.next();
 
         //query per ricevere le info sull'album
         ps = con.prepareStatement(queryAlbum);

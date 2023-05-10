@@ -54,14 +54,6 @@ a:link{
     border-radius: 30px;
 }
 
-div{
-    position: absolute;
-    top: 20%;
-    left: 5%;
-    padding: 10px;
-    flex: auto;
-}
-
 .newTrack{
     left: 60%;
 
@@ -192,7 +184,7 @@ input[type="checkbox"]:hover{
     left:.1em;
 }
 
-a.button {
+.button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -202,16 +194,16 @@ a.button {
     width: 50px;
 }
 
-a.button:link {
+.button:link {
     color:ivory;
     font-size: 40px;
 }
 
-a.button:visited {
+.button:visited {
     color: ivory;
 }
 
-a.button:hover {
+.button:hover, .shine:hover{
     border-color: deepskyblue;
     color: deepskyblue;
     cursor: pointer;
@@ -227,7 +219,7 @@ h1 {
 .title {
     position: absolute;
     top: 5%;
-    left: 50%;
+    margin-left: 50%;
     transform: translate(-50%, 0);
 
     display: flex;
@@ -241,7 +233,37 @@ h1 {
     max-width: 400px;
 }
 
-div.button {
+.tab {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5px;
+}
+
+.data {
+    border: 2px solid ivory;
+    border-radius: 32px;
+    width: 50px;
+    min-width: 150px;
+    height: 250px;
+    min-height: 200px;
+    padding: 10px;
+}
+
+
+.error {
+    position: relative;
+    margin-top: 10px;
+    transform: translate(0, 200px);
+}
+
+.page {
     position: absolute;
-    top: 30%;
+    width: 99%;
+    margin-top: 115px;
+    min-height: 100px;
+    min-width: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
 }

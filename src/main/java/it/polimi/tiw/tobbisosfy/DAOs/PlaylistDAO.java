@@ -149,12 +149,12 @@ public class PlaylistDAO {
         int tid;
 
 
-        String queryTracks = "SELECT * FROM contains JOIN track JOIN album WHERE contains.playlistID=? AND contains.trackID=track.ID ORDER BY year";  //creo query che seleziona le canzoni (tentativo di JOIN)
+        String queryTracks = "SELECT trackID, year FROM contains JOIN track JOIN album WHERE contains.playlistID=? ORDER BY year DESC";  //creo query che seleziona le canzoni (tentativo di JOIN)
         String prova = "SELECT ID FROM playlist WHERE title=?"; //creo query che trova l'id della playlist che mi interessa
 
-        ps = con.prepareStatement(prova);  //settaggio prepared statement
-        ps.setString(1,playlist.getTitle());
-        result = ps.executeQuery();  //mando la query playlist
+//        ps = con.prepareStatement(prova);  //settaggio prepared statement
+//        ps.setString(1,playlist.getTitle());
+//        result = ps.executeQuery();  //mando la query playlist
 
         ps = con.prepareStatement(queryTracks);  //settaggio altro statement
         ps.setInt(1,result.getInt("ID"));
@@ -162,7 +162,7 @@ public class PlaylistDAO {
 
         resultTrack.next();
         while (!resultTrack.isAfterLast()){
-            tid = resultTrack.getInt("track.ID");
+            tid = resultTrack.getInt("trackID");
             //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
             rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
             resultTrack.next();

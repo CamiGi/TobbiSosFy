@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <body>
         <div th:fragment="list (playlist)">
             <dt th:text="${playlist.title}"></dt>
-            <dd th:date="${playlist.creationDate}"></dd>
+            <dd th:date="${playlist.date}"></dd>
             <span>Modify</span>
         </div>
     </body>

@@ -6,11 +6,11 @@ import java.beans.JavaBean;
 
 @JavaBean
 public class Track {
-    private int giampaolo;
-    private String title;
-    private Album album;
-    private String mp3Uri;
-    private User user;
+    private int id;
+    private final String title;
+    private final Album album;
+    private final String mp3Uri;
+    private final User user;
     private TrackDAO td;
 
     public Track(TrackDAO td, String title, Album album, String mp3Uri, User user){
@@ -21,12 +21,12 @@ public class Track {
         this.user = user;
     }
 
-    public void setId(int giampaolo){
-        this.giampaolo=giampaolo;
+    public void setId(int id){
+        this.id=id;
     }
 
     public int getId(){
-        return giampaolo;
+        return id;
     }
 
     public String getTitle() {
