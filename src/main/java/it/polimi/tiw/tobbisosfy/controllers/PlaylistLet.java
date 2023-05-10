@@ -1,7 +1,6 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
 import it.polimi.tiw.tobbisosfy.DAOs.PlaylistDAO;
-import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 import it.polimi.tiw.tobbisosfy.beans.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -16,17 +15,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Home extends HttpServlet {
-
+public class PlaylistLet  extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
+    private User u;
 
-    public Home() {
+    public PlaylistLet(User u) {
         super();
+        this.u = u;
     }
 
     @Override
@@ -49,51 +50,30 @@ public class Home extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PlaylistDAO playlistDAO = new PlaylistDAO(connection);
-        TrackDAO trackDAO = new TrackDAO(connection);
-        getServletContext().getContextPath();
-        final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
-        User u = (User) req.getSession().getAttribute("user");
-        ArrayList<Playlist> playlists;
-        String path;
-        ArrayList<Track> songs = new ArrayList<>();
-
-
-        try {
-             playlists = playlistDAO.getPlaylists(u);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);  //Redirect pagina errore
-        }
-
-        try {
-            songs = trackDAO.getTracksFromUser(u);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);  //Redirect pagina errore
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        path = "/HomePage.html";
-        ctx.setVariable("playlists", playlists);
-        ctx.setVariable("user", u);
-        ctx.setVariable("songs", songs);
-        templateEngine.process(path, ctx, resp.getWriter());
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String trackTitle = req.getParameter("");
-    }
+        PlaylistDAO pd = new PlaylistDAO(connection);
+        final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
 
-    @Override
-    public void destroy() {
-        if (connection != null) {
+        if(!(req.getParameter("ptitle").isEmpty() || ((ArrayList<Track>)req.getAttribute("songs")).isEmpty())) {
+
+            String playlistTitle = req.getParameter("ptitle");
+            ArrayList<Track> songs = (ArrayList<Track>) req.getAttribute("songs");  ///vedere come funziona con html
+            Date d = new Date(System.currentTimeMillis());
+            Playlist playlist = new Playlist(playlistTitle, d, u);
+
+            int i = -1;
+
             try {
-                connection.close();
+                pd.addPlaylist(playlist, songs, i);
             } catch (SQLException e){
-                e.printStackTrace();
+                ctx.setVariable("error", e.getMessage());
+                resp.sendRedirect("/ShowError");
+            } catch (Exception e) {
+                ctx.setVariable("error", "Something wrong during the add of the playlist in the database");
+                resp.sendRedirect("/ShowError");
             }
         }
+
+
     }
 }

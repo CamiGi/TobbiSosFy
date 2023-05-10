@@ -8,9 +8,9 @@
 </head>
 <body>
 <div class="username" th:text="${user.username}">Null</div>
-<a class="logout" href="/Logout">logout</a>
+<a class="logout" href="/Logout">Logout</a>
 
-<li>
+
 <div class="one">
     <p class="myplaylists">My playlists</p>
         <dl>
@@ -21,10 +21,6 @@
 <script>
     function allowDrop(ev) {
         ev.preventDefault();
-    }
-
-    function drag(ev) {
-        ev.dataTransfer.setData("text", ev.target.id);
     }
 
     function drop(ev) {
@@ -39,9 +35,100 @@
     <form>
         <label for="ttitle">Track Title</label><br>
         <input class="text" type="text" id="ttitle" name="ttitle"><br>
+        <legend id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here the audio file</legend><br>
         <label for="talbum">Album</label><br>
         <input class="text" type="text" id="talbum" name="talbum"><br>
-        <legend id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here the audio file</legend><br>
+        <label for="dalbum">Date of the album</label><br>
+        <input class="text" type="date" id="dalbum" name="dalbum"><br>
+        <label for="galbum">Genre</label><br>
+        <fieldset id="galbum">
+                <table>
+                    <!-- tr riga e dentro ha la colonna che è td -->
+                    <tr>
+                        <td>
+                            <input type="radio" id="classic" value="CLASSIC" name="g">
+                            <label for ="classic">Classic</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="jazz" value="JAZZ" name="g">
+                            <label for="jazz">Jazz</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="blues" value="BLUES" name="g">
+                            <label for="blues">Blues</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="gospel" value="GOSPEL" name="g">
+                            <label for="gospel">Gospel</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="soul" value="SOUL" name="g">
+                            <label for="soul">Soul</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="pop" value="POP" name="g">
+                            <label for="pop">Pop</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="rock" value="ROCK" name="g">
+                            <label for="rock">Rock</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="country" value="COUNTRY" name="g">
+                            <label for="country">Country</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="disco" value="DISCO" name="g">
+                            <label for="disco">Disco</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="techno" value="TECHNO" name="g">
+                            <label for="techno">Techno</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="raggae" value="RAGGAE" name="g">
+                            <label for="raggae">Raggae</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="salsa" value="SALSA" name="g">
+                            <label for="salsa">Salsa</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="flamenco" value="FLAMENCO" name="g">
+                            <label for="flamenco">Flamenco</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="hiphop" value="HIPHOP" name="g">
+                            <label for="hiphop">Hip-Hop</label><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="metal" value="METAL" name="g">
+                            <label for="metal">Metal</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="funk" value="FUNK" name="g">
+                            <label for="funk">Funk</label><br>
+                        </td>
+                    </tr>
+            </table>
+        </fieldset>
+        <legend id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">Drop here the album image</legend><br>
+        <label for="aname">Artist name</label><br>
+        <input class="text" type="text" id="aname" name="aname"><br>
         <input type="submit" value="Submit"><br>
     </form>
 
@@ -62,6 +149,5 @@
     </form>
 </div>
 
-</li>
 
 </body>

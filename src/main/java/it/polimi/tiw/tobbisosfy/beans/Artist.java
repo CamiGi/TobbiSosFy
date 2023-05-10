@@ -17,4 +17,8 @@ public class Artist {
     public String getArtistName() {
         return artistName;
     }
+
+    public boolean isEmpty() {
+        return artistName.isEmpty();
+    }
 }

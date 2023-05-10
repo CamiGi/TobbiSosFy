@@ -54,6 +54,14 @@ a:link{
     border-radius: 30px;
 }
 
+.one, .newPlaylist, .newTrack{
+    position: absolute;
+    top: 20%;
+    left: 5%;
+    padding: 10px;
+    flex: auto;
+}
+
 .newTrack{
     left: 60%;
 
@@ -91,8 +99,19 @@ dd{
     align-items: center;
     margin-top: 20px;
 }
-#div1:hover{
-    padding: 12px;
+
+#div2 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+    color: ivory;
+    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
 label{

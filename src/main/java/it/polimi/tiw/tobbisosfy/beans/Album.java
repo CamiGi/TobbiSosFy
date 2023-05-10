@@ -5,7 +5,7 @@ import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 
 public class Album {
     private String title;
-    private int year;
+    private int year = 0;
     private Genre genre;
     private Artist artist;
     private String imgUri;
@@ -38,5 +38,10 @@ public class Album {
 
     public Genre getGenre() {
         return genre;
+    }
+
+    public boolean isEmpty(){
+        return (this.title.isEmpty() || this.year == 0 ||
+                this.imgUri.isEmpty() || this.artist.isEmpty());
     }
 }
