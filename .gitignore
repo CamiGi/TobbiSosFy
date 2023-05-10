@@ -58,3 +58,5 @@ build/
 .ogg
 .webm
 .flac
+
+src\main\webapp\WEB-INF\web.xml
