@@ -222,6 +222,16 @@ input[type="checkbox"]:hover{
     color: ivory;
 }
 
+.shine {
+    border: 2px solid ivory;
+    border-radius: 32px;
+    width: 50px;
+    min-width: 150px;
+    height: 250px;
+    min-height: 200px;
+    padding: 10px;
+}
+
 .button:hover, .shine:hover{
     border-color: deepskyblue;
     color: deepskyblue;
@@ -257,17 +267,6 @@ h1 {
     margin-right: 5%;
     margin-top: 5px;
 }
-
-.data {
-    border: 2px solid ivory;
-    border-radius: 32px;
-    width: 50px;
-    min-width: 150px;
-    height: 250px;
-    min-height: 200px;
-    padding: 10px;
-}
-
 
 .error {
     position: relative;

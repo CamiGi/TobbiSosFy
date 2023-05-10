@@ -17,10 +17,10 @@
     </div>
     <div class="tab">
         <table>
-            <tr>
-                <td class="data" th:each="t : ${tracks}"
-                                th:insert="track_pttn :: track">
-                    This playlist does not contain any tracks
+            <tr> <!--th:insert="@{track_pttn.html} :: list (track)"-->
+                <td th:class="shine" th:each="track : ${tracks}">
+                    <img th:href="@{/resources/images/{image}(image=${track.album.imgUri})}" alt="No album cover"></img>
+                    <div th:text="${track.title}">This playlist does not contain any tracks</div>
                 </td>
             </tr>
         </table>
