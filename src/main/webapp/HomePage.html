@@ -18,35 +18,24 @@
             <dd th:text="${playlist.getDateString()}"></dd>
         </dl>
 </div>
-<script>
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
-
-    function drop(ev) {
-        ev.preventDefault();
-        var data = ev.dataTransfer.getData("text");
-        ev.target.appendChild(document.getElementById(data));
-    }
-</script>
 
 <div class="newTrack">
     <p>Add a new track</p>
-    <form>
+    <form action="Home" method="POST" enctype="multipart/form-data"> <!--enctype="multipart/form-data"-->
         <label for="ttitle">Track Title</label><br>
         <input class="text" type="text" id="ttitle" name="ttitle" required="required"><br>
-        <legend id="div1" >Drop here the audio file</legend><br>
+        <!--<legend id="div1" >Drop here the audio file</legend>-->
         <label for="talbum">Album</label><br>
         <input class="text" type="text" id="talbum" name="talbum" required="required"><br>
-        <label for="dalbum">Date of the album</label><br>
-        <input class="text" type="date" id="dalbum" name="dalbum" required="required"><br>
+        <label for="dalbum">Year of release: </label>
+        <input class="text" type="number" max="2023" min="0" id="dalbum" name="dalbum" required="required"><br>
         <label for="galbum">Genre</label><br>
         <fieldset id="galbum">
                 <table>
                     <!-- tr riga e dentro ha la colonna che è td -->
                     <tr>
                         <td>
-                            <input type="radio" id="classic" value="CLASSIC" name="g">
+                            <input type="radio" id="classic" value="CLASSIC" name="g" checked="checked">
                             <label for ="classic">Classic</label>
                         </td>
                         <td>
@@ -126,9 +115,15 @@
                     </tr>
             </table>
         </fieldset>
-        <legend id="div2" >Drop here the album image</legend><br>
+        <!--<legend id="div2" >Drop here the album image</legend>-->
         <label for="aname">Artist name</label><br>
-        <input class="text" type="text" id="aname" name="aname"><br>
+        <input class="text" type="text" id="aname" name="aname" required="required"><br>
+
+        <label for="audio" >Select audio file: </label>
+        <input class="tfile" type="file" name="audio" id="audio"><br>
+        <label for="img" >Select album image: </label>
+        <input class="afile" type="file" name="img" id="img"><br>
+
         <input type="submit" value="Submit"><br>
     </form>
 
@@ -141,9 +136,9 @@
         <input class="text" type="text" id="ptitle" name="ptitle"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
-                <a th:each="track: ${songs}" alt="There's no songs">
+                <a th:each="track: ${songs}">
                     <input type="checkbox" id="song" th:value="${track.id}">
-                    <label for="song" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}"></label><br></a>
+                    <label for="song" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">There's no songs</label><br></a>
         </fieldset>
         <input type="submit" value="Submit"><br>
     </form>

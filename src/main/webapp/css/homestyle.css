@@ -60,11 +60,10 @@ a:link{
     left: 5%;
     padding: 10px;
     flex: auto;
-    box-shadow: 0px 5px 5px 5px ivory;
 }
 
 .one, .newPlaylist, .newTrack :hover{
-    box-shadow: 0px 10px 10px 10px ivory;
+
 }
 
 .newTrack{
