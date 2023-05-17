@@ -15,7 +15,7 @@
     <p class="myplaylists">My playlists</p>
         <dl th:each="playlist: ${playlists}">
             <dt>
-                <a th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=0)}"
+                <a class="ply" th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=0)}"
                    th:text="${playlist.title}">There are no playlists</a>
             </dt>
             <dd th:text="${playlist.getDateString()}"></dd>

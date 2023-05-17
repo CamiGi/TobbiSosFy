@@ -31,13 +31,13 @@ html {
     padding: 15px 25px;
 }
 
-a:link{
+a.link {
     text-decoration: none;
-    color: deepskyblue;
 }
 
-a:visited {
-    color: rgb(153, 179, 39);
+.ply:link{
+    text-decoration: none;
+    color: deepskyblue;
 }
 
 select {

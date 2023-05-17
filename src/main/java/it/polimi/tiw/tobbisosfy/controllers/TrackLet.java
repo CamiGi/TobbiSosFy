@@ -107,6 +107,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         try {
             songs = trackDAO.getTracksFromUser(u);
         } catch (SQLException e) {
+            e.printStackTrace();
             error += ""; //Messaggio d'errore, per CAMIIIIIII
             resp.sendRedirect(error);
             return;

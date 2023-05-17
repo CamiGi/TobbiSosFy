@@ -165,7 +165,7 @@ public class PlaylistDAO {
         ps.setInt(1,result.getInt("ID"));
         resultTrack = ps.executeQuery();  //mando la query definitiva che mi da tutte le canzoni
 
-        if (result.isBeforeFirst()) {
+        if (resultTrack.isBeforeFirst()) {
             resultTrack.next();
             while (!resultTrack.isAfterLast()) {
                 tid = resultTrack.getInt("tr.ID");
