@@ -7,11 +7,15 @@
                               th:href="@{css/homestyle.css}" />
 </head>
 <body>
-<a class="logout" href="/Logout">Logout</a>
-<div class="error" th:text="${error}.">Something went wrong during the elaboration of your request.</div>
+<a class="logout" th:href="@{/Logout}">Logout</a>
 <div class="error">
-Please click
-<a href="/Home">here </a>
-to return to the Home Page</div>
+    <div th:text="${error}">Something went wrong during the elaboration of your request. &nbsp
+    </div>
+    <div>
+        Please click
+        <a th:href="@{/Home}">here </a>
+        to return to the Home Page
+    </div>
+</div>
 </body>
 </html>

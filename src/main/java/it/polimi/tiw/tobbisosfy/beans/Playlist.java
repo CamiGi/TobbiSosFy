@@ -6,9 +6,9 @@ import java.sql.Date;
 @JavaBean
 public class Playlist {
     private int id;
-    private String title;
-    private Date date;
-    private User user;
+    private final String title;
+    private final Date date;
+    private final User user;
 
     public Playlist(String title, java.sql.Date date, User user) {
         this.title =title.toLowerCase();

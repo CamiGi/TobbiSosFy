@@ -12,7 +12,7 @@ html {
 .logout {
     position: absolute;
     top: 5%;
-    right: 10%;
+    left: 5%;
 
     text-align: center;
 
@@ -20,28 +20,23 @@ html {
     padding: 15px 25px;
 
     border: 1px solid rgb(100, 100, 100);
-    border-radius: 10px;
+    border-radius: 30px;
 }
 
 .back {
     position: absolute;
     top: 5%;
-    left: 5%;
+    right: 5%;
 
     background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px 25px;
 
     border: 1px solid rgb(100, 100, 100);
-    border-radius: 10px;
+    border-radius: 30px;
 }
 
-.homepage {
-    border-right: 1px solid rgb(100, 100, 100);
-    padding: 15px 20px;
-}
-
-.playlistpage {
-    border-left: 1px solid rgb(100, 100, 100);
-    padding: 15px 20px;
+.back td + td {
+    border-left:2px solid rgb(100, 100, 100);
 }
 
 td.entry {
@@ -93,6 +88,11 @@ img {
 
 a:link {
     color: ivory;
+    text-decoration: none;
+}
+
+a:hover {
+    cursor: pointer;
 }
 
 a:visited {

@@ -56,15 +56,14 @@ public class ShowPlaylist extends HttpServlet {
         int plID;
         int group;
         boolean next;
-        System.out.println("doGet started");
         PlaylistDAO plFinder = new PlaylistDAO(connection);
-        String path = getServletContext().getContextPath();
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         User user = (User) req.getSession().getAttribute("user");
         Playlist playlist;
         ArrayList<Track> tracks;
         ArrayList<Track> shownTracks;
         ArrayList<Track> addableTracks;
+        String error = getServletContext().getContextPath() + "/ShowError?error=";
 
         System.out.println("Start searching for playlist");
         try {
@@ -74,22 +73,29 @@ public class ShowPlaylist extends HttpServlet {
             addableTracks = new TrackDAO(connection).getTracksFromUser(user);
         } catch (NumberFormatException e) {
             System.out.println("Invalid playlist ID");
-            ctx.setVariable("error", "Invalid playlist ID");
-            resp.sendRedirect(path+"/ShowError");
+            error += "Invalid playlist ID";
+            resp.sendRedirect(error);
             return;
         } catch (SQLException e) {
             System.out.println("This playlist does not exist or you haven't got the authorization to see it");
-            ctx.setVariable("error", "This playlist does not exist or you haven't got the authorization to see it");
-            resp.sendRedirect(path+"/ShowError");
+            error += "This playlist does not exist or you haven't got the authorization to see it";
+            resp.sendRedirect(error);
             return;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ctx.setVariable("error", e.getMessage());
-            resp.sendRedirect(path+"/ShowError");
+            error += e.getMessage();
+            resp.sendRedirect(error);
             return;
         }
 
-        addableTracks.removeAll(tracks);
+        for (int i=addableTracks.size()-1; i>=0; i--) {
+            for (Track t : tracks) {
+                if (t.getId() == addableTracks.get(i).getId()) {
+                    addableTracks.remove(i);
+                    break;
+                }
+            }
+        }
         group = 5*Integer.parseInt(req.getParameter("group"));
         shownTracks = new ArrayList<>(5);
 
@@ -113,30 +119,30 @@ public class ShowPlaylist extends HttpServlet {
         String[] tracks = req.getParameterValues("tracks");
         ArrayList<Integer> trIDs;
         PlaylistDAO plfinder = new PlaylistDAO(connection);
-        String path = getServletContext().getContextPath();
-        final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         Playlist playlist;
+        String path = getServletContext().getContextPath();
+        String error = path + "/ShowError?error=";
 
         try {
             playlist = plfinder.getPlaylistFromId(Integer.parseInt(req.getParameter("playlist")),
                     (User) req.getSession().getAttribute("user"));
         } catch (NumberFormatException e) {
-            ctx.setVariable("error", "Invalid playlist ID");
-            resp.sendRedirect(path+"/ShowError");
+            error += "Invalid playlist ID";
+            resp.sendRedirect(error);
             return;
         } catch (SQLException e) {
-            ctx.setVariable("error", "Playlist cannot be found or you haven't got the rights to see it");
-            resp.sendRedirect(path+"/ShowError");
+            error += "Playlist cannot be found or you haven't got the rights to see it";
+            resp.sendRedirect(error);
             return;
         } catch (Exception e) {
-            ctx.setVariable("error", e.getMessage());
-            resp.sendRedirect(path+"/ShowError");
+            error += e.getMessage();
+            resp.sendRedirect(error);
             return;
         }
 
         if (tracks == null) {
-            ctx.setVariable("error", "Add a song to the playlist");
-            resp.sendRedirect(path+"/ShowError");
+            error += "Add at least one song to the playlist";
+            resp.sendRedirect(error);
             return;
         }
         trIDs = new ArrayList<>();
@@ -147,16 +153,16 @@ public class ShowPlaylist extends HttpServlet {
             }
             plfinder.addSongsToPlaylist(playlist, trIDs);
         } catch (NumberFormatException e) {
-            ctx.setVariable("error", "The song you're trying to add does not exist or you haven't the authorization to see it");
-            resp.sendRedirect(path+"/ShowError");
+            error += "The song you're trying to add does not exist or you haven't the authorization to see it";
+            resp.sendRedirect(error);
             return;
         } catch (Exception e) {
-            ctx.setVariable("error", e.getMessage());
-            resp.sendRedirect(path+"/ShowError");
+            error += e.getMessage();
+            resp.sendRedirect(error);
             return;
         }
 
-        doGet(req, resp); // guarda esempi fraternali
+        resp.sendRedirect("ShowPlaylist?playlist="+playlist.getId());
     }
 
     @Override

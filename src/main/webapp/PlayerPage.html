@@ -7,15 +7,15 @@
           th:href="@{css/playerstyle.css}" />
 </head>
 <body>
-<a class="logout" href="/Logout">Logout</a>
+<a class="logout" th:href="@{/Logout}">Logout</a>
 <div class="back">
     <table>
         <tr>
-            <td class="homepage">
-                <a th:href="@{/GoToHome}">Home</a>
+            <td>
+                <a th:href="@{/Home}">Home</a>
             </td>
-            <td class="playlistpage">
-                <a th:href="@{/GoToPlaylist}">Playlist</a>
+            <td>
+                <a th:href="@{/ShowPlaylist(playlist=${playlist},group=${group})}">Playlist</a>
             </td>
         </tr>
     </table>

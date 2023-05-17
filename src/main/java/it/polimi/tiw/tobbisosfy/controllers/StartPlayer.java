@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 import it.polimi.tiw.tobbisosfy.beans.Track;
 
+import it.polimi.tiw.tobbisosfy.beans.User;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -53,30 +54,33 @@ public class StartPlayer extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Track track;
         TrackDAO trFinder = new TrackDAO(connection);
-        String path;
+        String path = request.getContextPath();
         final WebContext ctx = DBServletInitializer.createContext(request, response, getServletContext());
         int trID;
 
         try {
             trID = Integer.parseInt(request.getParameter("track"));
-            track = trFinder.getTrack(trID, (String)request.getSession().getAttribute("user"));
+            track = trFinder.getTrack(trID, ((User)request.getSession().getAttribute("user")).getUsername());
         } catch (NumberFormatException e) {
             ctx.setVariable("error", "Erroneous track ID");
-            response.sendRedirect("/ShowError");
+            response.sendRedirect(path+"/ShowError");
             return;
         } catch (SQLException e) {
             ctx.setVariable("error", "Track not found");
-            response.sendRedirect("/ShowError");
+            response.sendRedirect(path+"/ShowError");
             return;
         } catch (Exception e){
             e.printStackTrace();
             ctx.setVariable("error", e.getMessage());
-            response.sendRedirect("/ShowError");
+            response.sendRedirect(path+"/ShowError");
             return;
         }
-        path = "/PlayerPage.html";
+
         ctx.setVariable("track", track);
-        templateEngine.process(path, ctx, response.getWriter());
+        ctx.setVariable("playlist", request.getParameter("playlist"));
+        ctx.setVariable("group", request.getParameter("group"));
+        //o le mandi nella request o provi a beccarle da ctx
+        templateEngine.process("/PlayerPage.html", ctx, response.getWriter());
     }
 
     @Override

@@ -13,12 +13,12 @@
           method="POST">
         <div class="field">
             username<br><br><label>
-            <input type="text" name="username">
+            <input type="text" name="username" required="required">
             </label>
         </div>
         <div class="field">
             password<br><br><label>
-            <input type="password" name="pwd">
+            <input type="password" name="pwd" required="required">
             </label>
         </div>
         <div id="err" th:text="${error}"></div>

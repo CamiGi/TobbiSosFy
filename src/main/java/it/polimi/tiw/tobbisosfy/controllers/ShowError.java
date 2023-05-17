@@ -34,8 +34,8 @@ public class ShowError extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        templateEngine.process("/PlaylistPage.html",
-                new WebContext(req, resp, req.getServletContext(), req.getLocale()),
-                resp.getWriter());
+        WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
+        ctx.setVariable("error", req.getParameter("error")+". ");
+        templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
     }
 }

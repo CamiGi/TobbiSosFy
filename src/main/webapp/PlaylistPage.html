@@ -7,27 +7,42 @@
         th:href="@{css/homestyle.css}" />
 </head>
 <body>
-<a class="logout" href="/Logout">Logout</a>
+<a class="logout" th:href="@{/Logout}">Logout</a>
 <div class="title">
     <h1 th:text="${playlist.title}">playlist</h1>
 </div>
+<a class="back" th:href="@{/Home}">Home</a>
 <div class="page">
-    <div class="button" th:if="${group}!=0">
-        <a th:href="@{/ShowPlaylist + '?group=' + {g} (g=group-1)}"><</a>
+    <div class="trks">
+        <div class="button" th:if="${group}!=0">
+            <a th:href="@{/ShowPlaylist(group=${group}-1)}"><</a>
+        </div>
+        <div class="tab">
+            <table>
+                <tr>
+                    <td th:class="shine" th:each="track : ${tracks}">
+                        <img th:src="@{/resources/images/{image}(image=${track.album.imgUri})}">
+                        <a th:class="il" th:href="@{/StartPlayer(track=${track.id},playlist=${playlist.id},
+                        group=${group})}" th:text="${track.title}">This playlist does not contain any tracks</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="button" th:if="${next}">
+            <a th:href="@{/ShowPlaylist(group=${group}+1)}"></a>
+        </div>
     </div>
-    <div class="tab">
-        <table>
-            <tr> <!--th:insert="@{track_pttn.html} :: list (track)"-->
-                <td th:class="shine" th:each="track : ${tracks}">
-                    <img th:href="@{/resources/images/{image}(image=${track.album.imgUri})}" alt="No album cover"></img>
-                    <div th:text="${track.title}">This playlist does not contain any tracks</div>
-                </td>
-            </tr>
-        </table>
+    <div th:if="${not #lists.isEmpty(addTrks)}">
+        <form th:action="@{ShowPlaylist+'?playlist='+${playlist.id}}" method="POST">
+            <div class="frm" th:each="track : ${addTrks}">
+                <input type="checkbox" th:id="${track.id}" name="tracks" th:value="${track.id}">
+                <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+
+                    ' - '+${track.album.genre}+' - '+${track.album.artist.artistName}"></label></td>
+            </div>
+            <input class="center" type="submit" value="Submit">
+        </form>
     </div>
-    <div class="button" th:if="${next}">
-        <a th:href="@{/ShowPlaylist + '?group=' + {g} (g=group+1)}">></a>
-    </div>
+    <div th:if="${#lists.isEmpty(addTrks)}" class="frm">There are no tracks to add to this playlist</div>
 </div>
 </body>
 </html>

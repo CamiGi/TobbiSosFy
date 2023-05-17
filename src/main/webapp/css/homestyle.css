@@ -35,7 +35,7 @@ a:link{
     text-decoration: none;
 }
 
-.logout{
+.logout, .back{
     font-size: 13px;
     font-weight: 700;
     color: black;
@@ -43,7 +43,6 @@ a:link{
 
     position: absolute;
     top: 5.5%;
-    left: 5%;
 
     text-align: center;
 
@@ -52,6 +51,14 @@ a:link{
 
     border: 1px solid rgb(100, 100, 100);
     border-radius: 30px;
+}
+
+.logout {
+    left: 5%;
+}
+
+.back {
+    right: 5%;
 }
 
 .one, .newPlaylist, .newTrack{
@@ -92,34 +99,6 @@ dt{
 
 dd{
     color: #aaaaaa;
-}
-
-#div1 {
-    width: 350px;
-    height: 70px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-    color: ivory;
-    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-#div2 {
-    width: 350px;
-    height: 70px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-    color: ivory;
-    font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
 }
 
 label{
@@ -230,18 +209,44 @@ input[type="checkbox"]:hover{
     color: ivory;
 }
 
-.shine {
-    border: 2px solid ivory;
-    border-radius: 32px;
-    width: 50px;
-    min-width: 150px;
-    height: 250px;
-    min-height: 200px;
-    padding: 10px;
+.il, a.il:link {
+    color: ivory;
 }
 
-.button:hover, .shine:hover{
+.shine {
+    display: inline-grid;
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid ivory;
+    border-radius: 32px;
+
+    min-width: 100px;
+    max-width: 200px;
+    min-height: 200px;
+    max-height: 300px;
+    padding: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 20px;
+
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.button:hover {
     border-color: deepskyblue;
+    color: deepskyblue;
+    cursor: pointer;
+}
+
+.shine:hover {
+    border-color: deepskyblue;
+    color: deepskyblue;
+}
+
+.il:hover {
     color: deepskyblue;
     cursor: pointer;
 }
@@ -276,20 +281,49 @@ h1 {
     margin-top: 5px;
 }
 
-.error {
-    position: relative;
-    margin-top: 10px;
-    transform: translate(0, 200px);
-}
-
 .page {
     position: absolute;
     width: 99%;
-    margin-top: 115px;
+    margin-top: 120px;
     min-height: 100px;
     min-width: 900px;
+}
+
+.trks {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid white;
+    margin-top: 20px;
+}
+
+.frm {
+    margin-left: 50%;
+    transform: translate(-50%, 0);
+    margin-top: 20px;
+
+    border: 2px dashed ivory;
+    border-radius: 32px;
+    padding: 10px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    max-width: 800px;
+    min-width: 800px;
+}
+
+.center {
+    margin-left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.error {
+    margin-top: 20%;
+    margin-left: 5%;
+}
+
+img {
+    max-width: 190px;
+    max-height: 270px;
+    border-radius: 8px;
 }

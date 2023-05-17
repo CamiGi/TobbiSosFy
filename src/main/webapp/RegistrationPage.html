@@ -12,17 +12,17 @@
         method="POST">
     <div class="field">
       username<br><br><label>
-      <input type="text" name="nickname">
+      <input type="text" name="nickname" required="required">
     </label>
     </div>
     <div class="field">
       password*<br><br><label>
-      <input type="text" name="password">
+      <input type="text" name="password" required="required">
     </label>
     </div>
     <div class="field">
       confirm password*<br><br><label>
-      <input type="text" name="conf">
+      <input type="text" name="conf" required="required">
     </label>
     </div>
     <div id="err" th:text="${error}"></div>

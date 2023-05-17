@@ -149,7 +149,12 @@ public class PlaylistDAO {
         int tid;
 
 
-        String queryTracks = "SELECT trackID, year FROM contains JOIN track JOIN album WHERE contains.playlistID=? ORDER BY year DESC";  //creo query che seleziona le canzoni (tentativo di JOIN)
+        String queryTracks =
+                "SELECT tr.ID, year " +
+                "FROM playlist as pl INNER JOIN contains as ct ON ct.playlistID=pl.id " +
+                        "INNER JOIN track as tr on ct.trackID=tr.ID " +
+                        "INNER JOIN album as al on tr.albumID=al.ID " +
+                "WHERE pl.ID=? ORDER BY year DESC";  //creo query che seleziona le canzoni (tentativo di JOIN)
         String prova = "SELECT ID FROM playlist WHERE title=?"; //creo query che trova l'id della playlist che mi interessa
 
 //        ps = con.prepareStatement(prova);  //settaggio prepared statement
@@ -162,7 +167,7 @@ public class PlaylistDAO {
 
         resultTrack.next();
         while (!resultTrack.isAfterLast()){
-            tid = resultTrack.getInt("trackID");
+            tid = resultTrack.getInt("tr.ID");
             //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
             rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
             resultTrack.next();
@@ -188,6 +193,7 @@ public class PlaylistDAO {
 
         result = ps.executeQuery();
         if (result.isBeforeFirst()){
+            result.next();
             id = result.getInt("ID");
         }
 
@@ -204,7 +210,6 @@ public class PlaylistDAO {
     public void addSongsToPlaylist(Playlist playlist, ArrayList<Integer> tracks) throws Exception{
         int code = 0;
         int idp = -1;
-        ArrayList<Integer> ids = new ArrayList<Integer>();
         con.setAutoCommit(false);
 
         idp = this.getIdOfPlaylist(playlist);
@@ -220,7 +225,6 @@ public class PlaylistDAO {
                 result = ps.executeQuery();
 
                 if (!result.isBeforeFirst()) {
-                    result.next();
                     ps = con.prepareStatement(query2);
                     ps.setInt(1, idp);
                     ps.setInt(2, i);
@@ -228,7 +232,7 @@ public class PlaylistDAO {
                 } else {
                     throw new Exception("ATTENZIONE la canzone è già nella playlist: " + playlist.getTitle());
                 }
-                if (!(code == 1)) {
+                if (code != 1) {
                     con.rollback();
                     throw new Exception("ATTENZIONE qualcosa è andato storto: 505");
                 }
