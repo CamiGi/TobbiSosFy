@@ -17,7 +17,7 @@ public class TrackDAO {
     private String queryAlID="SELECT ID, name FROM album WHERE name= ?";
     private String queryTID="SELECT ID, title FROM track WHERE title= ?";
     private String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?, ?)"; //NULL, title, albumID, file, username
-    private String queryNewAlbum = "INSERT INTO album VALUES (?' '?, ?, ?, ?, ?)"; //NULL, name, year, genre, artistID, img
+    private String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?, ?)"; //NULL, name, year, genre, artistID, img
     private String queryNewArtist = "INSERT INTO artist VALUES (?, ?)";  //NULL, name
     private String queryAlbum = "SELECT * FROM album WHERE ID=?";
     private String queryArtist = "SELECT * FROM artist WHERE ID=?";
@@ -100,6 +100,7 @@ public class TrackDAO {
             ps=con.prepareStatement("SELECT ID FROM artist WHERE name=?");  //chiedo al db l'id dell'artista col nome che compare nell'oggetto album
             ps.setString(1,album.getArtist().getArtistName());
             ResultSet re =ps.executeQuery();
+            re.next();
             ps = con.prepareStatement(queryNewAlbum);
             ps.setString(1, null);
             ps.setString(2, album.getTitle());
@@ -215,7 +216,7 @@ public class TrackDAO {
 
         //costruisco la track
         artist = new Artist(result.getString("name"),this);
-        album = new Album(this, resultAlbum.getString("name"), resultAlbum.getDate("year").toLocalDate().getYear(), Genre.valueOf(resultAlbum.getString("genre")), artist, resultAlbum.getString("img"));
+        album = new Album(this, resultAlbum.getString("name"), resultAlbum.getInt("year"), Genre.valueOf(resultAlbum.getString("genre")), artist, resultAlbum.getString("img"));
         ps = con.prepareStatement(queryUser);
         ps.setString(1,resultTrack.getString("username"));
         result = ps.executeQuery();
