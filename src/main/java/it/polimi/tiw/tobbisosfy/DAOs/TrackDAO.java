@@ -127,6 +127,8 @@ public class TrackDAO {
             ps = con.prepareStatement(queryNewTrack);
             ps.setString(1, null);
             ps.setString(2, title);
+            re.next();
+            re1.next();
             ps.setInt(3, re.getInt("ID"));
             ps.setString(4, mp3Uri);
             ps.setString(5, re1.getString("username"));  //ridondante ma almeno se c'è un errore nel db viene lanciato

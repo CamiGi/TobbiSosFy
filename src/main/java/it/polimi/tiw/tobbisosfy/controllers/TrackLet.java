@@ -45,7 +45,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
     public TrackLet() {
         //System.out.println("------- inizio costruttore tracklet -------");
         super();
-        System.out.println("------- fine costruttore tracklet -------");
+        //System.out.println("------- fine costruttore tracklet -------");
     }
 
     @Override
@@ -64,17 +64,17 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("1");
+        //System.out.println("1");
         ServletContext servletContext = getServletContext();
-        System.out.println("2");
+        //System.out.println("2");
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        System.out.println("3");
+        //System.out.println("3");
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        System.out.println("4");
+        //System.out.println("4");
         this.templateEngine = new TemplateEngine();
-        System.out.println("5");
+        //System.out.println("5");
         this.templateEngine.setTemplateResolver(templateResolver);
-        System.out.println("6");
+        //System.out.println("6");
         templateResolver.setSuffix(".html");
         imgFP = getServletContext().getInitParameter("imagepath");
         audioFP = getServletContext().getInitParameter("trackpath");
@@ -327,7 +327,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             resp.sendRedirect(error);
             return;
         }
-        resp.sendRedirect("/Home");
+        resp.sendRedirect(ctxPath+"/Home");
     }
 
     @Override

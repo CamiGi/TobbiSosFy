@@ -139,13 +139,13 @@
 
 <div class="newPlaylist">
     <p>Add a new playlist</p>
-    <form>
+    <form action="PLinsert" method="POST">
         <label for="ptitle">Playlist Title</label><br>
         <input class="text" type="text" id="ptitle" name="ptitle"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
                 <a th:each="track: ${songs}">
-                    <input type="checkbox" id="song" th:value="${track.id}">
+                    <input type="checkbox" id="song" name="song" th:value="${track.id}">
                     <label for="song" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">There's no songs</label><br></a>
         </fieldset>
         <input type="submit" value="Submit"><br>
