@@ -53,6 +53,7 @@ public class PlaylistLet  extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PlaylistDAO pd = new PlaylistDAO(connection);
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
+        String error = req.getContextPath() + "/ShowError?error=";
 
         if(!(req.getParameter("ptitle").isEmpty() || ((ArrayList<Track>)req.getAttribute("songs")).isEmpty())) {
 
@@ -66,11 +67,13 @@ public class PlaylistLet  extends HttpServlet {
             try {
                 pd.addPlaylist(playlist, songs, i);
             } catch (SQLException e){
-                ctx.setVariable("error", e.getMessage());
-                resp.sendRedirect("/ShowError");
+                error += e.getMessage(); //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
+                return;
             } catch (Exception e) {
-                ctx.setVariable("error", "Something wrong during the add of the playlist in the database");
-                resp.sendRedirect("/ShowError");
+                error += "Something wrong during the add of the playlist in the database"; //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
+                return;
             }
         }
 

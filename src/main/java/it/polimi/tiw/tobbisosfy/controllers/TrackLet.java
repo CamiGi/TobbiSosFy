@@ -91,20 +91,27 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         this.setU((User) req.getSession().getAttribute("user"));  //setto lo user che mi serve per tutta la classe
         ArrayList<Playlist> playlists;
         String path;
+        String error = req.getContextPath() + "/ShowError?error=";
         ArrayList<Track> songs = new ArrayList<>();
 
         try {
             playlists = playlistDAO.getPlaylists(u);
         } catch (SQLException e) {
-            throw new RuntimeException(e);  //Redirect pagina errore: mettere a postooooooooooooooooooooo
+            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            resp.sendRedirect(error);
+            return;
         }
 
         try {
             songs = trackDAO.getTracksFromUser(u);
         } catch (SQLException e) {
-            throw new RuntimeException(e);  //Redirect pagina errore: mettere a postooooooooooooooooooo
+            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            resp.sendRedirect(error);
+            return;
         } catch (Exception e) {
-            throw new RuntimeException(e); //Redirect pagina errore: mettere a postooooooooooooooooooo
+            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            resp.sendRedirect(error);
+            return;
         }
 
         path = "/HomePage.html";
@@ -124,6 +131,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         TrackDAO td = new TrackDAO(connection);
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         String ctxPath = req.getContextPath();
+        String error = ctxPath + "/ShowError?error=";
 
         String trackTitle = req.getParameter("ttitle");
         System.out.println("ttitle preso");
@@ -166,6 +174,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("STO USCENDO DAL TRY");
         } catch (Exception e) {
             e.printStackTrace();
+            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            resp.sendRedirect(error);
+            return;
         }
 
         System.out.println("JJJJJJ");
@@ -217,8 +228,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("Type " + contentTypeImg);
 
             if (!contentTypeImg.startsWith("image")) {
-                ctx.setVariable("error", "Image format not permitted!");
-                resp.sendRedirect(ctxPath + "/ShowError");
+                error += ""; //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
                 return;
             }
 
@@ -264,8 +275,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 //resp.sendRedirect("ShowImage?filename=" + imgName);
             } catch (Exception e) {
                 e.printStackTrace();
-                ctx.setVariable("error", "Error while saving image");
-                resp.sendRedirect(ctxPath + "/ShowError");
+                error += ""; //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
+                return;
             }
 
             try (InputStream audioContent = taudio.getInputStream()) {
@@ -279,8 +291,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 //resp.sendRedirect("ShowImage?filename=" + imgName);
             } catch (Exception e) {
                 e.printStackTrace();
-                ctx.setVariable("error", "Error while saving audio file");
-                resp.sendRedirect(ctxPath + "/ShowError");
+                error += ""; //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
+                return;
             }
 
 
@@ -295,15 +308,18 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             try {
                 td.addTrack(track.getTitle(), track.getAlbum(), track.getMp3Uri(), track.getUser());
             } catch (SQLException e){
-                ctx.setVariable("error", e.getMessage());
-                resp.sendRedirect("/ShowError");
+                error += e.getMessage(); //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
+                return;
             } catch (Exception e) {
-                ctx.setVariable("error", "Something wrong during the add of the song in the database");
-                resp.sendRedirect(ctxPath + "/ShowError");
+                error += "Something wrong during the add of the song in the database"; //Messaggio d'errore, per CAMIIIIIII
+                resp.sendRedirect(error);
+                return;
             }
         } else {
-            ctx.setVariable("error", "Missing parameters!");
-            resp.sendRedirect(ctxPath + "/ShowError");
+            error += "Missing parameters"; //Messaggio d'errore, per CAMIIIIIII
+            resp.sendRedirect(error);
+            return;
         }
     }
 
