@@ -125,29 +125,32 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         String ctxPath = req.getContextPath();
 
-        /*String trackTitle = req.getParameter("ttitle"); ok
+        String trackTitle = req.getParameter("ttitle");
         System.out.println("ttitle preso");
         int albumDate = 0;
         albumDate = Integer.parseInt(req.getParameter("dalbum"));  //
         //albumDate = req.getInteger("dalbum"); ok
         System.out.println("dalbum preso");
-        String albumTitle = req.getParameter("talbum"); ok
+        String albumTitle = req.getParameter("talbum");
         System.out.println("talbum preso");
         Genre albumGenre = (Genre) req.getAttribute("g");
         System.out.println("g preso");
-        String artistName = req.getParameter("aname"); ok
-        System.out.println("aname preso");*/
+        String artistName = req.getParameter("aname");
+        System.out.println("aname preso");
 
-        Part trackTitle = null;
+        /* trackTitle = null;
         Part albumDate = null;
         Part albumTitle = null;
         Part albumGenre = null;
-        Part artistName = null;
+        Part artistName = null;*/
         Part taudio = null;
         Part img = null;
 
         try {
-            trackTitle = req.getPart("ttitle");
+            System.out.println("DENTRO AL TRY");
+            //String trackTitle = req.getParameter("ttitle");
+            //trackTitle = req.getPart("ttitl");
+            /*trackTitle = req.getParameter("ttitle");
             System.out.println("ttitle preso");
             albumDate = req.getPart("dalbum");  //
             //albumDate = req.getInteger("dalbum");
@@ -157,20 +160,24 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             albumGenre = req.getPart("g");
             System.out.println("g preso");
             artistName = req.getPart("aname");
-            System.out.println("aname preso");
+            System.out.println("aname preso");*/
             taudio = req.getPart("audio");
             img = req.getPart("img");
+            System.out.println("STO USCENDO DAL TRY");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         System.out.println("JJJJJJ");
 
-        if(!(albumTitle == null || albumTitle.getSize() <= 0 ||
+        if(!(/*albumTitle == null || albumTitle.getSize() <= 0 ||
                 trackTitle == null || trackTitle.getSize() <= 0 ||
                 albumDate == null || albumDate.getSize() <= 0 ||
                 albumGenre == null || albumGenre.getSize() <= 0 ||
-                artistName == null || artistName.getSize() <= 0 ||
+                artistName == null || artistName.getSize() <= 0 ||*/
+                albumTitle.isEmpty() || trackTitle.isEmpty() ||
+                albumDate == 0 || albumGenre.isEmpty() ||
+                artistName.isEmpty() ||
                 img == null || img.getSize() <= 0 ||
                 taudio == null || taudio.getSize() <= 0)) {
 
@@ -190,7 +197,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
             //String text = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            /*String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             System.out.println("talbum preso");
             String tTitle = new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             System.out.println("ttitle preso");
@@ -201,7 +208,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("dalbum preso");
             String agenre = new String(albumDate.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             Genre aGenre = Genre.valueOf(agenre);
-            System.out.println("g preso");
+            System.out.println("g preso");*/
 
             System.out.println("AAAA");
 
@@ -277,9 +284,13 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             }
 
 
-            Artist artist = new Artist(aName, td);
+            /*Artist artist = new Artist(aName, td);
             Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
             Track track = new Track(td, tTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
+             */
+            Artist artist = new Artist(artistName, td);
+            Album album = new Album(td, albumTitle, albumDate, albumGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
+            Track track = new Track(td, trackTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
 
             try {
                 td.addTrack(track.getTitle(), track.getAlbum(), track.getMp3Uri(), track.getUser());
