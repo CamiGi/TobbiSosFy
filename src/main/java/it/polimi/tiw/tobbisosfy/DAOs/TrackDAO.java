@@ -16,9 +16,9 @@ public class TrackDAO {
     private String queryArID="SELECT ID, name FROM artist WHERE name= ?";
     private String queryAlID="SELECT ID, name FROM album WHERE name= ?";
     private String queryTID="SELECT ID, title FROM track WHERE title= ?";
-    private String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?)"; //title, albumID, file, username
-    private String queryNewAlbum = "INSERT INTO album VALUES (?, ?, ?, ?, ?)"; //name, year, genre, artistID, img
-    private String queryNewArtist = "INSERT INTO artist VALUES (?)";  //name
+    private String queryNewTrack = "INSERT INTO track VALUES (?, ?, ?, ?, ?)"; //NULL, title, albumID, file, username
+    private String queryNewAlbum = "INSERT INTO album VALUES (?' '?, ?, ?, ?, ?)"; //NULL, name, year, genre, artistID, img
+    private String queryNewArtist = "INSERT INTO artist VALUES (?, ?)";  //NULL, name
     private String queryAlbum = "SELECT * FROM album WHERE ID=?";
     private String queryArtist = "SELECT * FROM artist WHERE ID=?";
     private String queryTrack = "SELECT * FROM track WHERE ID=? AND username=?";
@@ -85,7 +85,8 @@ public class TrackDAO {
     private int newArtist(int code,  Artist artist) throws SQLException{
         try{
             ps = con.prepareStatement(queryNewArtist);
-            ps.setString(1, artist.getArtistName());
+            ps.setString(1, null);
+            ps.setString(2, artist.getArtistName());
             code= ps.executeUpdate();  //returns the number of rows inserted into the table
         } catch (SQLException e){
             throw new SQLException(e);
@@ -100,11 +101,12 @@ public class TrackDAO {
             ps.setString(1,album.getArtist().getArtistName());
             ResultSet re =ps.executeQuery();
             ps = con.prepareStatement(queryNewAlbum);
-            ps.setString(1, album.getTitle());
-            ps.setInt(2, album.getYear());
-            ps.setString(3, album.getGenre().toString());
-            ps.setInt(4, re.getInt("ID"));
-            ps.setString(5, album.getImgUri());
+            ps.setString(1, null);
+            ps.setString(2, album.getTitle());
+            ps.setInt(3, album.getYear());
+            ps.setString(4, album.getGenre().toString());
+            ps.setInt(5, re.getInt("ID"));
+            ps.setString(6, album.getImgUri());
             code = ps.executeUpdate();
         } catch (SQLException e){
             throw new SQLException(e);
@@ -122,10 +124,11 @@ public class TrackDAO {
             ps.setString(1,user.getUsername());
             ResultSet re1 =ps.executeQuery();
             ps = con.prepareStatement(queryNewTrack);
-            ps.setString(1, title);
-            ps.setInt(2, re.getInt("ID"));
-            ps.setString(3, mp3Uri);
-            ps.setString(4, re1.getString("username"));  //ridondante ma almeno se c'è un errore nel db viene lanciato
+            ps.setString(1, null);
+            ps.setString(2, title);
+            ps.setInt(3, re.getInt("ID"));
+            ps.setString(4, mp3Uri);
+            ps.setString(5, re1.getString("username"));  //ridondante ma almeno se c'è un errore nel db viene lanciato
             code = ps.executeUpdate();
         } catch (SQLException e){
             throw new SQLException(e);

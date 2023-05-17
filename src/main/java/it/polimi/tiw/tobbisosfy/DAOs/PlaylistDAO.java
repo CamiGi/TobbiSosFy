@@ -19,8 +19,8 @@ public class PlaylistDAO {
     private PreparedStatement ps;
     private ResultSet result;
     private final String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
-    private final String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?)";
-    private final String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
+    private final String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?)";
+    private final String queryNewContains = "INSERT INTO contains VALUES(?, ?, ?)";
 
 
     public PlaylistDAO(Connection con){
@@ -48,9 +48,10 @@ public class PlaylistDAO {
 
         if(!result.isBeforeFirst()){  //se non ho già la playlist
             ps = con.prepareStatement(queryNewPlaylist);
-            ps.setString(1,playlist.getTitle());
-            ps.setDate(2,playlist.getDate());
-            ps.setString(3,playlist.getUser().getUsername());
+            ps.setString(1, null);
+            ps.setString(2,playlist.getTitle());
+            ps.setDate(3,playlist.getDate());
+            ps.setString(4,playlist.getUser().getUsername());
             code = ps.executeUpdate();
         } else {
             throw new Exception("ATTENZIONE qualcosa non è andato bene: 500");
@@ -77,7 +78,8 @@ public class PlaylistDAO {
 
             for (Track t : tracks){
                 ps = con.prepareStatement(queryNewContains);
-                ps.setInt(1,h);
+                ps.setString(1,null);
+                ps.setInt(2,h);
                 try {
                     ps.setInt(2, t.getId());
                 } catch (SQLException e){

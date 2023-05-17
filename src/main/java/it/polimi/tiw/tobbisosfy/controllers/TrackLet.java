@@ -11,6 +11,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+@MultipartConfig
 @WebServlet("/Home")
 public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN ALTRA SOLO PER L?ALTRA COSA playlist - track
 
@@ -133,7 +135,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         String ctxPath = req.getContextPath();
         String error = ctxPath + "/ShowError?error=";
 
-        String trackTitle = req.getParameter("ttitle");
+        /*String trackTitle = req.getParameter("ttitle");
         System.out.println("ttitle preso");
         int albumDate = 0;
         albumDate = Integer.parseInt(req.getParameter("dalbum"));  //
@@ -144,13 +146,13 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         Genre albumGenre = (Genre) req.getAttribute("g");
         System.out.println("g preso");
         String artistName = req.getParameter("aname");
-        System.out.println("aname preso");
+        System.out.println("aname preso");*/
 
-        /* trackTitle = null;
+        Part trackTitle = null;
         Part albumDate = null;
         Part albumTitle = null;
         Part albumGenre = null;
-        Part artistName = null;*/
+        Part artistName = null;
         Part taudio = null;
         Part img = null;
 
@@ -158,8 +160,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("DENTRO AL TRY");
             //String trackTitle = req.getParameter("ttitle");
             //trackTitle = req.getPart("ttitl");
-            /*trackTitle = req.getParameter("ttitle");
-            System.out.println("ttitle preso");
+            trackTitle = req.getPart("ttitle");
+            System.out.println("ttitle preso "+ new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
             albumDate = req.getPart("dalbum");  //
             //albumDate = req.getInteger("dalbum");
             System.out.println("dalbum preso");
@@ -168,7 +170,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             albumGenre = req.getPart("g");
             System.out.println("g preso");
             artistName = req.getPart("aname");
-            System.out.println("aname preso");*/
+            System.out.println("aname preso");
             taudio = req.getPart("audio");
             img = req.getPart("img");
             System.out.println("STO USCENDO DAL TRY");
@@ -181,14 +183,14 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
         System.out.println("JJJJJJ");
 
-        if(!(/*albumTitle == null || albumTitle.getSize() <= 0 ||
+        if(!(albumTitle == null || albumTitle.getSize() <= 0 ||
                 trackTitle == null || trackTitle.getSize() <= 0 ||
                 albumDate == null || albumDate.getSize() <= 0 ||
                 albumGenre == null || albumGenre.getSize() <= 0 ||
-                artistName == null || artistName.getSize() <= 0 ||*/
-                albumTitle.isEmpty() || trackTitle.isEmpty() ||
+                artistName == null || artistName.getSize() <= 0 ||
+                /*albumTitle.isEmpty() || trackTitle.isEmpty() ||
                 albumDate == 0 || albumGenre.isEmpty() ||
-                artistName.isEmpty() ||
+                artistName.isEmpty() ||*/
                 img == null || img.getSize() <= 0 ||
                 taudio == null || taudio.getSize() <= 0)) {
 
@@ -208,7 +210,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
             //String text = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            /*String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             System.out.println("talbum preso");
             String tTitle = new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             System.out.println("ttitle preso");
@@ -217,9 +219,10 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             String adate = new String(albumDate.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             int aDate = Integer.parseInt(adate);
             System.out.println("dalbum preso");
-            String agenre = new String(albumDate.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            Genre aGenre = Genre.valueOf(agenre);
-            System.out.println("g preso");*/
+            String agenre = new String(albumGenre.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            System.out.println("GENRE: "+agenre);
+            Genre aGenre = Genre.valueOf(agenre.toUpperCase());
+            System.out.println("g preso");
 
             System.out.println("AAAA");
 
@@ -238,7 +241,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             String contentTypeAudio = taudio.getContentType();
             System.out.println("Type " + contentTypeAudio);
 
-            if (!contentTypeImg.startsWith("audio")) {
+            if (!contentTypeAudio.startsWith("audio")) {
                 ctx.setVariable("error", "Audio file format not permitted!");
                 resp.sendRedirect(ctxPath + "/ShowError");
                 return;
@@ -257,7 +260,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
             File imgFile = new File(imgOutputPath);
 
-            String audioOutputPath = audioFP + imgName; //folderPath inizialized in init
+            String audioOutputPath = audioFP + audioName; //folderPath inizialized in init
             System.out.println("Output path: " + audioOutputPath);
 
             File audioFile = new File(audioOutputPath);
@@ -297,16 +300,19 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             }
 
 
-            /*Artist artist = new Artist(aName, td);
+            Artist artist = new Artist(aName, td);
             Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
             Track track = new Track(td, tTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
-             */
-            Artist artist = new Artist(artistName, td);
+
+            /*Artist artist = new Artist(artistName, td);
             Album album = new Album(td, albumTitle, albumDate, albumGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
             Track track = new Track(td, trackTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
+            */
 
             try {
+                System.out.println("Ora aggiungo la track al server");
                 td.addTrack(track.getTitle(), track.getAlbum(), track.getMp3Uri(), track.getUser());
+                System.out.println("Track aggiunta corettamente al server");
             } catch (SQLException e){
                 error += e.getMessage(); //Messaggio d'errore, per CAMIIIIIII
                 resp.sendRedirect(error);
@@ -321,6 +327,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             resp.sendRedirect(error);
             return;
         }
+        resp.sendRedirect("/Home");
     }
 
     @Override
