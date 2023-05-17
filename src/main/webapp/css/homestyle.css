@@ -31,11 +31,11 @@ html {
     padding: 15px 25px;
 }
 
-a.link {
+a:link {
     text-decoration: none;
 }
 
-.ply:link{
+.ply:link, a.ply:link {
     text-decoration: none;
     color: deepskyblue;
 }
