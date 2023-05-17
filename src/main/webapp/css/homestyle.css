@@ -33,6 +33,15 @@ html {
 
 a:link{
     text-decoration: none;
+    color: deepskyblue;
+}
+
+a:visited {
+    color: rgb(153, 179, 39);
+}
+
+select {
+    min-width: 100px;
 }
 
 .logout, .back{

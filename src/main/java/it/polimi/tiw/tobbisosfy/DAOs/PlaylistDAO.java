@@ -144,8 +144,6 @@ public class PlaylistDAO {
      * @throws SQLException
      */
     public ArrayList<Track> getTracksFromPlaylist(Playlist playlist) throws SQLException, Exception{
-        //DA MARCO PER CAMI: come per la track bisogna fare un controllo anche sull'utente, se no si possono
-        //vedere anche le playlist degli altri utenti
         ArrayList<Track> rs = new ArrayList<>();
         ResultSet resultTrack;
         int tid;
@@ -167,12 +165,14 @@ public class PlaylistDAO {
         ps.setInt(1,result.getInt("ID"));
         resultTrack = ps.executeQuery();  //mando la query definitiva che mi da tutte le canzoni
 
-        resultTrack.next();
-        while (!resultTrack.isAfterLast()){
-            tid = resultTrack.getInt("tr.ID");
-            //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
-            rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
+        if (result.isBeforeFirst()) {
             resultTrack.next();
+            while (!resultTrack.isAfterLast()) {
+                tid = resultTrack.getInt("tr.ID");
+                //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
+                rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
+                resultTrack.next();
+            }
         }
 
         return  rs;

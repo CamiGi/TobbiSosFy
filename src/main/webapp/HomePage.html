@@ -8,13 +8,16 @@
 </head>
 <body>
 <div class="username" th:text="${user.username}">Null</div>
-<a class="logout" href="/Logout">Logout</a>
+<a class="logout" th:href="@{/Logout}">Logout</a>
 
 
 <div class="one">
     <p class="myplaylists">My playlists</p>
         <dl th:each="playlist: ${playlists}">
-            <dt th:text="${playlist.title}">There's no playlists</dt>
+            <dt>
+                <a th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=0)}"
+                   th:text="${playlist.title}">There are no playlists</a>
+            </dt>
             <dd th:text="${playlist.getDateString()}"></dd>
         </dl>
 </div>
@@ -28,7 +31,12 @@
         <label for="talbum">Album</label><br>
         <input class="text" type="text" id="talbum" name="talbum" required="required"><br>
         <label for="dalbum">Year of release: </label>
-        <input class="text" type="number" max="2023" min="0" id="dalbum" name="dalbum" required="required"><br>
+        <!--<input class="text" type="number" max="2023" min="0" id="dalbum" name="dalbum" required="required"><br>-->
+        <select name="dalbum" id="dalbum">
+            <option th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()), 0)}"
+                    th:value="${year}" th:text="${year}"></option>
+        </select>
+        <br>
         <fieldset id="galbum">
             <legend>Genre</legend>
                 <table>
