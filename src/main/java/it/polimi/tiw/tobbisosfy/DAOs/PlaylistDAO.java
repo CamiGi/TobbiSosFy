@@ -115,13 +115,17 @@ public class PlaylistDAO {
         ps.setString(1,user.getUsername());
         result = ps.executeQuery();
 
-        result.next();
-        
-        while (!result.isAfterLast()){
-            pl= new Playlist(result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user);
-            pl.setId(result.getInt("ID"));
-            r.add(pl);
+        if(result.isBeforeFirst()){
             result.next();
+
+            while (!result.isAfterLast()){
+                pl= new Playlist(result.getString("title"), (java.sql.Date) result.getObject("creationDate"), user);
+                pl.setId(result.getInt("ID"));
+                r.add(pl);
+                result.next();
+            }
+        } else {
+            return new ArrayList<Playlist>();
         }
         return r;
     }
@@ -161,11 +165,6 @@ public class PlaylistDAO {
                         "INNER JOIN track as tr on ct.trackID=tr.ID " +
                         "INNER JOIN album as al on tr.albumID=al.ID " +
                 "WHERE pl.ID=? ORDER BY year DESC";  //creo query che seleziona le canzoni (tentativo di JOIN)
-        String prova = "SELECT ID FROM playlist WHERE title=?"; //creo query che trova l'id della playlist che mi interessa
-
-//        ps = con.prepareStatement(prova);  //settaggio prepared statement
-//        ps.setString(1,playlist.getTitle());
-//        result = ps.executeQuery();  //mando la query playlist
 
         ps = con.prepareStatement(queryTracks);  //settaggio altro statement
         ps.setInt(1,result.getInt("ID"));
@@ -179,6 +178,8 @@ public class PlaylistDAO {
                 rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
                 resultTrack.next();
             }
+        } else {
+            return new ArrayList<Track>();
         }
 
         return  rs;

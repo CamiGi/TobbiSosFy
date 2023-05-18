@@ -171,7 +171,7 @@ public class TrackDAO {
                 r.next();
             }
         } else {
-            throw new Exception("ATTENZIONE l'utente non ha canzoni: 301");
+            return new ArrayList<Track>();
         }
 
         return tracks;
@@ -184,8 +184,7 @@ public class TrackDAO {
      * @throws SQLException
      */
     public Track getTrack(int trackID, String username) throws SQLException, Exception{
-        //DA MARCO PER CAMI: attenzione, l'utente malevolo puo' inserire un id a caso e vedere le canzoni degli
-        // altri utenti. Per risolvere bisogna cercare la canzone nella tabella join tra track e user
+
         Track t;
         Album album;
         Artist artist;
