@@ -25,7 +25,7 @@
     <table>
       <tr>
         <td class="entry">
-          <img th:src="@{${#servletContext.getInitParameter('imagepath')+'/'+track.album.imgUri}}"
+            <img th:src="${#servletContext.getContextPath()+'/resources/images/'+track.album.imgUri}"
                alt="No Album Cover">
         </td>
         <td class="entry">
@@ -57,7 +57,7 @@
   </div>
   <div class="player">
     <audio controls>
-      <source th:src="@{${#servletContext.getInitParameter('trackpath')+'/'+track.mp3Uri}}"
+      <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
               type="audio/mpeg">
       Your browser does not support this audio extension
     </audio>
