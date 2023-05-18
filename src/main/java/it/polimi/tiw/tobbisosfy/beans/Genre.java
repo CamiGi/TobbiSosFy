@@ -10,7 +10,7 @@ public enum Genre {
     TECHNO("TECHNO"), RAGGAE("RAGGAE"), SALSA("SALSA"), FLAMENCO("FLAMENCO"), HIPHOP("HIPHOP"),
     METAL("METAL"), FUNK("FUNK");
 
-    private String genre;
+    private final String genre;
 
     Genre(String genre) {
         this.genre = genre;

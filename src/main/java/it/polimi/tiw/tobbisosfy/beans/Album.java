@@ -1,18 +1,13 @@
 package it.polimi.tiw.tobbisosfy.beans;
 
-import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
-
-
 public class Album {
-    private String title;
-    private int year = 0;
-    private Genre genre;
-    private Artist artist;
-    private String imgUri;
-    private TrackDAO td;
+    private final String title;
+    private final int year;
+    private final Genre genre;
+    private final Artist artist;
+    private final String imgUri;
 
-    public Album(TrackDAO td, String name, int year, Genre genre, Artist artist, String imgUri) {
-        this.td = td;
+    public Album(String name, int year, Genre genre, Artist artist, String imgUri) {
         this.title = name.toLowerCase();
         this.year = year;
         this.genre = genre;

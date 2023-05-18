@@ -4,13 +4,11 @@ import it.polimi.tiw.tobbisosfy.beans.Playlist;
 import it.polimi.tiw.tobbisosfy.beans.Track;
 import it.polimi.tiw.tobbisosfy.beans.User;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class PlaylistDAO {
 
@@ -18,9 +16,6 @@ public class PlaylistDAO {
     private final Connection con;
     private PreparedStatement ps;
     private ResultSet result;
-    private final String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
-    private final String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?)";
-    private final String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
 
 
     public PlaylistDAO(Connection con){
@@ -29,15 +24,12 @@ public class PlaylistDAO {
     }
 
     /**
-     *
      * @param playlist
      * @param tracks
-     * @param code
-     * @return un codice risultato, controllare che sia cambiato, se l'operazione è andata a buon fine deve essere = 1
      * @throws SQLException Vuol dire che già esiste nel DB
      * @throws Exception
      */
-    public void addPlaylist(Playlist playlist, ArrayList<Track> tracks, int code) throws SQLException, Exception{
+    public void addPlaylist(Playlist playlist, ArrayList<Track> tracks) throws SQLException, Exception{
 
         String queryplst = "SELECT * FROM playlist WHERE title=? AND userID=?";
 
@@ -48,7 +40,9 @@ public class PlaylistDAO {
 
         result.next();
 
+        int code;
         if(!result.isBeforeFirst()){  //se non ho già la playlist
+            String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(queryNewPlaylist);
             ps.setString(1, null);
             ps.setString(2,playlist.getTitle());
@@ -64,6 +58,7 @@ public class PlaylistDAO {
             throw new Exception("ATTENZIONE qualcosa è andato storto: 501");
         }
 
+        String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
         ps = con.prepareStatement(queryPlID);
         ps.setString(1,playlist.getTitle());
         ps.setString(2, playlist.getUser().getUsername());
@@ -81,6 +76,7 @@ public class PlaylistDAO {
         if(!result.isBeforeFirst()){  //se non ho già la tupla
 
             for (Track t : tracks){
+                String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
                 ps = con.prepareStatement(queryNewContains);
                 //ps.setString(1,null);
                 ps.setInt(1,h);
@@ -125,7 +121,7 @@ public class PlaylistDAO {
                 result.next();
             }
         } else {
-            return new ArrayList<Playlist>();
+            return new ArrayList<>();
         }
         return r;
     }
@@ -179,7 +175,7 @@ public class PlaylistDAO {
                 resultTrack.next();
             }
         } else {
-            return new ArrayList<Track>();
+            return new ArrayList<>();
         }
 
         return  rs;
@@ -212,13 +208,12 @@ public class PlaylistDAO {
     /**
      * Inserisce una canzone nella playlist
      * @param playlist
-     * @return
      * @throws SQLException
      * @throws Exception
      */
     public void addSongsToPlaylist(Playlist playlist, ArrayList<Integer> tracks) throws Exception{
-        int code = 0;
-        int idp = -1;
+        int code;
+        int idp;
         con.setAutoCommit(false);
 
         idp = this.getIdOfPlaylist(playlist);

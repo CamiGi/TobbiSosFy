@@ -9,15 +9,8 @@ import java.sql.SQLException;
 
 public class UserDAO {
 
-    private Connection con;
+    private final Connection con;
     private PreparedStatement ps;
-    private ResultSet result;
-
-    private String queryLogin = "SELECT * FROM user WHERE username=? AND password=?";
-    private String queryUsername = "SELECT * FROM user WHERE username=?";
-    private String queryPassword = "SELECT * FROM user WHERE password=?";
-
-    private String queryNewUser = "INSERT INTO user VALUES (?, ?)";  //username, password
 
     public UserDAO(Connection con){
         this.con=con;
@@ -32,11 +25,13 @@ public class UserDAO {
      * @throws Exception se lo username o la password sono errate
      */
     public User login(String username, String password) throws SQLException, Exception{
+        String queryUsername = "SELECT * FROM user WHERE username=?";
         ps = con.prepareStatement(queryUsername);
         ps.setString(1,username);
-        result = ps.executeQuery();
+        ResultSet result = ps.executeQuery();
 
         if (result.isBeforeFirst()){
+            String queryLogin = "SELECT * FROM user WHERE username=? AND password=?";
             ps = con.prepareStatement(queryLogin);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -59,14 +54,16 @@ public class UserDAO {
      * @throws Exception ATTENZIONE username già esistente
      */
     public void addUser(String username, String password) throws SQLException, Exception{
-        int code = 0;
+        int code;
 
+        //username, password
+        String queryNewUser = "INSERT INTO user VALUES (?, ?)";
         ps = con.prepareStatement(queryNewUser);
         ps.setString(1, username);
         ps.setString(2, password);
         code = ps.executeUpdate();
 
-        if (!(code == 1)){
+        if (code != 1){
             con.rollback();
             throw new Exception("ATTENTION something went wrong: 600");
         }

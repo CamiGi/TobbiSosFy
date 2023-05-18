@@ -1,18 +1,14 @@
 package it.polimi.tiw.tobbisosfy.beans;
 
-import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
-
 import java.beans.JavaBean;
 
 @JavaBean
 public class Artist {
 
-    private String artistName;
-    private TrackDAO td;
+    private final String artistName;
 
-    public Artist(String name, TrackDAO td){
-        this.td = td;
-        this.artistName=name.toLowerCase();
+    public Artist(String name){
+        this.artistName=name;
     }
     public String getArtistName() {
         return artistName;

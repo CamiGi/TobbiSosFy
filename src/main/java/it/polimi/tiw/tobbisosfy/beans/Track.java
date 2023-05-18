@@ -1,7 +1,5 @@
 package it.polimi.tiw.tobbisosfy.beans;
 
-import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
-
 import java.beans.JavaBean;
 
 @JavaBean
@@ -11,10 +9,8 @@ public class Track {
     private final Album album;
     private final String mp3Uri;
     private final User user;
-    private TrackDAO td;
 
-    public Track(TrackDAO td, String title, Album album, String mp3Uri, User user){
-        this.td = td;
+    public Track(String title, Album album, String mp3Uri, User user){
         this.album=album;
         this.title=title.toLowerCase();
         this.mp3Uri=mp3Uri;

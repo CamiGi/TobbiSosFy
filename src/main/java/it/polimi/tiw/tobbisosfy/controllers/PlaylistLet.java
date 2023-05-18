@@ -3,12 +3,7 @@ package it.polimi.tiw.tobbisosfy.controllers;
 import it.polimi.tiw.tobbisosfy.DAOs.PlaylistDAO;
 import it.polimi.tiw.tobbisosfy.DAOs.TrackDAO;
 import it.polimi.tiw.tobbisosfy.beans.*;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +19,6 @@ import java.util.ArrayList;
 @WebServlet("/PLinsert")
 public class PlaylistLet  extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     private Connection connection = null;
     private User u;
 
@@ -47,13 +41,6 @@ public class PlaylistLet  extends HttpServlet {
             e.printStackTrace();
             throw new UnavailableException("Couldn't get db connection");
         }
-        ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setSuffix(".html");
-        System.out.println("PlaylistLet inizializzata");
     }
 
     @Override
@@ -62,7 +49,6 @@ public class PlaylistLet  extends HttpServlet {
         this.setU((User) req.getSession().getAttribute("user"));
         PlaylistDAO pd = new PlaylistDAO(connection);
         TrackDAO td = new TrackDAO(connection);
-        final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         String error = req.getContextPath() + "/ShowError?error=";
         String ctxPath = req.getContextPath();
         //System.out.println(req.getParameterValues("song"));
@@ -74,9 +60,9 @@ public class PlaylistLet  extends HttpServlet {
             System.out.println("Titolo preso");
             ArrayList<Track> sng = new ArrayList<>();
 
-            for(int i = 0; i<songs.length; i++){
+            for (String song : songs) {
                 try {
-                    sng.add(td.getTrack(Integer.parseInt(songs[i]), u.getUsername()));
+                    sng.add(td.getTrack(Integer.parseInt(song), u.getUsername()));
                 } catch (Exception e) {
                     error += "Something wrong during the add of the playlist in the database";
                     resp.sendRedirect(error);
@@ -93,7 +79,7 @@ public class PlaylistLet  extends HttpServlet {
 
             try {
                 System.out.println("Invio nuova playlist");
-                pd.addPlaylist(playlist, sng, i);
+                pd.addPlaylist(playlist, sng);
                 System.out.println("Inviata nuova playlist");
             } catch (SQLException e){
                 e.printStackTrace();

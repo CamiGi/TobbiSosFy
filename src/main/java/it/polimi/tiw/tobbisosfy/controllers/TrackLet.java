@@ -81,7 +81,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         ArrayList<Playlist> playlists;
         String path;
         String error = req.getContextPath() + "/ShowError?error=";
-        ArrayList<Track> songs = new ArrayList<>();
+        ArrayList<Track> songs;
 
         try {
             playlists = playlistDAO.getPlaylists(u);
@@ -115,30 +115,16 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         TrackDAO td = new TrackDAO(connection);
-        final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         String ctxPath = req.getContextPath();
         String error = ctxPath + "/ShowError?error=";
 
-        /*String trackTitle = req.getParameter("ttitle");
-        System.out.println("ttitle preso");
-        int albumDate = 0;
-        albumDate = Integer.parseInt(req.getParameter("dalbum"));  //
-        //albumDate = req.getInteger("dalbum"); ok
-        System.out.println("dalbum preso");
-        String albumTitle = req.getParameter("talbum");
-        System.out.println("talbum preso");
-        Genre albumGenre = (Genre) req.getAttribute("g");
-        System.out.println("g preso");
-        String artistName = req.getParameter("aname");
-        System.out.println("aname preso");*/
-
-        Part trackTitle = null;
-        Part albumDate = null;
-        Part albumTitle = null;
-        Part albumGenre = null;
-        Part artistName = null;
-        Part taudio = null;
-        Part img = null;
+        Part trackTitle;
+        Part albumDate;
+        Part albumTitle;
+        Part albumGenre;
+        Part artistName;
+        Part taudio;
+        Part img;
 
         try {
             System.out.println("DENTRO AL TRY");
@@ -174,23 +160,6 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 artistName.isEmpty() ||*/
                 img == null || img.getSize() <= 0 ||
                 taudio == null || taudio.getSize() <= 0)) {
-
-            // We first check the parameter needed is present
-            /*if (img == null || img.getSize() <= 0) {
-                ctx.setVariable("error", "Missing image album in request!");
-                resp.sendRedirect(ctxPath + "/ShowError");
-                return;
-            }
-            System.out.println("HHHHH");
-            // We first check the parameter needed is present
-            if (taudio == null || taudio.getSize() <= 0) {
-                ctx.setVariable("error", "Missing the file audio in request!");
-                resp.sendRedirect(ctxPath + "/ShowError");
-                return;
-            }*/
-
-            //String text = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-
             String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             String tTitle = new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             String aName = new String(artistName.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
@@ -216,8 +185,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("Type " + contentTypeAudio);
 
             if (!contentTypeAudio.startsWith("audio")) {
-                ctx.setVariable("error", "Audio file format not permitted! Retry");
-                resp.sendRedirect(ctxPath + "/ShowError");    ///MA VA BENE FATTO COSI?????
+                error += "Audio file format not permitted! Retry";
+                resp.sendRedirect(error);
                 return;
             }
 
@@ -246,7 +215,6 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 Files.copy(imgContent, imgFile.toPath());
                 System.out.println("Image saved correctly!");
 
-                //resp.sendRedirect("ShowImage?filename=" + imgName);
             } catch (FileAlreadyExistsException e) {
                 System.out.println("Image saved correctly!");
             } catch (Exception e) {
@@ -276,16 +244,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             }
 
 
-            Artist artist = new Artist(aName, td);
-            //Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
-            Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgName);
-            //Track track = new Track(td, tTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
-            Track track = new Track(td, tTitle, album, audioName, u);
-
-            /*Artist artist = new Artist(artistName, td);
-            Album album = new Album(td, albumTitle, albumDate, albumGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
-            Track track = new Track(td, trackTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
-            */
+            Artist artist = new Artist(aName);
+            Album album = new Album(aTitle, aDate, aGenre, artist,  imgName);
+            Track track = new Track(tTitle, album, audioName, u);
 
             try {
                 System.out.println("Ora aggiungo la track al server");

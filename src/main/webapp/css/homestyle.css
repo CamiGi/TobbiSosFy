@@ -17,7 +17,7 @@ html {
 .username{
     font-size: 25px;
     font-weight: 700;
-    line-height: 20.8px;
+    line-height: 21px;
 
     position: absolute;
     top: 5%;
@@ -100,7 +100,7 @@ select {
 p{
     font-size: 21px;
     font-weight: 700;
-    line-height: 20.8px;
+    line-height: 21px;
 }
 
 .fs{
