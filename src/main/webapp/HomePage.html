@@ -146,7 +146,7 @@
                 <dt th:if="${#lists.isEmpty(songs)}">You don't have any song</dt>
                 <a th:each="track: ${songs}" required="required">
                     <input type="checkbox" th:id="${track.id}" name="song" th:value="${track.id}">
-                    <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">There's no songs</label><br></a>
+                    <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}"></label><br></a>
         </fieldset>
         <input type="submit" value="Submit"><br>
     </form>
