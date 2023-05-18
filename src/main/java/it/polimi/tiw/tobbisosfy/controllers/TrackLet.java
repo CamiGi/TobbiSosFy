@@ -205,7 +205,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("Type " + contentTypeImg);
 
             if (!contentTypeImg.startsWith("image")) {
-                error += "Audio file format not permitted! Retry";
+                error += "Image file format not permitted! Retry";
                 resp.sendRedirect(error);
                 return;
             }
