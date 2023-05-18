@@ -74,29 +74,36 @@ public class Register extends HttpServlet {
             return;
         }
         if (!pwd.contains("0") &&
-                !pwd.contains("1") &&
-                !pwd.contains("2") &&
-                !pwd.contains("3") &&
-                !pwd.contains("4") &&
-                !pwd.contains("5") &&
-                !pwd.contains("6") &&
-                !pwd.contains("7") &&
-                !pwd.contains("8") &&
-                !pwd.contains("9")) {
+            !pwd.contains("1") &&
+            !pwd.contains("2") &&
+            !pwd.contains("3") &&
+            !pwd.contains("4") &&
+            !pwd.contains("5") &&
+            !pwd.contains("6") &&
+            !pwd.contains("7") &&
+            !pwd.contains("8") &&
+            !pwd.contains("9")) {
             registrationFailed(response, ctx, "Password has no numeric chars");
             return;
         }
         if (!pwd.contains("-") &&
-                !pwd.contains("_") &&
-                !pwd.contains("=") &&
-                !pwd.contains("+") &&
-                !pwd.contains("/") &&
-                !pwd.contains("£") &&
-                !pwd.contains("%") &&
-                !pwd.contains("^") &&
-                !pwd.contains("@") &&
-                !pwd.contains("`") &&
-                !pwd.contains("#")) {
+            !pwd.contains("_") &&
+            !pwd.contains("=") &&
+            !pwd.contains("+") &&
+            !pwd.contains("/") &&
+            !pwd.contains("£") &&
+            !pwd.contains("%") &&
+            !pwd.contains("^") &&
+            !pwd.contains("@") &&
+            !pwd.contains("`") &&
+            !pwd.contains("#") &&
+            !pwd.contains(".") &&
+            !pwd.contains(",") &&
+            !pwd.contains("!") &&
+            !pwd.contains("?") &&
+            !pwd.contains(">") &&
+            !pwd.contains("<") &&
+            !pwd.contains(":")) {
             registrationFailed(response, ctx, "Password has no special chars");
             return;
         }

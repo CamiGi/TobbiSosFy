@@ -1,9 +1,7 @@
 html {
     height: 100%;
 
-    background-color: rgba(0,0,0,1);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: rgb(13, 16, 23);
 
     font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
     color: ivory;

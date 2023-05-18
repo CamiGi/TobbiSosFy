@@ -35,13 +35,14 @@
     </div>
     <div th:if="${not #lists.isEmpty(addTrks)}">
         <form th:action="@{ShowPlaylist+'?playlist='+${playlist.id}}" method="POST">
-            <div class="frm">
+            <fieldset class="frm">
+                <legend>Add songs to the playlist</legend>
                 <div th:each="track : ${addTrks}">
                     <input type="checkbox" th:id="${track.id}" name="tracks" th:value="${track.id}">
                     <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+
                         ' - '+${track.album.genre}+' - '+${track.album.artist.artistName}"></label></td>
                 </div>
-            </div>
+            </fieldset>
             <input class="center" type="submit" value="Submit">
         </form>
     </div>
