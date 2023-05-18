@@ -68,17 +68,17 @@ public class PlaylistLet  extends HttpServlet {
         //System.out.println(req.getParameterValues("song"));
         String[] songs = req.getParameterValues("song");
 
-        if(!(req.getParameter("ptitle").isEmpty() || songs[0].isEmpty() )  ) {  ////METTI A POSTO
+        if(!(req.getParameter("ptitle").isEmpty() || songs[0].isEmpty() )  ) {
 
             String playlistTitle = req.getParameter("ptitle");
             System.out.println("Titolo preso");
-            ArrayList<Track> sng = new ArrayList<>();  ///vedere come funziona con html
+            ArrayList<Track> sng = new ArrayList<>();
 
             for(int i = 0; i<songs.length; i++){
                 try {
                     sng.add(td.getTrack(Integer.parseInt(songs[i]), u.getUsername()));
                 } catch (Exception e) {
-                    error += "Something wrong during the add of the playlist in the database"; //Messaggio d'errore, per CAMIIIIIII
+                    error += "Something wrong during the add of the playlist in the database";
                     resp.sendRedirect(error);
                     return;
                 }
@@ -96,11 +96,12 @@ public class PlaylistLet  extends HttpServlet {
                 pd.addPlaylist(playlist, sng, i);
                 System.out.println("Inviata nuova playlist");
             } catch (SQLException e){
-                error += e.getMessage(); //Messaggio d'errore, per CAMIIIIIII
+                e.printStackTrace();
+                error += "Error occurred while saving the playlist in the database (SQL exception)";
                 resp.sendRedirect(error);
                 return;
             } catch (Exception e) {
-                error += "Something wrong during the add of the playlist in the database"; //Messaggio d'errore, per CAMIIIIIII
+                error += "Error occurred while saving the playlist in the database";
                 resp.sendRedirect(error);
                 return;
             }

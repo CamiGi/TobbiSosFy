@@ -25,7 +25,7 @@
     <table>
       <tr>
         <td class="entry">
-          <img th:src="@{/resources/images/{image}(image=${track.album.imgUri})}" alt="No Album Cover">
+          <img th:src="@{C:{image}(image=${track.album.imgUri})}" alt="No Album Cover">
         </td>
         <td class="entry">
           <table>
@@ -56,7 +56,7 @@
   </div>
   <div class="player">
     <audio controls>
-      <source th:src="@{/resources/tracks/{song}(song=${track.mp3Uri})}" type="audio/mpeg">
+      <source th:src="@{C:{song}(song=${track.mp3Uri})}" type="audio/mpeg">
       Your browser does not support this audio extension
     </audio>
   </div>

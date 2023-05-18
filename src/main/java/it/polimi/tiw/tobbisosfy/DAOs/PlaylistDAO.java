@@ -20,7 +20,7 @@ public class PlaylistDAO {
     private ResultSet result;
     private final String queryPlID = "SELECT ID FROM playlist WHERE title=? AND userID=?";
     private final String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?)";
-    private final String queryNewContains = "INSERT INTO contains VALUES(?, ?, ?)";
+    private final String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
 
 
     public PlaylistDAO(Connection con){
@@ -46,6 +46,8 @@ public class PlaylistDAO {
         ps.setString(2,playlist.getUser().getUsername());
         result = ps.executeQuery();
 
+        result.next();
+
         if(!result.isBeforeFirst()){  //se non ho già la playlist
             ps = con.prepareStatement(queryNewPlaylist);
             ps.setString(1, null);
@@ -66,6 +68,7 @@ public class PlaylistDAO {
         ps.setString(1,playlist.getTitle());
         ps.setString(2, playlist.getUser().getUsername());
         result = ps.executeQuery();
+        result.next();
         int h = result.getInt("ID");
 
         String querycnts = "SELECT * FROM contains WHERE playlistID=?";
@@ -73,13 +76,14 @@ public class PlaylistDAO {
         ps = con.prepareStatement(querycnts);
         ps.setInt(1,h);
         result = ps.executeQuery();
+        result.next();
 
         if(!result.isBeforeFirst()){  //se non ho già la tupla
 
             for (Track t : tracks){
                 ps = con.prepareStatement(queryNewContains);
-                ps.setString(1,null);
-                ps.setInt(2,h);
+                //ps.setString(1,null);
+                ps.setInt(1,h);
                 try {
                     ps.setInt(2, t.getId());
                 } catch (SQLException e){
@@ -128,6 +132,8 @@ public class PlaylistDAO {
         ps.setInt(1, playlist.getId());
         ps.setInt(2, track.getId());
         result = ps.executeQuery();
+
+        result.next();
 
         if(result.isBeforeFirst()){
             return true;
@@ -225,6 +231,7 @@ public class PlaylistDAO {
                 ps.setInt(1, idp);
                 ps.setInt(2, i);
                 result = ps.executeQuery();
+                result.next();
 
                 if (!result.isBeforeFirst()) {
                     ps = con.prepareStatement(query2);

@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.sound.sampled.AudioFileFormat;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,10 +24,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 @MultipartConfig
 @WebServlet("/Home")
@@ -43,18 +39,13 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
     private String imgFP = "";
 
     public TrackLet() {
-        //System.out.println("------- inizio costruttore tracklet -------");
         super();
-        //System.out.println("------- fine costruttore tracklet -------");
     }
 
     @Override
     public void init() throws ServletException {
-        System.out.println("HEY");
         try {
-            System.out.println("SONO QUAAA");
             connection = DBServletInitializer.init(getServletContext());
-            System.out.println("SONO QUIII");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new UnavailableException("Can't load database driver");
@@ -64,17 +55,12 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //System.out.println("1");
+
         ServletContext servletContext = getServletContext();
-        //System.out.println("2");
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        //System.out.println("3");
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        //System.out.println("4");
         this.templateEngine = new TemplateEngine();
-        //System.out.println("5");
         this.templateEngine.setTemplateResolver(templateResolver);
-        //System.out.println("6");
         templateResolver.setSuffix(".html");
         imgFP = getServletContext().getInitParameter("imagepath");
         audioFP = getServletContext().getInitParameter("trackpath");
@@ -99,7 +85,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         try {
             playlists = playlistDAO.getPlaylists(u);
         } catch (SQLException e) {
-            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            error += "Error occurred while loading playlists";
             resp.sendRedirect(error);
             return;
         }
@@ -108,29 +94,25 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             songs = trackDAO.getTracksFromUser(u);
         } catch (SQLException e) {
             e.printStackTrace();
-            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            error += "Error occurred while loading tracks of the user (SQL exception)";
             resp.sendRedirect(error);
             return;
         } catch (Exception e) {
-            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            error += "Error occurred while loading tracks of the user (SQL exception)";
             resp.sendRedirect(error);
             return;
         }
 
         path = "/HomePage.html";
         ctx.setVariable("playlists", playlists);
-        System.out.println(playlists);
         ctx.setVariable("user", u);
-        System.out.println(u);
         ctx.setVariable("songs", songs);
-        System.out.println(songs);
         templateEngine.process(path, ctx, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println("CIAO CAMIIII");
         TrackDAO td = new TrackDAO(connection);
         final WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
         String ctxPath = req.getContextPath();
@@ -159,12 +141,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
         try {
             System.out.println("DENTRO AL TRY");
-            //String trackTitle = req.getParameter("ttitle");
-            //trackTitle = req.getPart("ttitl");
             trackTitle = req.getPart("ttitle");
             System.out.println("ttitle preso "+ new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
-            albumDate = req.getPart("dalbum");  //
-            //albumDate = req.getInteger("dalbum");
+            albumDate = req.getPart("dalbum");
             System.out.println("dalbum preso");
             albumTitle = req.getPart("talbum");
             System.out.println("talbum preso");
@@ -177,7 +156,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("STO USCENDO DAL TRY");
         } catch (Exception e) {
             e.printStackTrace();
-            error += ""; //Messaggio d'errore, per CAMIIIIIII
+            error += "Error occurred while reading the form: Add a new track";
             resp.sendRedirect(error);
             return;
         }
@@ -232,7 +211,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("Type " + contentTypeImg);
 
             if (!contentTypeImg.startsWith("image")) {
-                error += ""; //Messaggio d'errore, per CAMIIIIIII
+                error += "Audio file format not permitted! Retry";
                 resp.sendRedirect(error);
                 return;
             }
@@ -243,8 +222,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             System.out.println("Type " + contentTypeAudio);
 
             if (!contentTypeAudio.startsWith("audio")) {
-                ctx.setVariable("error", "Audio file format not permitted!");
-                resp.sendRedirect(ctxPath + "/ShowError");
+                ctx.setVariable("error", "Audio file format not permitted! Retry");
+                resp.sendRedirect(ctxPath + "/ShowError");    ///MA VA BENE FATTO COSI?????
                 return;
             }
 
@@ -279,7 +258,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 //resp.sendRedirect("ShowImage?filename=" + imgName);
             } catch (Exception e) {
                 e.printStackTrace();
-                error += ""; //Messaggio d'errore, per CAMIIIIIII
+                error += "Error occurred while saving the image! Retry";
                 resp.sendRedirect(error);
                 return;
             }
@@ -295,7 +274,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 //resp.sendRedirect("ShowImage?filename=" + imgName);
             } catch (Exception e) {
                 e.printStackTrace();
-                error += ""; //Messaggio d'errore, per CAMIIIIIII
+                error += "Error occurred while saving the audio file! Retry";
                 resp.sendRedirect(error);
                 return;
             }
@@ -315,16 +294,17 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 td.addTrack(track.getTitle(), track.getAlbum(), track.getMp3Uri(), track.getUser());
                 System.out.println("Track aggiunta corettamente al server");
             } catch (SQLException e){
-                error += e.getMessage(); //Messaggio d'errore, per CAMIIIIIII
+                e.printStackTrace();
+                error += "Error occurred while saving the track in the database (SQL exception)";
                 resp.sendRedirect(error);
                 return;
             } catch (Exception e) {
-                error += "Something wrong during the add of the song in the database"; //Messaggio d'errore, per CAMIIIIIII
+                error += "Error occurred while saving the track in the database";
                 resp.sendRedirect(error);
                 return;
             }
         } else {
-            error += "Missing parameters"; //Messaggio d'errore, per CAMIIIIIII
+            error += "Missing parameters in the 'Add a new track' form";
             resp.sendRedirect(error);
             return;
         }
