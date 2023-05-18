@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -191,20 +192,13 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             //String text = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
             String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("talbum preso");
             String tTitle = new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("ttitle preso");
             String aName = new String(artistName.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("aname preso");
             String adate = new String(albumDate.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             int aDate = Integer.parseInt(adate);
-            System.out.println("dalbum preso");
             String agenre = new String(albumGenre.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("GENRE: "+agenre);
             Genre aGenre = Genre.valueOf(agenre.toUpperCase());
             System.out.println("g preso");
-
-            System.out.println("AAAA");
 
             // We then check the parameter is valid (in this case right format)
             String contentTypeImg = img.getContentType();
@@ -227,8 +221,6 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 return;
             }
 
-            System.out.println("BBBBB");
-
             String imgName = Paths.get(img.getSubmittedFileName()).getFileName().toString();
             System.out.println("Filename: " + imgName);
 
@@ -245,23 +237,25 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
             File audioFile = new File(audioOutputPath);
 
-            System.out.println("CCCC");
-
             try (InputStream imgContent = img.getInputStream()) {
                 // TODO: WHAT HAPPENS IF A FILE WITH THE SAME NAME ALREADY EXISTS?
                 // you could override it, send an error or
-                // rename it, for example, if I need to upload images to an album, and for each image I also save other data, I could save the image as {image_id}.jpg using the id of the db
+                // rename it, for example, if I need to upload images to an album, and for each image
+                //I also save other data, I could save the image as {image_id}.jpg using the id of the db
 
                 Files.copy(imgContent, imgFile.toPath());
                 System.out.println("Image saved correctly!");
 
                 //resp.sendRedirect("ShowImage?filename=" + imgName);
+            } catch (FileAlreadyExistsException e) {
+                System.out.println("Image saved correctly!");
             } catch (Exception e) {
                 e.printStackTrace();
                 error += "Error occurred while saving the image! Retry";
                 resp.sendRedirect(error);
                 return;
             }
+
 
             try (InputStream audioContent = taudio.getInputStream()) {
                 // TODO: WHAT HAPPENS IF A FILE WITH THE SAME NAME ALREADY EXISTS?
@@ -272,6 +266,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 System.out.println("Track audio saved correctly!");
 
                 //resp.sendRedirect("ShowImage?filename=" + imgName);
+            } catch (FileAlreadyExistsException e) {
+                System.out.println("Track audio saved correctly!");
             } catch (Exception e) {
                 e.printStackTrace();
                 error += "Error occurred while saving the audio file! Retry";
@@ -281,8 +277,10 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
 
             Artist artist = new Artist(aName, td);
-            Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
-            Track track = new Track(td, tTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
+            //Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri
+            Album album = new Album(td, aTitle, aDate, aGenre, artist,  imgName);
+            //Track track = new Track(td, tTitle, album, audioOutputPath, u);  //vedi righe sopra per l'uri
+            Track track = new Track(td, tTitle, album, audioName, u);
 
             /*Artist artist = new Artist(artistName, td);
             Album album = new Album(td, albumTitle, albumDate, albumGenre, artist,  imgOutputPath); //vedi righe sopra per l'uri

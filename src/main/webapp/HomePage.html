@@ -27,6 +27,8 @@
     <form action="Home" method="POST" enctype="multipart/form-data"> <!--enctype="multipart/form-data"-->
         <label for="ttitle">Track Title</label><br>
         <input class="text" type="text" id="ttitle" name="ttitle" required="required"><br>
+        <label for="audio" >Select audio file: </label>
+        <input class="tfile" type="file" name="audio" id="audio"><br>
         <!--<legend id="div1" >Drop here the audio file</legend>-->
         <label for="talbum">Album</label><br>
         <input class="text" type="text" id="talbum" name="talbum" required="required"><br>
@@ -37,6 +39,8 @@
                     th:value="${year}" th:text="${year}"></option>
         </select>
         <br>
+        <label for="img" >Select album image: </label>
+        <input class="afile" type="file" name="img" id="img"><br>
         <fieldset id="galbum">
             <legend>Genre</legend>
                 <table>
@@ -127,11 +131,6 @@
         <label for="aname">Artist name</label><br>
         <input class="text" type="text" id="aname" name="aname" required="required"><br>
 
-        <label for="audio" >Select audio file: </label>
-        <input class="tfile" type="file" name="audio" id="audio"><br>
-        <label for="img" >Select album image: </label>
-        <input class="afile" type="file" name="img" id="img"><br>
-
         <input type="submit" value="Submit"><br>
     </form>
 
@@ -141,10 +140,10 @@
     <p>Add a new playlist</p>
     <form action="PLinsert" method="POST">
         <label for="ptitle">Playlist Title</label><br>
-        <input class="text" type="text" id="ptitle" name="ptitle"><br>
+        <input class="text" type="text" id="ptitle" name="ptitle" required="required"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
-                <a th:each="track: ${songs}">
+                <a th:each="track: ${songs}" required="required">
                     <input type="checkbox" id="song" name="song" th:value="${track.id}">
                     <label for="song" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">There's no songs</label><br></a>
         </fieldset>

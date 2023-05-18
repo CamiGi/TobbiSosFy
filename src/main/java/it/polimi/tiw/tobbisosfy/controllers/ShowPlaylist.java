@@ -96,7 +96,7 @@ public class ShowPlaylist extends HttpServlet {
                 }
             }
         }
-        group = 5*Integer.parseInt(req.getParameter("group"));
+        group = 5*Integer.parseInt(req.getParameter("group"));//////////
         shownTracks = new ArrayList<>(5);
 
         for (int c=group; c<group+5 && c<tracks.size(); c++)
@@ -111,7 +111,7 @@ public class ShowPlaylist extends HttpServlet {
         ctx.setVariable("group", group);
         ctx.setVariable("next", next);
         System.out.println("Rendering playlist page");
-        System.out.println("'C:'"+shownTracks.get(0).getMp3Uri()); ////////////////
+        System.out.println("'C:'"+shownTracks.get(0).getMp3Uri());
         templateEngine.process("/PlaylistPage.html", ctx, resp.getWriter());
     }
 
@@ -147,10 +147,11 @@ public class ShowPlaylist extends HttpServlet {
             return;
         }
         trIDs = new ArrayList<>();
+        System.out.println("SONO QUA");
 
         try {
             for (String track : tracks) {
-                trIDs.add(Integer.parseInt(track));
+                trIDs.add(Integer.parseInt(track));  //eccezione qua
             }
             plfinder.addSongsToPlaylist(playlist, trIDs);
         } catch (NumberFormatException e) {
@@ -163,7 +164,9 @@ public class ShowPlaylist extends HttpServlet {
             return;
         }
 
-        resp.sendRedirect("ShowPlaylist?playlist="+playlist.getId());
+        System.out.println("SONO QUIII");
+
+        resp.sendRedirect("ShowPlaylist?playlist="+playlist.getId()+"&group=0");
     }
 
     @Override

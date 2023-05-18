@@ -123,6 +123,8 @@ label{
     font-size: 15px;
     line-height: 25px;
     padding: 3px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 .text{
     background-color: rgba(0, 0, 0, 0.5);
@@ -131,6 +133,7 @@ label{
     font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
     height: 24px;
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 legend{

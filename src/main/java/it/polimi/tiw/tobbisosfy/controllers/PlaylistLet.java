@@ -68,7 +68,7 @@ public class PlaylistLet  extends HttpServlet {
         //System.out.println(req.getParameterValues("song"));
         String[] songs = req.getParameterValues("song");
 
-        if(!(req.getParameter("ptitle").isEmpty() || songs[0].isEmpty() )  ) {
+        if(!(req.getParameter("ptitle").isEmpty() || songs == null )  ) {
 
             String playlistTitle = req.getParameter("ptitle");
             System.out.println("Titolo preso");
@@ -105,6 +105,10 @@ public class PlaylistLet  extends HttpServlet {
                 resp.sendRedirect(error);
                 return;
             }
+        } else {
+            error += "Missing parameters in the 'Add a new playlist' form";
+            resp.sendRedirect(error);
+            return;
         }
         System.out.println("è andato tutto bene");
         resp.sendRedirect(ctxPath+"/Home");

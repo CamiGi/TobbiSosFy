@@ -17,7 +17,7 @@ public class UserDAO {
     private String queryUsername = "SELECT * FROM user WHERE username=?";
     private String queryPassword = "SELECT * FROM user WHERE password=?";
 
-    private String queryNewUser = "INSERT INTO user VALUES (?, ?, ?)";  //username, password
+    private String queryNewUser = "INSERT INTO user VALUES (?, ?)";  //username, password
 
     public UserDAO(Connection con){
         this.con=con;
@@ -62,9 +62,8 @@ public class UserDAO {
         int code = 0;
 
         ps = con.prepareStatement(queryNewUser);
-        ps.setString(1, null);
-        ps.setString(2, username);
-        ps.setString(3, password);
+        ps.setString(1, username);
+        ps.setString(2, password);
         code = ps.executeUpdate();
 
         if (!(code == 1)){
