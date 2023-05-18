@@ -22,7 +22,7 @@
                 <tr>
                     <td th:if="${#lists.isEmpty(tracks)}">This playlist does not contain any tracks</td>
                     <td th:class="shine" th:each="track : ${tracks}">
-                        <img th:src="@{C:{image}(image=${track.album.imgUri})}">
+                        <img th:src="@{${#servletContext.getInitParameter('imagepath')+'/'+track.album.imgUri}}">
                         <a th:class="il" th:href="@{/StartPlayer(track=${track.id},playlist=${playlist.id},
                         group=${group})}" th:text="${track.title}"></a>
                     </td>

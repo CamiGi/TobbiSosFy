@@ -40,6 +40,14 @@ a:link {
     color: deepskyblue;
 }
 
+.ply:visited, a.ply:visited {
+    color: deepskyblue;
+}
+
+.ply:hover, a.ply:hover {
+    cursor: pointer;
+}
+
 select {
     min-width: 100px;
 }
