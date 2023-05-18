@@ -13,10 +13,11 @@
 
 <div class="one">
     <p class="myplaylists">My playlists</p>
+    <dt th:if="${#lists.isEmpty(playlists)}">There are no playlists</dt>
         <dl th:each="playlist: ${playlists}">
             <dt>
                 <a class="ply" th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=0)}"
-                   th:text="${playlist.title}">There are no playlists</a>
+                   th:text="${playlist.title}"></a>
             </dt>
             <dd th:text="${playlist.getDateString()}"></dd>
         </dl>
@@ -143,6 +144,7 @@
         <input class="text" type="text" id="ptitle" name="ptitle" required="required"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
+                <dt th:if="${#lists.isEmpty(songs)}">You don't have any song</dt>
                 <a th:each="track: ${songs}" required="required">
                     <input type="checkbox" id="song" name="song" th:value="${track.id}">
                     <label for="song" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">There's no songs</label><br></a>
