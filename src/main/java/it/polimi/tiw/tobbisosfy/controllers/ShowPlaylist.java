@@ -103,7 +103,7 @@ public class ShowPlaylist extends HttpServlet {
             shownTracks.add(tracks.get(c));
 
         System.out.println(shownTracks.size() + " tracce mostrate");
-        next = group+5<tracks.size()-1;
+        next = group+5<tracks.size();
 
         ctx.setVariable("playlist", playlist);
         ctx.setVariable("tracks", shownTracks);
@@ -111,6 +111,7 @@ public class ShowPlaylist extends HttpServlet {
         ctx.setVariable("group", group);
         ctx.setVariable("next", next);
         System.out.println("Rendering playlist page");
+        //System.out.println("'C:'"+shownTracks.get(0).getMp3Uri());
         templateEngine.process("/PlaylistPage.html", ctx, resp.getWriter());
     }
 
