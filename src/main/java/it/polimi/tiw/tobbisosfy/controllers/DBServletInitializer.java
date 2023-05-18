@@ -18,7 +18,6 @@ public class DBServletInitializer {
             String user = context.getInitParameter("dbUser");
             String password = context.getInitParameter("dbPassword");
             Class.forName(driver);
-            System.out.println("DBINITIALIZER");
             return DriverManager.getConnection(url, user, password);
         } catch (Exception e){
             e.printStackTrace();

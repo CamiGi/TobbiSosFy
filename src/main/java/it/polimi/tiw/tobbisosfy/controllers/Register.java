@@ -92,6 +92,7 @@ public class Register extends HttpServlet {
             !pwd.contains("+") &&
             !pwd.contains("/") &&
             !pwd.contains("£") &&
+            !pwd.contains("&") &&
             !pwd.contains("%") &&
             !pwd.contains("^") &&
             !pwd.contains("@") &&
