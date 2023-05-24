@@ -14,7 +14,7 @@
 <div class="one">
     <p class="myplaylists">My playlists</p>
     <dt th:if="${#lists.isEmpty(playlists)}">There are no playlists</dt>
-        <dl th:each="playlist: ${playlists}">
+        <dl th:each="playlist : ${playlists}">
             <dt>
                 <a class="ply" th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=0)}"
                    th:text="${playlist.title}"></a>
@@ -143,10 +143,13 @@
         <input class="text" type="text" id="ptitle" name="ptitle" required="required"><br>
         <fieldset class="fs">
             <legend>My songs</legend><br>
-                <dt th:if="${#lists.isEmpty(songs)}">You don't have any song</dt>
-                <a th:each="track: ${songs}" required="required">
+                <div th:if="${#lists.isEmpty(songs)}">You don't have any song</div>
+                <div th:each="track : ${songs}" required="required">
                     <input type="checkbox" th:id="${track.id}" name="song" th:value="${track.id}">
-                    <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}"></label><br></a>
+                    <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">
+                    </label>
+                    <br>
+                </div>
         </fieldset>
         <input type="submit" value="Submit"><br>
     </form>
