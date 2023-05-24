@@ -11,7 +11,7 @@ public class Playlist {
     private final User user;
 
     public Playlist(String title, java.sql.Date date, User user) {
-        this.title =title.toLowerCase();
+        this.title =title;
         this.date=date;
         this.user = user;
     }

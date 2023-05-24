@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="resources/TobbiSosFy logo.png">
     <title>Home</title>
     <link rel="stylesheet" type="text/css" media="all" href="css/homestyle.css"
           th:href="@{css/homestyle.css}" />
@@ -144,8 +145,8 @@
         <fieldset class="fs">
             <legend>My songs</legend><br>
                 <div th:if="${#lists.isEmpty(songs)}">You don't have any song</div>
-                <div th:each="track : ${songs}" required="required">
-                    <input type="checkbox" th:id="${track.id}" name="song" th:value="${track.id}">
+                <div th:each="track : ${songs}">
+                    <input type="checkbox" th:id="${track.id}" name="song" th:value="${track.id}"  required="required">
                     <label th:for="${track.id}" th:text="${track.title}+' - '+${track.album.title}+' - '+${track.album.genre}+' - '+${track.album.artist.artistName}">
                     </label>
                     <br>

@@ -8,7 +8,7 @@ public class Album {
     private final String imgUri;
 
     public Album(String name, int year, Genre genre, Artist artist, String imgUri) {
-        this.title = name.toLowerCase();
+        this.title = name;
         this.year = year;
         this.genre = genre;
         this.artist = artist;

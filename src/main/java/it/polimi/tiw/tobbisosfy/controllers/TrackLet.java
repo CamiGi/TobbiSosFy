@@ -36,8 +36,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
     private TemplateEngine templateEngine;
     private Connection connection = null;
     private User u;
-    private String audioFP = "";
-    private String imgFP = "";
+    private String audioFP;
+    private String imgFP;
 
     public TrackLet() {
         super();

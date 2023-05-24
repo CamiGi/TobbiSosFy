@@ -9,6 +9,10 @@ html {
     color: ivory;
 }
 
+img {
+    pointer-events: none;
+}
+
 .logout {
     position: absolute;
     top: 5%;

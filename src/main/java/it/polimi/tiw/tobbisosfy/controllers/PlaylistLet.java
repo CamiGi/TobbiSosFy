@@ -64,7 +64,7 @@ public class PlaylistLet  extends HttpServlet {
                 try {
                     sng.add(td.getTrack(Integer.parseInt(song), u.getUsername()));
                 } catch (Exception e) {
-                    error += "Something wrong during the add of the playlist in the database";
+                    error += "Something wrong when adding the playlist in the database";
                     resp.sendRedirect(error);
                     return;
                 }

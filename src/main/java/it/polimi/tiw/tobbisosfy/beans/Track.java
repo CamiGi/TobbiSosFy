@@ -12,7 +12,7 @@ public class Track {
 
     public Track(String title, Album album, String mp3Uri, User user){
         this.album=album;
-        this.title=title.toLowerCase();
+        this.title=title;
         this.mp3Uri=mp3Uri;
         this.user = user;
     }
