@@ -14,8 +14,8 @@
 <a class="back" th:href="@{/Home}">Home</a>
 <div class="page">
     <div class="trks">
-        <div class="button" th:if="${group}!=0">
-            <a th:href="@{/ShowPlaylist(platlist=${playlist.id}, group=${group}-1)}"><</a>
+        <div  th:if="${group}!=0">
+            <a class="button" th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=${group}-1)}"><</a>
         </div>
         <div class="tab">
             <table>
@@ -30,8 +30,8 @@
                 </tr>
             </table>
         </div>
-        <div class="button" th:if="${next}">
-            <a th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=${group}+1)}">></a>
+        <div  th:if="${next}">
+            <a class="button" th:href="@{/ShowPlaylist(playlist=${playlist.id}, group=${group}+1)}">></a>
         </div>
     </div>
     <div th:if="${not #lists.isEmpty(addTrks)}">

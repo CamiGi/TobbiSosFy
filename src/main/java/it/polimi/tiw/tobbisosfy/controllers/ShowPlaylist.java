@@ -108,7 +108,7 @@ public class ShowPlaylist extends HttpServlet {
         ctx.setVariable("playlist", playlist);
         ctx.setVariable("tracks", shownTracks);
         ctx.setVariable("addTrks", addableTracks);
-        ctx.setVariable("group", group);
+        ctx.setVariable("group", group/5);
         ctx.setVariable("next", next);
         System.out.println("Rendering playlist page");
         //System.out.println("'C:'"+shownTracks.get(0).getMp3Uri());

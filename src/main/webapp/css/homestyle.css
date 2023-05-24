@@ -25,7 +25,7 @@ html {
 
     text-align: center;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(13, 16, 23);
     padding: 15px 25px;
 }
 
@@ -125,7 +125,7 @@ label{
     margin-bottom: 7px;
 }
 .text{
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(13, 16, 23);
     border: 1px solid rgb(100, 100, 100);
     color: ivory;
     font-family: CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, Helvetica Neue, helvetica, arial, Hiragino Kaku Gothic Pro, Meiryo, MS Gothic;
@@ -169,7 +169,7 @@ input[type="checkbox"]:checked{
 }*/
 
 input[type="submit"]{
-    background-color: black;
+    background-color: rgb(13, 16, 23);
     font-family: "helvetica";
     font-size: 15px;
     cursor: pointer;
@@ -190,7 +190,7 @@ input[type="submit"]:hover{
 }
 
 input[type="submit"]:active{
-    background-color: black;
+    background-color: lightslategrey;
     color: ivory;
     border-color: black;
 }
@@ -216,14 +216,15 @@ input[type="checkbox"]:hover{
     border-radius: 50%;
     height: 50px;
     width: 50px;
+    color: ivory;
 }
 
-.button:link {
+a.button:link, .button:link{
     color:ivory;
-    font-size: 40px;
+    font-size: 32px;
 }
 
-.button:visited {
+a.button:visited, .button:visited {
     color: ivory;
 }
 
@@ -253,7 +254,7 @@ input[type="checkbox"]:hover{
     margin-right: 2px;
 }
 
-.button:hover {
+.button:hover, a.button:hover {
     border-color: deepskyblue;
     color: deepskyblue;
     cursor: pointer;
