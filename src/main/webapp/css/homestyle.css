@@ -270,7 +270,7 @@ a.button:visited, .button:visited {
     color: deepskyblue;
 }
 
-.il:hover {
+a.il:hover, .il:hover {
     color: deepskyblue;
     cursor: pointer;
 }
@@ -307,8 +307,10 @@ h1 {
 
 .page {
     position: absolute;
-    width: 99%;
+    width: 95%;
     margin-top: 120px;
+    margin-left: 10px;
+    margin-right: 10px;
     min-height: 100px;
     min-width: 900px;
 }

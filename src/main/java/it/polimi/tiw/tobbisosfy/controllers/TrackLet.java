@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 @MultipartConfig
-@WebServlet("/Home")
+@WebServlet({"/Home", "/HomePage.html"})
 public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN ALTRA SOLO PER L?ALTRA COSA playlist - track
 
     private static final long serialVersionUID = 1L;
@@ -184,7 +184,15 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             String contentTypeAudio = taudio.getContentType();
             System.out.println("Type " + contentTypeAudio);
 
-            if (!contentTypeAudio.startsWith("audio")) {
+            if (!contentTypeAudio.startsWith("audio") ||
+                    !contentTypeAudio.contains("mpeg") ||
+                    !contentTypeAudio.contains("mp4") ||
+                    !contentTypeAudio.contains("wav") ||
+                    !contentTypeAudio.contains("aac") ||
+                    !contentTypeAudio.contains("ogg") ||
+                    !contentTypeAudio.contains("webm") ||
+                    !contentTypeAudio.contains("x-caf") ||
+                    !contentTypeAudio.contains("flac")) {
                 error += "Audio file format not permitted! Retry";
                 resp.sendRedirect(error);
                 return;

@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/ShowPlaylist")
+@WebServlet({"/ShowPlaylist", "/PlaylistPage.html"})
 public class ShowPlaylist extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -99,6 +99,8 @@ public class ShowPlaylist extends HttpServlet {
         group = 5*Integer.parseInt(req.getParameter("group"));//////////
         shownTracks = new ArrayList<>(5);
 
+        if (group >= tracks.size())
+            group = 0;
         for (int c=group; c<group+5 && c<tracks.size(); c++)
             shownTracks.add(tracks.get(c));
 

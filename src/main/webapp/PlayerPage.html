@@ -60,6 +60,20 @@
     <audio controls>
       <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
               type="audio/mpeg">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/mp4">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/wav">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/aac">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/ogg">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/webm">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/x-caf">
+        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+                type="audio/flac">
       Your browser does not support this audio extension
     </audio>
   </div>

@@ -21,7 +21,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-@WebServlet ("/StartPlayer")
+@WebServlet ({"/StartPlayer", "/PlayerPage.html"})
 public class StartPlayer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -54,7 +54,7 @@ public class StartPlayer extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Track track;
         TrackDAO trFinder = new TrackDAO(connection);
-        String path = request.getContextPath();
+        String path = request.getContextPath() + "/ShowError?error=";
         final WebContext ctx = DBServletInitializer.createContext(request, response, getServletContext());
         int trID;
 
@@ -62,17 +62,17 @@ public class StartPlayer extends HttpServlet {
             trID = Integer.parseInt(request.getParameter("track"));
             track = trFinder.getTrack(trID, ((User)request.getSession().getAttribute("user")).getUsername());
         } catch (NumberFormatException e) {
-            ctx.setVariable("error", "Erroneous track ID");
-            response.sendRedirect(path+"/ShowError");
+            path += "Erroneous track ID";
+            response.sendRedirect(path);
             return;
         } catch (SQLException e) {
-            ctx.setVariable("error", "Track not found");
-            response.sendRedirect(path+"/ShowError");
+            path += "Track not found";
+            response.sendRedirect(path);
             return;
         } catch (Exception e){
             e.printStackTrace();
-            ctx.setVariable("error", e.getMessage());
-            response.sendRedirect(path+"/ShowError");
+            path += e.getMessage();
+            response.sendRedirect(path);
             return;
         }
 

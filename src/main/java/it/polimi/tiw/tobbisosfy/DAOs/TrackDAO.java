@@ -200,7 +200,7 @@ public class TrackDAO {
         resultTrack = ps.executeQuery();
 
         if (!resultTrack.isBeforeFirst()){
-            throw new Exception("ATTENZIONE non puoi prendere questa Track, non sei tu l'utente che l'ha inserita");
+            throw new Exception("ATTENTION! This track does not belong to you");
         }
         resultTrack.next();
 

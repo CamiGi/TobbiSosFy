@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/ShowError")
+@WebServlet({"/ShowError", "/ErrorPage.html"})
 public class ShowError extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
@@ -35,7 +35,12 @@ public class ShowError extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext ctx = DBServletInitializer.createContext(req, resp, getServletContext());
-        ctx.setVariable("error", req.getParameter("error")+". ");
+        String error = req.getParameter("error");
+        if (error == null)
+            error = "Origin server could not find the requested resource";
+        else if (error.length() != 0)
+            error = "Origin server could not find the requested resource";
+        ctx.setVariable("error", error+". ");
         templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());
     }
 }
