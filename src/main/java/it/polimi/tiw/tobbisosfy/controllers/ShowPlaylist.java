@@ -65,24 +65,20 @@ public class ShowPlaylist extends HttpServlet {
         ArrayList<Track> addableTracks;
         String error = getServletContext().getContextPath() + "/ShowError?error=";
 
-        System.out.println("Start searching for playlist");
         try {
             plID = Integer.parseInt(req.getParameter("playlist"));
             playlist = plFinder.getPlaylistFromId(plID, user);
             tracks = plFinder.getTracksFromPlaylist(playlist);
             addableTracks = new TrackDAO(connection).getTracksFromUser(user);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid playlist ID");
             error += "Invalid playlist ID";
             resp.sendRedirect(error);
             return;
         } catch (SQLException e) {
-            System.out.println("This playlist does not exist or you haven't got the authorization to see it");
             error += "This playlist does not exist or you haven't got the authorization to see it";
             resp.sendRedirect(error);
             return;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             error += e.getMessage();
             resp.sendRedirect(error);
             return;
@@ -104,7 +100,6 @@ public class ShowPlaylist extends HttpServlet {
         for (int c=group; c<group+5 && c<tracks.size(); c++)
             shownTracks.add(tracks.get(c));
 
-        System.out.println(shownTracks.size() + " tracce mostrate");
         next = group+5<tracks.size();
 
         ctx.setVariable("playlist", playlist);
@@ -112,8 +107,6 @@ public class ShowPlaylist extends HttpServlet {
         ctx.setVariable("addTrks", addableTracks);
         ctx.setVariable("group", group/5);
         ctx.setVariable("next", next);
-        System.out.println("Rendering playlist page");
-        //System.out.println("'C:'"+shownTracks.get(0).getMp3Uri());
         templateEngine.process("/PlaylistPage.html", ctx, resp.getWriter());
     }
 
@@ -149,7 +142,6 @@ public class ShowPlaylist extends HttpServlet {
             return;
         }
         trIDs = new ArrayList<>();
-        System.out.println("SONO QUA");
 
         try {
             for (String track : tracks) {
@@ -165,8 +157,6 @@ public class ShowPlaylist extends HttpServlet {
             resp.sendRedirect(error);
             return;
         }
-
-        System.out.println("SONO QUIII");
 
         resp.sendRedirect("ShowPlaylist?playlist="+playlist.getId()+"&group=0");
     }

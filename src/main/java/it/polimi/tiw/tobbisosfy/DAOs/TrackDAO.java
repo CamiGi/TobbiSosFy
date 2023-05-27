@@ -166,7 +166,6 @@ public class TrackDAO {
         if(r.isBeforeFirst()){
             r.next();
             while(!r.isAfterLast()){
-                System.out.println(r.getInt("ID"));
                 tracks.add(this.getTrack(r.getInt("ID"), user.getUsername()));
                 r.next();
             }

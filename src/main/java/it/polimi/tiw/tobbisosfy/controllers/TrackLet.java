@@ -30,8 +30,7 @@ import java.util.ArrayList;
 
 @MultipartConfig
 @WebServlet({"/Home", "/HomePage.html"})
-public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN ALTRA SOLO PER L?ALTRA COSA playlist - track
-
+public class TrackLet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     private Connection connection = null;
@@ -127,37 +126,24 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
         Part img;
 
         try {
-            System.out.println("DENTRO AL TRY");
             trackTitle = req.getPart("ttitle");
-            System.out.println("ttitle preso "+ new String(trackTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8));
             albumDate = req.getPart("dalbum");
-            System.out.println("dalbum preso");
             albumTitle = req.getPart("talbum");
-            System.out.println("talbum preso");
             albumGenre = req.getPart("g");
-            System.out.println("g preso");
             artistName = req.getPart("aname");
-            System.out.println("aname preso");
             taudio = req.getPart("audio");
             img = req.getPart("img");
-            System.out.println("STO USCENDO DAL TRY");
         } catch (Exception e) {
-            e.printStackTrace();
             error += "Error occurred while reading the form: Add a new track";
             resp.sendRedirect(error);
             return;
         }
-
-        System.out.println("JJJJJJ");
 
         if(!(albumTitle == null || albumTitle.getSize() <= 0 ||
                 trackTitle == null || trackTitle.getSize() <= 0 ||
                 albumDate == null || albumDate.getSize() <= 0 ||
                 albumGenre == null || albumGenre.getSize() <= 0 ||
                 artistName == null || artistName.getSize() <= 0 ||
-                /*albumTitle.isEmpty() || trackTitle.isEmpty() ||
-                albumDate == 0 || albumGenre.isEmpty() ||
-                artistName.isEmpty() ||*/
                 img == null || img.getSize() <= 0 ||
                 taudio == null || taudio.getSize() <= 0)) {
             String aTitle = new String(albumTitle.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
@@ -167,11 +153,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             int aDate = Integer.parseInt(adate);
             String agenre = new String(albumGenre.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             Genre aGenre = Genre.valueOf(agenre.toUpperCase());
-            System.out.println("g preso");
 
             // We then check the parameter is valid (in this case right format)
             String contentTypeImg = img.getContentType();
-            System.out.println("Type " + contentTypeImg);
 
             if (!contentTypeImg.startsWith("image")) {
                 error += "Image file format not permitted! Retry";
@@ -182,35 +166,31 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
 
             // We then check the parameter is valid (in this case right format)
             String contentTypeAudio = taudio.getContentType();
-            System.out.println("Type " + contentTypeAudio);
+            System.out.println(contentTypeAudio);
 
             if (!contentTypeAudio.startsWith("audio") ||
-                    !contentTypeAudio.contains("mpeg") ||
-                    !contentTypeAudio.contains("mp4") ||
-                    !contentTypeAudio.contains("wav") ||
-                    !contentTypeAudio.contains("aac") ||
-                    !contentTypeAudio.contains("ogg") ||
-                    !contentTypeAudio.contains("webm") ||
-                    !contentTypeAudio.contains("x-caf") ||
-                    !contentTypeAudio.contains("flac")) {
+                    !(contentTypeAudio.contains("mpeg") ||
+                    contentTypeAudio.contains("mp4") ||
+                    contentTypeAudio.contains("wav") ||
+                    contentTypeAudio.contains("aac") ||
+                    contentTypeAudio.contains("ogg") ||
+                    contentTypeAudio.contains("webm") ||
+                    contentTypeAudio.contains("x-caf") ||
+                    contentTypeAudio.contains("flac"))) {
                 error += "Audio file format not permitted! Retry";
                 resp.sendRedirect(error);
                 return;
             }
 
             String imgName = Paths.get(img.getSubmittedFileName()).getFileName().toString();
-            System.out.println("Filename: " + imgName);
 
             String audioName = Paths.get(taudio.getSubmittedFileName()).getFileName().toString();
-            System.out.println("Filename: " + audioName);
 
             String imgOutputPath = imgFP + imgName; //folderPath inizialized in init
-            System.out.println("Output path: " + imgOutputPath);
 
             File imgFile = new File(imgOutputPath);
 
             String audioOutputPath = audioFP + audioName; //folderPath inizialized in init
-            System.out.println("Output path: " + audioOutputPath);
 
             File audioFile = new File(audioOutputPath);
 
@@ -221,8 +201,6 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 //I also save other data, I could save the image as {image_id}.jpg using the id of the db
 
                 Files.copy(imgContent, imgFile.toPath());
-                System.out.println("Image saved correctly!");
-
             } catch (FileAlreadyExistsException e) {
                 System.out.println("Image saved correctly!");
             } catch (Exception e) {
@@ -239,13 +217,9 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 // rename it, for example, if I need to upload images to an album, and for each image I also save other data, I could save the image as {image_id}.jpg using the id of the db
 
                 Files.copy(audioContent, audioFile.toPath());
-                System.out.println("Track audio saved correctly!");
-
-                //resp.sendRedirect("ShowImage?filename=" + imgName);
             } catch (FileAlreadyExistsException e) {
                 System.out.println("Track audio saved correctly!");
             } catch (Exception e) {
-                e.printStackTrace();
                 error += "Error occurred while saving the audio file! Retry";
                 resp.sendRedirect(error);
                 return;
@@ -257,11 +231,8 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
             Track track = new Track(tTitle, album, audioName, u);
 
             try {
-                System.out.println("Ora aggiungo la track al server");
                 td.addTrack(track.getTitle(), track.getAlbum(), track.getMp3Uri(), track.getUser());
-                System.out.println("Track aggiunta corettamente al server");
             } catch (SQLException e){
-                e.printStackTrace();
                 error += "Error occurred while saving the track in the database (SQL exception)";
                 resp.sendRedirect(error);
                 return;
@@ -270,6 +241,7 @@ public class TrackLet extends HttpServlet { //SERVLET DA SPECIFICARE E FARNE UN 
                 resp.sendRedirect(error);
                 return;
             }
+
         } else {
             error += "Missing parameters in the 'Add a new track' form";
             resp.sendRedirect(error);

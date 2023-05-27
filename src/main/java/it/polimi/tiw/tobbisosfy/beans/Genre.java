@@ -8,7 +8,7 @@ public enum Genre {
     CLASSIC("CLASSIC"), JAZZ("JAZZ"), BLUES("BLUES"), GOSPEL("GOSPEL"),
     SOUL("SOUL"), POP("POP"), ROCK("ROCK"), COUNTRY("COUNTRY"), DISCO("DISCO"),
     TECHNO("TECHNO"), RAGGAE("RAGGAE"), SALSA("SALSA"), FLAMENCO("FLAMENCO"), HIPHOP("HIPHOP"),
-    METAL("METAL"), FUNK("FUNK");
+    METAL("METAL"), FUNK("FUNK"), RAP("RAP"), TRAP("TRAP");
 
     private final String genre;
 

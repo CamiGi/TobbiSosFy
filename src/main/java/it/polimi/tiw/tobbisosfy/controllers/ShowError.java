@@ -38,7 +38,7 @@ public class ShowError extends HttpServlet {
         String error = req.getParameter("error");
         if (error == null)
             error = "Origin server could not find the requested resource";
-        else if (error.length() != 0)
+        else if (error.length() == 0)
             error = "Origin server could not find the requested resource";
         ctx.setVariable("error", error+". ");
         templateEngine.process("/ErrorPage.html", ctx, resp.getWriter());

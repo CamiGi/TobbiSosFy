@@ -70,7 +70,6 @@ public class StartPlayer extends HttpServlet {
             response.sendRedirect(path);
             return;
         } catch (Exception e){
-            e.printStackTrace();
             path += e.getMessage();
             response.sendRedirect(path);
             return;

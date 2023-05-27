@@ -26,26 +26,25 @@
 
 <div class="newTrack">
     <p>Add a new track</p>
-    <form action="Home" method="POST" enctype="multipart/form-data"> <!--enctype="multipart/form-data"-->
+    <form action="Home" method="POST" enctype="multipart/form-data">
         <label for="ttitle">Track Title</label><br>
-        <input class="text" type="text" id="ttitle" name="ttitle" required="required"><br>
-        <label for="audio" >Select audio file: </label>
-        <input class="tfile" type="file" name="audio" id="audio"><br>
-        <!--<legend id="div1" >Drop here the audio file</legend>-->
-        <label for="talbum">Album</label><br>
-        <input class="text" type="text" id="talbum" name="talbum" required="required"><br>
+        <input class="text" type="text" id="ttitle" name="ttitle" required="required">
+        <br>
+        <label for="aname">Artist Name</label><br>
+        <input class="text" type="text" id="aname" name="aname" required="required">
+        <br>
+        <label for="talbum">Album Title</label><br>
+        <input class="text" type="text" id="talbum" name="talbum" required="required">
+        <br><br>
         <label for="dalbum">Year of release: </label>
         <select class="text" name="dalbum" id="dalbum">
             <option th:each="year : ${#numbers.sequence(#dates.year(#dates.createNow()), 0)}"
                     th:value="${year}" th:text="${year}"></option>
         </select>
         <br>
-        <label for="img" >Select album image: </label>
-        <input class="afile" type="file" name="img" id="img"><br>
-        <fieldset id="galbum">
+        <fieldset>
             <legend>Genre</legend>
                 <table>
-                    <!-- tr riga e dentro ha la colonna che è td -->
                     <tr>
                         <td>
                             <input type="radio" id="classic" value="CLASSIC" name="g" checked="checked">
@@ -126,11 +125,24 @@
                             <label for="funk">Funk</label><br>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="rap" value="RAP" name="g">
+                            <label for="rap">Rap</label><br>
+                        </td>
+                        <td>
+                            <input type="radio" id="trap" value="TRAP" name="g">
+                            <label for="trap">Trap</label><br>
+                        </td>
+                    </tr>
             </table>
         </fieldset>
         <br>
-        <label for="aname">Artist name</label><br>
-        <input class="text" type="text" id="aname" name="aname" required="required"><br>
+        <label for="audio" >Select audio file: </label>
+        <input type="file" name="audio" id="audio">
+        <br><br>
+        <label for="img" >Select album image: </label>
+        <input type="file" name="img" id="img"><br>
 
         <input type="submit" value="Submit"><br>
     </form>

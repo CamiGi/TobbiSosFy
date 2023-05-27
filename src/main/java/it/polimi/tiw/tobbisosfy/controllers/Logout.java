@@ -1,5 +1,7 @@
 package it.polimi.tiw.tobbisosfy.controllers;
 
+import it.polimi.tiw.tobbisosfy.beans.User;
+
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +21,9 @@ public class Logout extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession session = request.getSession(false);
+
+        System.out.println("Bye user "+((User)session.getAttribute("user")).getUsername());
         if (session != null) {
             session.invalidate();
         }
