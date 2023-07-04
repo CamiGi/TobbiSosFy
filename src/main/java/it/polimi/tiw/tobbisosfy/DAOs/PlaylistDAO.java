@@ -106,7 +106,7 @@ public class PlaylistDAO {
         ArrayList<Playlist> r = new ArrayList<>();
         Playlist pl;
 
-        String query = "SELECT * FROM playlist WHERE userID=?";
+        String query = "SELECT * FROM playlist WHERE userID=? ORDER BY creationDate DESC";
         ps = con.prepareStatement(query);
         ps.setString(1,user.getUsername());
         result = ps.executeQuery();
