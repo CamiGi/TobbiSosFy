@@ -42,12 +42,13 @@ public class PlaylistDAO {
 
         int code;
         if(!result.isBeforeFirst()){  //se non ho già la playlist
-            String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?)";
+            String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?, ?)";
             ps = con.prepareStatement(queryNewPlaylist);
             ps.setString(1, null);
             ps.setString(2,playlist.getTitle());
             ps.setDate(3,playlist.getDate());
             ps.setString(4,playlist.getUser().getUsername());
+            ps.setInt(5, 1);
             code = ps.executeUpdate();
         } else {
             throw new Exception("ATTENZIONE qualcosa non è andato bene: 500");
@@ -76,10 +77,11 @@ public class PlaylistDAO {
         if(!result.isBeforeFirst()){  //se non ho già la tupla
 
             for (Track t : tracks){
-                String queryNewContains = "INSERT INTO contains VALUES(?, ?)";
+                String queryNewContains = "INSERT INTO contains VALUES(?, ?, ?)";
                 ps = con.prepareStatement(queryNewContains);
                 //ps.setString(1,null);
                 ps.setInt(1,h);
+                ps.setInt(3,0);
                 try {
                     ps.setInt(2, t.getId());
                 } catch (SQLException e){
@@ -219,7 +221,7 @@ public class PlaylistDAO {
         idp = this.getIdOfPlaylist(playlist);
 
         String query1 = "SELECT * FROM contains WHERE playlistID=? AND trackID=?";
-        String query2 = "INSERT INTO contains VALUES(?, ?)";
+        String query2 = "INSERT INTO contains VALUES(?, ?, ?)";
 
         try {
             for (Integer i : tracks) {
@@ -233,6 +235,7 @@ public class PlaylistDAO {
                     ps = con.prepareStatement(query2);
                     ps.setInt(1, idp);
                     ps.setInt(2, i);
+                    ps.setInt(3, 0);
                     code = ps.executeUpdate();
                 } else {
                     throw new Exception("ATTENZIONE la canzone è già nella playlist: " + playlist.getTitle());

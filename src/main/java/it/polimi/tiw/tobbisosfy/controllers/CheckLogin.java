@@ -80,6 +80,7 @@ public class CheckLogin extends HttpServlet {
             request.getSession().setAttribute("user", u);
         }
         response.sendRedirect(path+"/Home");
+
     }
 
     public void destroy() {
