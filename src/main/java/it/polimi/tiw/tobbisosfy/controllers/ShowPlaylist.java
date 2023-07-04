@@ -92,7 +92,12 @@ public class ShowPlaylist extends HttpServlet {
                 }
             }
         }
-        group = 5*Integer.parseInt(req.getParameter("group"));//////////
+
+        try {
+            group = 5 * Integer.parseInt(req.getParameter("group"));
+        } catch (Exception e) {
+            group = 0;
+        }
         shownTracks = new ArrayList<>(5);
 
         if (group >= tracks.size())

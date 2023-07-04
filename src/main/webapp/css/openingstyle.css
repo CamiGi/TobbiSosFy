@@ -114,3 +114,8 @@ a:hover {
     transform: translate(-50%, 0);
     max-width: 80px;
 }
+
+.divider {
+    border-top: 2px solid rgb(26, 31, 37);
+    border-radius: 2px;
+}
