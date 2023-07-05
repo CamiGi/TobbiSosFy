@@ -26,7 +26,7 @@
     <table>
       <tr>
         <td class="entry">
-            <img th:src="${#servletContext.getContextPath()+'/resources/images/'+track.album.imgUri}"
+            <img th:src="${'GetImageFile?name='+track.album.imgUri}"
                alt="No Album Cover">
         </td>
         <td class="entry">
@@ -58,21 +58,21 @@
   </div>
   <div class="player">
     <audio controls>
-      <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+      <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
               type="audio/mpeg">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/mp4">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/wav">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/aac">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/ogg">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/webm">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/x-caf">
-        <source th:src="${#servletContext.getContextPath()+'/resources/tracks/'+track.mp3Uri}"
+        <source th:src="${'GetAudioFile?name='+track.mp3Uri}"
                 type="audio/flac">
       Your browser does not support this audio extension
     </audio>
