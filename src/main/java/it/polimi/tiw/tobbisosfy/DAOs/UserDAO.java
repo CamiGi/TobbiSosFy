@@ -56,7 +56,6 @@ public class UserDAO {
     public void addUser(String username, String password) throws SQLException, Exception{
         int code;
 
-        //username, password
         String queryNewUser = "INSERT INTO user VALUES (?, ?)";
         ps = con.prepareStatement(queryNewUser);
         ps.setString(1, username);

@@ -78,7 +78,6 @@ public class StartPlayer extends HttpServlet {
         ctx.setVariable("track", track);
         ctx.setVariable("playlist", request.getParameter("playlist"));
         ctx.setVariable("group", request.getParameter("group"));
-        //o le mandi nella request o provi a beccarle da ctx
         templateEngine.process("/PlayerPage.html", ctx, response.getWriter());
     }
 

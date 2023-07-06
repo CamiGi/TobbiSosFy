@@ -195,11 +195,6 @@ public class TrackLet extends HttpServlet {
             File audioFile = new File(audioOutputPath);
 
             try (InputStream imgContent = img.getInputStream()) {
-                // TODO: WHAT HAPPENS IF A FILE WITH THE SAME NAME ALREADY EXISTS?
-                // you could override it, send an error or
-                // rename it, for example, if I need to upload images to an album, and for each image
-                //I also save other data, I could save the image as {image_id}.jpg using the id of the db
-
                 Files.copy(imgContent, imgFile.toPath());
             } catch (FileAlreadyExistsException e) {
                 System.out.println("Image saved correctly!");
@@ -212,10 +207,6 @@ public class TrackLet extends HttpServlet {
 
 
             try (InputStream audioContent = taudio.getInputStream()) {
-                // TODO: WHAT HAPPENS IF A FILE WITH THE SAME NAME ALREADY EXISTS?
-                // you could override it, send an error or
-                // rename it, for example, if I need to upload images to an album, and for each image I also save other data, I could save the image as {image_id}.jpg using the id of the db
-
                 Files.copy(audioContent, audioFile.toPath());
             } catch (FileAlreadyExistsException e) {
                 System.out.println("Track audio saved correctly!");

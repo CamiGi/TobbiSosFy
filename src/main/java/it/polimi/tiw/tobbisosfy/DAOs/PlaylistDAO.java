@@ -41,7 +41,7 @@ public class PlaylistDAO {
         result.next();
 
         int code;
-        if(!result.isBeforeFirst()){  //se non ho già la playlist
+        if(!result.isBeforeFirst()){
             String queryNewPlaylist = "INSERT INTO playlist VALUES (?, ?, ?, ?, ?)";
             ps = con.prepareStatement(queryNewPlaylist);
             ps.setString(1, null);
@@ -74,12 +74,11 @@ public class PlaylistDAO {
         result = ps.executeQuery();
         result.next();
 
-        if(!result.isBeforeFirst()){  //se non ho già la tupla
+        if(!result.isBeforeFirst()){
 
             for (Track t : tracks){
                 String queryNewContains = "INSERT INTO contains VALUES(?, ?, ?)";
                 ps = con.prepareStatement(queryNewContains);
-                //ps.setString(1,null);
                 ps.setInt(1,h);
                 ps.setInt(3,0);
                 try {
@@ -162,17 +161,16 @@ public class PlaylistDAO {
                 "FROM playlist as pl INNER JOIN contains as ct ON ct.playlistID=pl.id " +
                         "INNER JOIN track as tr on ct.trackID=tr.ID " +
                         "INNER JOIN album as al on tr.albumID=al.ID " +
-                "WHERE pl.ID=? ORDER BY year DESC";  //creo query che seleziona le canzoni (tentativo di JOIN)
+                "WHERE pl.ID=? ORDER BY year DESC";
 
-        ps = con.prepareStatement(queryTracks);  //settaggio altro statement
+        ps = con.prepareStatement(queryTracks);
         ps.setInt(1,result.getInt("ID"));
-        resultTrack = ps.executeQuery();  //mando la query definitiva che mi da tutte le canzoni
+        resultTrack = ps.executeQuery();
 
         if (resultTrack.isBeforeFirst()) {
             resultTrack.next();
             while (!resultTrack.isAfterLast()) {
                 tid = resultTrack.getInt("tr.ID");
-                //rs.add(td.getTrack(tid));  //uso il metodo privato che dato un id di Track restituisce l'oggetto Track
                 rs.add(td.getTrack(tid, playlist.getUser().getUsername()));
                 resultTrack.next();
             }
