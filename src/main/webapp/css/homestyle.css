@@ -12,7 +12,7 @@ html {
 img {
     pointer-events: none;
 
-    max-width: 130px;
+    max-width: 140px;
     max-height: 280px;
     border-radius: 8px;
 }
@@ -247,7 +247,7 @@ a.button:visited, .button:visited {
     min-width: 100px;
     max-width: 150px;
     min-height: 200px;
-    max-height: 300px;
+    max-height: 350px;
     padding: 10px;
 
     overflow: hidden;
