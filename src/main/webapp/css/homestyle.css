@@ -11,6 +11,10 @@ html {
 
 img {
     pointer-events: none;
+
+    max-width: 140px;
+    max-height: 280px;
+    border-radius: 8px;
 }
 
 .body{
@@ -241,9 +245,9 @@ a.button:visited, .button:visited {
     border-radius: 32px;
 
     min-width: 100px;
-    max-width: 200px;
+    max-width: 150px;
     min-height: 200px;
-    max-height: 300px;
+    max-height: 350px;
     padding: 10px;
 
     overflow: hidden;
@@ -341,10 +345,4 @@ h1 {
 .error {
     margin-top: 20%;
     margin-left: 5%;
-}
-
-img {
-    max-width: 190px;
-    max-height: 270px;
-    border-radius: 8px;
 }
